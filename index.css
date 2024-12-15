@@ -20,8 +20,9 @@
 
 .pac-dot {
     background-color: greenyellow;
-    border: 5px solid white;
+    border: 6px solid white;
     box-sizing: border-box;
+    border-radius: 10px;
 }
 
 .wall {
