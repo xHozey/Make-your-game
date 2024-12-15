@@ -1,4 +1,0 @@
-
-const width = 28
-
-

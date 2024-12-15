@@ -29,3 +29,28 @@
     background-color: red;
     border-radius: 10px;
 }
+
+.pac-man {
+    background-color: rgb(46, 46, 15);
+    border-radius: 50%;
+}
+
+.pink {
+    background-color: pink;
+}
+
+.brown {
+    background-color: brown;
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+.scared-ghost {
+    background-color: aquamarine;
+}
