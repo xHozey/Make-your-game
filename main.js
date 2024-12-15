@@ -1,5 +1,6 @@
-const score = document.getElementById("score-id").innerText;
-const lifes = document.getElementById("lifes-id").innerText;
+let score = document.getElementById("score-id").innerText;
+console.log(score)
+let lifes = document.getElementById("lifes-id").innerText;
 const map = document.querySelector(".map");
 const grids = [];
 const width = 28;
@@ -159,6 +160,7 @@ let playerPos = [17, 14];
 grids[playerPos[0]][playerPos[1]].classList.add("pac-man");
 
 const playerMovement = (event) => {
+  eatPacDot()
   switch (event.key.toLowerCase()) {
     case "arrowup":
     case "w":
@@ -268,4 +270,11 @@ const ghostMovements = (ghost) => {
     } else nextMove = directions[Math.floor(Math.random() * directions.length)];
   }, ghost.speed);
 };
+
+const eatPacDot = () => {
+  if (grids[playerPos[0]][playerPos[1]].classList.contains("pac-dot")) {
+    grids[playerPos[0]][playerPos[1]].classList.remove("pac-dot");
+    score+=10;
+  }
+}
 ghosts.forEach((ghost) => ghostMovements(ghost));
