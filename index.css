@@ -1,3 +1,8 @@
+* {
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
 .map {
     width: 560px;
     height: 560px;
