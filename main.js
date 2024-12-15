@@ -2,7 +2,6 @@ const score = document.getElementById("score-id").innerText;
 const lifes = document.getElementById("lifes-id").innerText;
 const map = document.querySelector(".map");
 const grids = [];
-const heigth = 28;
 const width = 28;
 const level_1 = [
   [
@@ -164,7 +163,6 @@ const playerMovement = (event) => {
     case "arrowup":
     case "w":
       if (
-        playerPos[0] - 1 < 0 ||
         grids[playerPos[0] - 1][playerPos[1]].classList.contains("wall")
       )
         return;
@@ -175,7 +173,6 @@ const playerMovement = (event) => {
     case "arrowdown":
     case "s":
       if (
-        playerPos[0] + 1 >= heigth ||
         grids[playerPos[0] + 1][playerPos[1]].classList.contains("wall")
       )
         return;
@@ -186,7 +183,6 @@ const playerMovement = (event) => {
     case "arrowright":
     case "d":
       if (
-        playerPos[1] + 1 >= width ||
         grids[playerPos[0]][playerPos[1] + 1].classList.contains("wall")
       )
         return;
@@ -203,7 +199,6 @@ const playerMovement = (event) => {
     case "a":
       
       if (
-        playerPos[1] - 1 < 0 ||
         grids[playerPos[0]][playerPos[1] - 1].classList.contains("wall")
       )
         return; 
@@ -248,7 +243,7 @@ ghosts.forEach((ghost) => {
   grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.add("ghost");
 });
 
-const getRandomMove = (ghost) => {
+const ghostMovements = (ghost) => {
   const directions = [
     [-1, 0],
     [1, 0],
@@ -256,39 +251,12 @@ const getRandomMove = (ghost) => {
     [0, 1],
   ];
 
-  const nextMove = directions[Math.floor(Math.random() * directions.length)];
-
-  const newRow = ghost.currentPos[0] + nextMove[0];
-  const newCol = ghost.currentPos[1] + nextMove[1];
-
-  const topCheck = newRow < 0;
-  const bottomCheck = newRow >= grids.length;
-  const leftCheck = newCol < 0;
-  const rightCheck = newCol >= grids[ghost.currentPos[0]].length;
-  const directionCheck =
-    grids[newRow][newCol].classList.contains("ghost") ||
-    grids[newRow][newCol].classList.contains("wall");
-
-  if (topCheck || bottomCheck || leftCheck || rightCheck || directionCheck) {
-    return getRandomMove(ghost);
-  }
-
-  return nextMove;
-};
-
-const ghostMovements = (ghost) => {
-  const nextMove = getRandomMove(ghost);
+  let nextMove = directions[Math.floor(Math.random() * directions.length)];
 
   ghost.timerId = setInterval(() => {
-    const wallInWay = grids[ghost.currentPos[0] + nextMove[0]][ghost.currentPos[1] + nextMove[1]].classList.contains("wall");
-    if (wallInWay) {
-      const newMove = getRandomMove(ghost);
-      ghost.currentPos[0] += newMove[0]
-      ghost.currentPos[1] += newMove[1];
-    }
-    const ghostInWay = grids[ghost.currentPos[0] + nextMove[0]][ghost.currentPos[1] + nextMove[1]].classList.contains("ghost")
+    const invalidDirection = grids[ghost.currentPos[0] + nextMove[0]][ghost.currentPos[1] + nextMove[1]].classList.contains("wall") || grids[ghost.currentPos[0] + nextMove[0]][ghost.currentPos[1] + nextMove[1]].classList.contains("ghost");
 
-    if (!ghostInWay) {
+    if (!invalidDirection) {
       grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.remove(
         "ghost",
         ghost.className
@@ -296,10 +264,8 @@ const ghostMovements = (ghost) => {
       ghost.currentPos[0] += nextMove[0];
       ghost.currentPos[1] += nextMove[1];
       grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.add("ghost");
-      grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.add(
-        ghost.className
-      );
-    }
+      grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.add(ghost.className);
+    } else nextMove = directions[Math.floor(Math.random() * directions.length)];
   }, ghost.speed);
 };
 ghosts.forEach((ghost) => ghostMovements(ghost));
