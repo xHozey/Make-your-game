@@ -201,13 +201,19 @@ const playerMovement = (event) => {
       break;
     case "arrowleft":
     case "a":
+      
       if (
         playerPos[1] - 1 < 0 ||
         grids[playerPos[0]][playerPos[1] - 1].classList.contains("wall")
       )
-        return;
+        return; 
       grids[playerPos[0]][playerPos[1]].classList.remove("pac-man");
       playerPos[1] -= 1;
+      if (grids[playerPos[0]][playerPos[1]].classList.contains("teleport")) {
+        playerPos[1] = 27;
+        grids[playerPos[0]][27].classList.add("pac-man");
+        return;
+      }
       grids[playerPos[0]][playerPos[1]].classList.add("pac-man");
       break;
     default:
@@ -224,22 +230,76 @@ class ghost {
     this.speed = speed;
     this.currentPos = start;
     this.isScared = false;
-    this.fearCD = NaN
+    this.timerId = NaN;
   }
 }
 
 const ghosts = [
-  new ghost("red", [12, 13], 100),
-  new ghost("brown", [12, 14], 150),
-  new ghost("green", [12, 12], 120),
-  new ghost("pink", [12, 15], 130),
+  new ghost("red", [12, 13], 1000),
+  new ghost("brown", [12, 14], 1500),
+  new ghost("green", [12, 12], 1200),
+  new ghost("pink", [12, 15], 1300),
 ];
 
-ghosts.forEach((ghost) => { 
-  const div = document.createElement("div");
-  map.appendChild(div);
-  grids[ghost.start[0]][ghost.start[1]].classList.add(ghost.className);
-  grids[ghost.start[0]][ghost.start[1]].appendChild(div);
-})
+ghosts.forEach((ghost) => {
+  grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.add(
+    ghost.className
+  );
+  grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.add("ghost");
+});
 
-const ghostMovements = []
+const getRandomMove = (ghost) => {
+  const directions = [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+
+  const nextMove = directions[Math.floor(Math.random() * directions.length)];
+
+  const newRow = ghost.currentPos[0] + nextMove[0];
+  const newCol = ghost.currentPos[1] + nextMove[1];
+
+  const topCheck = newRow < 0;
+  const bottomCheck = newRow >= grids.length;
+  const leftCheck = newCol < 0;
+  const rightCheck = newCol >= grids[ghost.currentPos[0]].length;
+  const directionCheck =
+    grids[newRow][newCol].classList.contains("ghost") ||
+    grids[newRow][newCol].classList.contains("wall");
+
+  if (topCheck || bottomCheck || leftCheck || rightCheck || directionCheck) {
+    return getRandomMove(ghost);
+  }
+
+  return nextMove;
+};
+
+const ghostMovements = (ghost) => {
+  const nextMove = getRandomMove(ghost);
+
+  ghost.timerId = setInterval(() => {
+    const wallInWay = grids[ghost.currentPos[0] + nextMove[0]][ghost.currentPos[1] + nextMove[1]].classList.contains("wall");
+    if (wallInWay) {
+      const newMove = getRandomMove(ghost);
+      ghost.currentPos[0] += newMove[0]
+      ghost.currentPos[1] += newMove[1];
+    }
+    const ghostInWay = grids[ghost.currentPos[0] + nextMove[0]][ghost.currentPos[1] + nextMove[1]].classList.contains("ghost")
+
+    if (!ghostInWay) {
+      grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.remove(
+        "ghost",
+        ghost.className
+      );
+      ghost.currentPos[0] += nextMove[0];
+      ghost.currentPos[1] += nextMove[1];
+      grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.add("ghost");
+      grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.add(
+        ghost.className
+      );
+    }
+  }, ghost.speed);
+};
+ghosts.forEach((ghost) => ghostMovements(ghost));
