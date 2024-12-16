@@ -1,5 +1,6 @@
-let score = document.getElementById("score-id").innerText;
-console.log(score)
+let score = document.getElementById("score-id");
+let currentScore = 0;
+score.innerText = String(currentScore);
 let lifes = document.getElementById("lifes-id").innerText;
 const map = document.querySelector(".map");
 const grids = [];
@@ -160,12 +161,12 @@ let playerPos = [17, 14];
 grids[playerPos[0]][playerPos[1]].classList.add("pac-man");
 
 const playerMovement = (event) => {
-  eatPacDot()
   switch (event.key.toLowerCase()) {
     case "arrowup":
     case "w":
       if (
-        grids[playerPos[0] - 1][playerPos[1]].classList.contains("wall")
+        grids[playerPos[0] - 1][playerPos[1]].classList.contains("wall") ||
+        grids[playerPos[0] - 1][playerPos[1]].classList.contains("ghost-lair")
       )
         return;
       grids[playerPos[0]][playerPos[1]].classList.remove("pac-man");
@@ -175,7 +176,8 @@ const playerMovement = (event) => {
     case "arrowdown":
     case "s":
       if (
-        grids[playerPos[0] + 1][playerPos[1]].classList.contains("wall")
+        grids[playerPos[0] + 1][playerPos[1]].classList.contains("wall") ||
+        grids[playerPos[0] + 1][playerPos[1]].classList.contains("ghost-lair")
       )
         return;
       grids[playerPos[0]][playerPos[1]].classList.remove("pac-man");
@@ -185,7 +187,8 @@ const playerMovement = (event) => {
     case "arrowright":
     case "d":
       if (
-        grids[playerPos[0]][playerPos[1] + 1].classList.contains("wall")
+        grids[playerPos[0]][playerPos[1] + 1].classList.contains("wall") ||
+        grids[playerPos[0]][playerPos[1] + 1].classList.contains("ghost-lair")
       )
         return;
       grids[playerPos[0]][playerPos[1]].classList.remove("pac-man");
@@ -199,11 +202,11 @@ const playerMovement = (event) => {
       break;
     case "arrowleft":
     case "a":
-      
       if (
-        grids[playerPos[0]][playerPos[1] - 1].classList.contains("wall")
+        grids[playerPos[0]][playerPos[1] - 1].classList.contains("wall") ||
+        grids[playerPos[0]][playerPos[1] - 1].classList.contains("ghost-lair")
       )
-        return; 
+        return;
       grids[playerPos[0]][playerPos[1]].classList.remove("pac-man");
       playerPos[1] -= 1;
       if (grids[playerPos[0]][playerPos[1]].classList.contains("teleport")) {
@@ -216,6 +219,8 @@ const playerMovement = (event) => {
     default:
       break;
   }
+  eatPacDot();
+  eatPowerPullet();
 };
 
 document.addEventListener("keyup", playerMovement);
@@ -232,10 +237,10 @@ class ghost {
 }
 
 const ghosts = [
-  new ghost("red", [12, 13], 1000),
-  new ghost("brown", [12, 14], 1500),
+  new ghost("red", [12, 13], 1200),
+  new ghost("brown", [12, 14], 1200),
   new ghost("green", [12, 12], 1200),
-  new ghost("pink", [12, 15], 1300),
+  new ghost("pink", [12, 15], 1200),
 ];
 
 ghosts.forEach((ghost) => {
@@ -256,25 +261,75 @@ const ghostMovements = (ghost) => {
   let nextMove = directions[Math.floor(Math.random() * directions.length)];
 
   ghost.timerId = setInterval(() => {
-    const invalidDirection = grids[ghost.currentPos[0] + nextMove[0]][ghost.currentPos[1] + nextMove[1]].classList.contains("wall") || grids[ghost.currentPos[0] + nextMove[0]][ghost.currentPos[1] + nextMove[1]].classList.contains("ghost");
+    const invalidDirection =
+      grids[ghost.currentPos[0] + nextMove[0]][
+        ghost.currentPos[1] + nextMove[1]
+      ].classList.contains("wall") ||
+      grids[ghost.currentPos[0] + nextMove[0]][
+        ghost.currentPos[1] + nextMove[1]
+      ].classList.contains("ghost");
 
     if (!invalidDirection) {
       grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.remove(
         "ghost",
+        "scared-ghost",
         ghost.className
       );
       ghost.currentPos[0] += nextMove[0];
       ghost.currentPos[1] += nextMove[1];
       grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.add("ghost");
-      grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.add(ghost.className);
+      grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.add(
+        ghost.className
+      );
     } else nextMove = directions[Math.floor(Math.random() * directions.length)];
+    if (ghost.isScared)
+      grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.add(
+        "scared-ghost"
+      );
+    if (
+      ghost.isScared &&
+      grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.contains(
+        "pac-man"
+      )
+    ) {
+      grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.remove(
+        "ghost",
+        "scared-ghost",
+        ghost.className
+      );
+      console.log(ghost.start);
+      console.log(ghost.currentPos);
+      ghost.currentPos = ghost.start;
+      console.log(ghost.currentPos);
+      currentScore += 200;
+      score.innerText = String(currentScore);
+      ghost.isScared = false;
+      grids[ghost.currentPos[0]][ghost.currentPos[1]].classList.add(
+        "ghost",
+        ghost.className
+      );
+    }
   }, ghost.speed);
 };
 
 const eatPacDot = () => {
   if (grids[playerPos[0]][playerPos[1]].classList.contains("pac-dot")) {
     grids[playerPos[0]][playerPos[1]].classList.remove("pac-dot");
-    score+=10;
+    currentScore += 10;
+    score.innerText = String(currentScore);
   }
-}
+};
+
+const eatPowerPullet = () => {
+  if (grids[playerPos[0]][playerPos[1]].classList.contains("power-pellet")) {
+    grids[playerPos[0]][playerPos[1]].classList.remove("power-pellet");
+    currentScore += 50;
+    score.innerText = String(currentScore);
+    ghosts.forEach((ghost) => (ghost.isScared = true));
+    setTimeout(() => {
+      ghosts.forEach((ghost) => (ghost.isScared = false));
+    }, 10000000);
+  }
+};
+
 ghosts.forEach((ghost) => ghostMovements(ghost));
