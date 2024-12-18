@@ -1,0 +1,15 @@
+.map {
+    display: flex;
+    flex-wrap: wrap;
+    height: 576px;
+    width: 448px;
+}
+
+.map div {
+    height: 16px;
+    width: 16px;
+}
+
+.wall {
+    background-color: blue;
+}
