@@ -1,71 +1,80 @@
 import { level_1 } from "./levels.js";
-
-const height = 576;
-const width = 448;
-const map = document.querySelector(".map");
+let map = document.querySelector(".map");
 const grids = [];
 
-// Create grid structure
 for (let i = 0; i < level_1.length; i++) {
   grids[i] = [];
   for (let j = 0; j < level_1[i].length; j++) {
     let div = document.createElement("div");
-    map.appendChild(div);
     grids[i].push(div);
-
+    map.appendChild(div);
     switch (level_1[i][j]) {
       case 0:
         div.classList.add("empty");
         break;
       case 1:
         div.classList.add("wall");
-        break;
-      case 2:
-        div.classList.add("pac-dots");
-        break;
-      case 3:
-        div.classList.add("power-pullet");
-        break;
       default:
         break;
     }
   }
 }
 
+let bomberman = document.createElement("div");
+bomberman.classList.add("bomber-man");
+const playerPos = { x: 30, y: 30 };
+let targetPos = { ...playerPos };
 
-const playerPos = { x: 14, y: 21 };  
-const pacMan = document.createElement("div");
-pacMan.classList.add("pac-man");
-map.appendChild(pacMan);  
-  pacMan.style.transform = `translate(${playerPos.x*16}px, ${playerPos.y*16}px)`
+bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
+map.appendChild(bomberman);
 
-
-const playerMov = (e) => {
-
-  const key = e.key.toLowerCase();
-
+const movePlayer = (e) => {
+  let key = e.key.toLowerCase();
+  const playerSpeed = 10;
 
   switch (key) {
-    case "w":
     case "arrowup":
-      if (playerPos.y > 0) playerPos.y--;  
+      if (
+        targetPos.y / 30 > 0 &&
+        level_1[targetPos.y / 30 - 1][targetPos.x / 30] !== 1
+      ) {
+        targetPos.y -= playerSpeed;
+      }
       break;
-    case "s":
     case "arrowdown":
-      if (playerPos.y < level_1.length - 1) playerPos.y++; 
+      if (
+        targetPos.y / 30 < level_1.length - 1 &&
+        level_1[targetPos.y / 30 + 1][targetPos.x / 30] !== 1
+      ) {
+        targetPos.y += playerSpeed;
+      }
       break;
-    case "a":
     case "arrowleft":
-      if (playerPos.x > 0) playerPos.x--;  
+      if (
+        targetPos.x / 30 > 0 &&
+        level_1[targetPos.y / 30][targetPos.x / 30 - 1] !== 1
+      ) {
+        targetPos.x -= playerSpeed;
+      }
       break;
-    case "d":
     case "arrowright":
-      if (playerPos.x < level_1[0].length - 1) playerPos.x++;  
+      if (
+        targetPos.x / 30 < level_1[0].length - 1 &&
+        level_1[targetPos.y / 30][targetPos.x / 30 + 1] !== 1
+      ) {
+        targetPos.x += playerSpeed;
+      }
+      break;
+    default:
       break;
   }
 
-  pacMan.style.transform = `translate(${playerPos.x*16}px, ${playerPos.y*16}px)`
+  requestAnimationFrame(animateMovement);
 };
 
+const animateMovement = () => {
+  bomberman.style.transform = `translate(${targetPos.x}px, ${targetPos.y}px)`;
+  requestAnimationFrame(animateMovement);
+};
 
-document.addEventListener("keydown", playerMov);
+document.addEventListener("keydown", movePlayer);

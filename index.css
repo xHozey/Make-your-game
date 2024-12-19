@@ -1,30 +1,23 @@
-* {
-    overflow-x: hidden;
-    overflow-y: hidden;
-  }
-  
-  .map {
-    position: relative; 
+.map {
+    width: 690px;
+    height: 390px;
+    border: 5px solid;
     display: flex;
     flex-wrap: wrap;
-    height: 576px;
-    width: 448px;
+    position: relative;
   }
   
   .map div {
-    height: 16px;
-    width: 16px;
+    height: 30px;
+    width: 30px;
+  }
+  
+  .bomber-man {
+    position: absolute;
+    background-color: black;
   }
   
   .wall {
     background-color: blue;
-  }
-  
-  .pac-man {
-    position: absolute;  
-    background-color: black;
-    width: 16px;
-    height: 16px;
-    transition: top 0.1s ease, left 0.1s ease; 
   }
   
