@@ -41,8 +41,47 @@ for (let i = 0; i < level_1.length; i++) {
 
 const win = () => {
   //player position in the portal and all enemies are dead
-}
+};
 
-const lose = () => { 
+const lose = () => {
   //player get expolied by bomber or hited by enemy
-}
+};
+
+let bomberman = document.createElement("div");
+bomberman.classList.add("bomber-man");
+const playerPos = { x: 30, y: 30 };
+let targetPos = { ...playerPos };
+
+bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
+map.appendChild(bomberman);
+
+const movePlayer = (e) => {
+  let key = e.key.toLowerCase();
+  const playerSpeed = 10;
+
+  switch (key) {
+    case "arrowup":
+      targetPos.y -= playerSpeed;
+      break;
+    case "arrowdown":
+      targetPos.y += playerSpeed;
+      break;
+    case "arrowleft":
+      targetPos.x -= playerSpeed;
+      break;
+    case "arrowright":
+      targetPos.x += playerSpeed;
+      break;
+    default:
+      break;
+  }
+
+  requestAnimationFrame(animateMovement);
+};
+
+const animateMovement = () => {
+  bomberman.style.transform = `translate(${targetPos.x}px, ${targetPos.y}px)`;
+  requestAnimationFrame(animateMovement);
+};
+
+document.addEventListener("keydown", movePlayer);
