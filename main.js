@@ -50,14 +50,14 @@ const lose = () => {
 };
 
 
-const playerPos = { x: 59, y: 59 };
+const playerPos = { x: 60, y: 60 };
 
 map.append(bomberman);
 bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
 
 const movePlayer = (e) => {
   let key = e.key.toLowerCase();
-  const playerSpeed = 20;
+  const playerSpeed = 30;
 
   switch (key) {
     case "arrowup":
