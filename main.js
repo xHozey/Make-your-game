@@ -1,8 +1,9 @@
 import { level_1 } from "./levels.js";
+import { bomberman } from "./bomber.js";
 const map = document.querySelector(".map");
 const grids = [];
 let portal = false;
-for (let i = 0; i < 120; i++) {
+for (let i = 0; i < 450; i++) {
   const row = Math.floor(Math.random() * level_1.length);
   const col = Math.floor(Math.random() * level_1[0].length);
 
@@ -47,30 +48,29 @@ const lose = () => {
   //player get expolied by bomber or hited by enemy
 };
 
-let bomberman = document.createElement("div");
-bomberman.classList.add("bomber-man");
-const playerPos = { x: 30, y: 30 };
-let targetPos = { ...playerPos };
 
+const playerPos = { x: 30, y: 30 };
+
+map.append(bomberman);
 bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
-map.appendChild(bomberman);
 
 const movePlayer = (e) => {
   let key = e.key.toLowerCase();
-  const playerSpeed = 10;
+  const playerSpeed = 20;
 
   switch (key) {
     case "arrowup":
-      targetPos.y -= playerSpeed;
+      //change the picture 
+      playerPos.y -= playerSpeed;
       break;
     case "arrowdown":
-      targetPos.y += playerSpeed;
+      playerPos.y += playerSpeed;
       break;
     case "arrowleft":
-      targetPos.x -= playerSpeed;
+      playerPos.x -= playerSpeed;
       break;
     case "arrowright":
-      targetPos.x += playerSpeed;
+      playerPos.x += playerSpeed;
       break;
     default:
       break;
@@ -80,7 +80,8 @@ const movePlayer = (e) => {
 };
 
 const animateMovement = () => {
-  bomberman.style.transform = `translate(${targetPos.x}px, ${targetPos.y}px)`;
+
+  bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
   requestAnimationFrame(animateMovement);
 };
 
