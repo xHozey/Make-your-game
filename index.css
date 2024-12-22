@@ -14,8 +14,8 @@ body {
 }
 
 .map {
-    width: 690px;
-    height: 390px;
+  width: 544px;
+  height: 336px;
   border: 5px solid;
   display: flex;
   flex-wrap: wrap;
@@ -23,8 +23,8 @@ body {
 }
 
 .map div {
-  width: 30px;
-  height: 30px;
+  width: 16px;
+  height: 16px;
 }
 
 .score-holder, .lifes-holder {
@@ -41,15 +41,18 @@ body {
 }
 
 .wall {
-  background-color: blue;
+  background-image: url(assets/rogueliketiles.png);
+  background-position: -16px -16px;
 }
 
 .empty {
-  background-color: green;
+  background-image: url(assets/rogueliketiles.png);
+  background-position: -16px 0;
 }
 
 .soft-wall {
-  background-color: grey;
+  background-image: url(assets/rogueliketiles.png);
+  background-position: 32 80;
 }
 
 .portal {
