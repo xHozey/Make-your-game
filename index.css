@@ -14,8 +14,8 @@ body {
 }
 
 .map {
-  width: 544px;
-  height: 336px;
+  width: 1020px;
+  height: 660px;
   border: 5px solid;
   display: flex;
   flex-wrap: wrap;
@@ -27,7 +27,8 @@ body {
   height: 16px;
 }
 
-.score-holder, .lifes-holder {
+.score-holder,
+.lifes-holder {
   position: absolute;
   top: 250px;
   left: 120px;
@@ -41,18 +42,21 @@ body {
 }
 
 .wall {
-  background-image: url(assets/rogueliketiles.png);
-  background-position: -16px -16px;
+  background-image: url('assets/solid.png');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .empty {
-  background-image: url(assets/rogueliketiles.png);
-  background-position: -16px 0;
+  background-image: url('assets/rbiaa.png');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .soft-wall {
-  background-image: url(assets/rogueliketiles.png);
-  background-position: 32 80;
+  background-image: url('assets/soft.png');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .portal {
@@ -60,6 +64,7 @@ body {
 }
 
 .bomber-man {
-  background-color: black;
   position: absolute;
+  background-position: center;
+  background-size: 100%;
 }

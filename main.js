@@ -1,6 +1,6 @@
 import { level_1 } from "./levels.js";
+import { bomberman } from "./bomber.js";
 const map = document.querySelector(".map");
-console.log(level_1.length, level_1[0].length);
 
 const grids = [];
 let portal = false;
@@ -49,64 +49,28 @@ const lose = () => {
   //player get expolied by bomber or hited by enemy
 };
 
-let bomberman = document.createElement("div");
-bomberman.classList.add("bomber-man");
-const playerPos = { x: 32, y: 32 };
-let currentPos = { ...playerPos };
 
+const playerPos = { x: 59, y: 59 };
+
+map.append(bomberman);
 bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
-map.appendChild(bomberman);
 
 const movePlayer = (e) => {
   let key = e.key.toLowerCase();
-  const playerSpeed = 16;
+  const playerSpeed = 20;
+
   switch (key) {
     case "arrowup":
-      if (
-        grids[Math.floor(playerPos.y / 16 - 1)][Math.floor(playerPos.x / 16)].classList.contains(
-          "wall"
-        ) ||
-        grids[Math.floor(playerPos.y / 16 - 1)][Math.floor(playerPos.x / 16)].classList.contains(
-          "soft-wall"
-        )
-      )
-        return;
+      //change the picture 
       playerPos.y -= playerSpeed;
       break;
     case "arrowdown":
-      if (
-        grids[Math.floor(playerPos.y / 16 + 1)][Math.floor(playerPos.x / 16)].classList.contains(
-          "wall"
-        ) ||
-        grids[Math.floor(playerPos.y / 16 + 1)][Math.floor(playerPos.x / 16)].classList.contains(
-          "soft-wall"
-        )
-      )
-        return;
       playerPos.y += playerSpeed;
       break;
     case "arrowleft":
-      if (
-        grids[Math.floor(playerPos.y / 16)][Math.floor(playerPos.x / 16 - 1)].classList.contains(
-          "wall"
-        ) ||
-        grids[Math.floor(playerPos.y / 16)][Math.floor(playerPos.x / 16 - 1)].classList.contains(
-          "soft-wall"
-        )
-      )
-        return;
       playerPos.x -= playerSpeed;
       break;
     case "arrowright":
-      if (
-        grids[Math.floor(playerPos.y / 16)][Math.floor(playerPos.x / 16 + 1)].classList.contains(
-          "wall"
-        ) ||
-        grids[Math.floor(playerPos.y / 16)][Math.floor(playerPos.x / 16 + 1)].classList.contains(
-          "soft-wall"
-        )
-      )
-        return;
       playerPos.x += playerSpeed;
       break;
     default:
@@ -117,11 +81,9 @@ const movePlayer = (e) => {
 };
 
 const animateMovement = () => {
+
   bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
-  if (playerPos.x != currentPos.x || playerPos.y != currentPos.y) {
-    currentPos = { ...playerPos };
-    requestAnimationFrame(animateMovement);
-  }
+  requestAnimationFrame(animateMovement);
 };
 
 document.addEventListener("keydown", movePlayer);
