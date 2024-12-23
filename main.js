@@ -83,6 +83,18 @@ const PuttheBoomb = () => {
        grids[boombpos.y/30][boombpos.x/30+1].classList.remove('soft-wall')
        grids[boombpos.y/30][boombpos.x/30+1].classList.add('empty')
     }
+    if (grids[boombpos.y/30][boombpos.x/30-1].classList.contains('soft-wall')) {
+      grids[boombpos.y/30][boombpos.x/30-1].classList.remove('soft-wall')
+      grids[boombpos.y/30][boombpos.x/30-1].classList.add('empty')
+   }
+   if (grids[boombpos.y/30+1][boombpos.x/30].classList.contains('soft-wall')) {
+    grids[boombpos.y/30+1][boombpos.x/30].classList.remove('soft-wall')
+    grids[boombpos.y/30+1][boombpos.x/30].classList.add('empty')
+ }
+ if (grids[boombpos.y/30-1][boombpos.x/30].classList.contains('soft-wall')) {
+  grids[boombpos.y/30-1][boombpos.x/30].classList.remove('soft-wall')
+  grids[boombpos.y/30-1][boombpos.x/30].classList.add('empty')
+}
   }, 2000);
   //right
 }
