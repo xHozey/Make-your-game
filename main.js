@@ -68,43 +68,20 @@ const PuttheBoomb = () => {
   dropedtheboomb = true;
   boombpos = { x: playerPos.x, y: playerPos.y };
   grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30)].classList.add('bomb')
+
   setTimeout(() => {
     grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30)].classList.remove('bomb')
-    if (
-      grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.contains(
-        "soft-wall"
-      )
-    ) { 
-      grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.remove("soft-wall");
-      grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.add("empty");
-    }
-    if (
-      grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) - 1].classList.contains(
-        "soft-wall"
-      )
-    ) {
-      grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) - 1].classList.remove("soft-wall");
-      grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) - 1].classList.add("empty");
-    }
-    if (
-      grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.contains(
-        "soft-wall"
-      )
-    ) {
-      grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.remove("soft-wall");
-      grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.add("empty");
-    }
-    if (
-      grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.contains(
-        "soft-wall"
-      )
-    ) {
-      grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.remove("soft-wall");
-      grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.add("empty");
-    }
+    grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.remove("soft-wall")
+    grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.contains("wall")?null:grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.add("empty");
+    grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) - 1].classList.remove("soft-wall");
+    grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) - 1].classList.contains("wall")?null:grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) - 1].classList.add("empty");
+    grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.remove("soft-wall");
+    grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.contains("wall")?null:grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.add("empty");
+    grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.remove("soft-wall");
+    grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.contains("wall")?null:grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.add("empty");
+
+    
     dropedtheboomb = false;
-    console.log("hello");
-    console.log(dropedtheboomb);
   }, 2000);
 };
 
