@@ -65,6 +65,8 @@ body {
 
 .bomber-man {
   position: absolute;
-  background-position: center;
-  background-size: 100%;
+  image-rendering: pixelated;
+  justify-content: center;
+  align-items: center;
 }
+

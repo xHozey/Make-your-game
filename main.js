@@ -1,6 +1,8 @@
 import { level_1 } from "./levels.js";
-import { bomberman } from "./bomber.js";
+import { bomberman, getPosImg } from "./bomber.js";
+
 const map = document.querySelector(".map");
+
 const grids = [];
 let portal = false;
 for (let i = 0; i < 450; i++) {
@@ -19,7 +21,7 @@ for (let i = 0; i < level_1.length; i++) {
   grids[i] = [];
   for (let j = 0; j < level_1[i].length; j++) {
     const div = document.createElement("div");
-    grids.push(div);
+    grids[i].push(div);
     map.appendChild(div);
     if (level_1[i][j] == 0 || level_1[i][j] == "x") {
       div.classList.add("empty");
@@ -48,28 +50,74 @@ const lose = () => {
   //player get expolied by bomber or hited by enemy
 };
 
-
-const playerPos = { x: 59, y: 49 };
-
+const playerPos = { x: 60, y: 60 };
+let currentPos = { ...playerPos };
+let currentLoop = 0
+const downMove = [1,2,3,4]
+const upMove = [5,6,7,8]
+const leftMove = [9,10,11,12]
+const rightMove = [13,14,15,16]
+let slowedBy = 0
+let slowFrameRate = 5;
 map.append(bomberman);
 bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
 
 const movePlayer = (e) => {
+  console.log(playerPos);
   let key = e.key.toLowerCase();
-  const playerSpeed = 20;
+  const playerSpeed = 3;
 
   switch (key) {
     case "arrowup":
-      //change the picture 
+      getPosImg(upMove[currentLoop], 5)
+      if (
+        (grids[Math.floor(playerPos.y / 30 - 1)][Math.floor(playerPos.x / 30)].classList.contains(
+          "wall"
+        ) ||
+        grids[Math.floor(playerPos.y / 30 - 1)][Math.floor(playerPos.x / 30)].classList.contains(
+          "soft-wall"
+        )) && playerPos.y % 30 == 0
+      )
+        return;
       playerPos.y -= playerSpeed;
       break;
-    case "arrowdown":
+      case "arrowdown":
+      getPosImg(downMove[currentLoop], 8)
+      if (
+        (grids[Math.floor(playerPos.y / 30 + 1)][Math.floor(playerPos.x / 30)].classList.contains(
+          "wall"
+        ) ||
+        grids[Math.floor(playerPos.y / 30 + 1)][Math.floor(playerPos.x / 30)].classList.contains(
+          "soft-wall"
+        )) && playerPos.y % 30 == 0
+      )
+        return;
       playerPos.y += playerSpeed;
       break;
     case "arrowleft":
+      getPosImg(leftMove[currentLoop], 7)
+      if (
+        (grids[Math.floor(playerPos.y / 30)][Math.floor(playerPos.x / 30 - 1)].classList.contains(
+          "wall"
+        ) ||
+        grids[Math.floor(playerPos.y / 30)][Math.floor(playerPos.x / 30 - 1)].classList.contains(
+          "soft-wall"
+        )) && playerPos.x % 30 == 0
+      )
+        return;
       playerPos.x -= playerSpeed;
       break;
-    case "arrowright":
+      case "arrowright":
+      getPosImg(rightMove[currentLoop], 6)
+      if (
+        (grids[playerPos.y / 30][Math.floor(playerPos.x / 30) + 1].classList.contains(
+          "wall"
+        ) ||
+        grids[playerPos.y / 30][Math.floor(playerPos.x / 30) + 1].classList.contains(
+          "soft-wall"
+        )) && playerPos.x % 30 == 0
+      )
+        return;
       playerPos.x += playerSpeed;
       break;
     default:
@@ -80,9 +128,23 @@ const movePlayer = (e) => {
 };
 
 const animateMovement = () => {
-
   bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
-  requestAnimationFrame(animateMovement);
+  if (slowedBy >= slowFrameRate) {
+
+    if (currentLoop < downMove.length -1) {
+      currentLoop++
+    } else {
+      currentLoop = 0
+    }
+    slowedBy = 0
+  } else {
+    slowedBy++
+  }
+  if (currentPos.x !== playerPos.x && currentPos.y !== playerPos.y) {
+
+    currentPos = { ...playerPos };
+    requestAnimationFrame(animateMovement);
+  }
 };
 
 document.addEventListener("keydown", movePlayer);
