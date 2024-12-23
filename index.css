@@ -68,11 +68,9 @@ body {
   image-rendering: pixelated;
   justify-content: center;
   align-items: center;
-  z-index: 2;
 }
 
 .boomb {
-  position: absolute;
+  background-image: url('assets/bomb.png');
   background-color: black;
-  z-index: 1;
 }

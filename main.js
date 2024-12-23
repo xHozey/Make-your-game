@@ -67,10 +67,9 @@ const PuttheBoomb = () => {
   if (dropedtheboomb) return;
   dropedtheboomb = true;
   boombpos = { x: playerPos.x, y: playerPos.y };
-  grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30)].style.backgroundImage =
-    "url(assets/boomb.jpg)";
+  grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30)].classList.add('bomb')
   setTimeout(() => {
-    grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30)].style.backgroundImage = "";
+    grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30)].classList.remove('bomb')
     if (
       grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.contains(
         "soft-wall"
