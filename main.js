@@ -51,7 +51,6 @@ const lose = () => {
 };
 
 const playerPos = { x: 60, y: 60 };
-let currentPos = { ...playerPos };
 let currentLoop = 0
 const downMove = [1,2,3,4]
 const upMove = [5,6,7,8]
@@ -69,7 +68,6 @@ const movePlayer = (e) => {
 
   switch (key) {
     case "arrowup":
-      getPosImg(upMove[currentLoop], 5)
       if (
         (grids[Math.floor(playerPos.y / 30 - 1)][Math.floor(playerPos.x / 30)].classList.contains(
           "wall"
@@ -80,9 +78,9 @@ const movePlayer = (e) => {
       )
         return;
       playerPos.y -= playerSpeed;
+      getPosImg(upMove[currentLoop], 5)
       break;
       case "arrowdown":
-      getPosImg(downMove[currentLoop], 8)
       if (
         (grids[Math.floor(playerPos.y / 30 + 1)][Math.floor(playerPos.x / 30)].classList.contains(
           "wall"
@@ -93,9 +91,9 @@ const movePlayer = (e) => {
       )
         return;
       playerPos.y += playerSpeed;
+      getPosImg(downMove[currentLoop], 8)
       break;
     case "arrowleft":
-      getPosImg(leftMove[currentLoop], 7)
       if (
         (grids[Math.floor(playerPos.y / 30)][Math.floor(playerPos.x / 30 - 1)].classList.contains(
           "wall"
@@ -106,25 +104,25 @@ const movePlayer = (e) => {
       )
         return;
       playerPos.x -= playerSpeed;
+      getPosImg(leftMove[currentLoop], 7)
       break;
       case "arrowright":
-      getPosImg(rightMove[currentLoop], 6)
       if (
-        (grids[playerPos.y / 30][Math.floor(playerPos.x / 30) + 1].classList.contains(
+        (grids[Math.floor(playerPos.y / 30)][Math.floor(playerPos.x / 30) + 1].classList.contains(
           "wall"
         ) ||
-        grids[playerPos.y / 30][Math.floor(playerPos.x / 30) + 1].classList.contains(
+        grids[Math.floor(playerPos.y / 30)][Math.floor(playerPos.x / 30) + 1].classList.contains(
           "soft-wall"
         )) && playerPos.x % 30 == 0
       )
         return;
       playerPos.x += playerSpeed;
+      getPosImg(rightMove[currentLoop], 6)
       break;
     default:
       break;
   }
 
-  requestAnimationFrame(animateMovement);
 };
 
 const animateMovement = () => {
@@ -140,11 +138,11 @@ const animateMovement = () => {
   } else {
     slowedBy++
   }
-  if (currentPos.x !== playerPos.x && currentPos.y !== playerPos.y) {
 
-    currentPos = { ...playerPos };
     requestAnimationFrame(animateMovement);
-  }
 };
+
+requestAnimationFrame(animateMovement);
+
 
 document.addEventListener("keydown", movePlayer);
