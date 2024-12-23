@@ -79,8 +79,6 @@ const PuttheBoomb = () => {
     grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.contains("wall")?null:grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.add("empty");
     grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.remove("soft-wall");
     grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.contains("wall")?null:grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.add("empty");
-
-    
     dropedtheboomb = false;
   }, 2000);
 };

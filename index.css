@@ -70,7 +70,7 @@ body {
   align-items: center;
 }
 
-.boomb {
+.bomb {
   background-image: url('assets/bomb.png');
   background-size: 30px 30px;
   background-color: black;
