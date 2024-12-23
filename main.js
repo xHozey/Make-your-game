@@ -119,27 +119,38 @@ const movePlayer = (e) => {
       break;
     case "arrowup":
       if (
-        (grids[Math.floor(playerPos.y / 30 - 1)][
+        (grids[Math.floor(playerPos.y / 30)][
           Math.floor(playerPos.x / 30)
         ].classList.contains("wall") ||
-          grids[Math.floor(playerPos.y / 30 - 1)][
+          grids[Math.floor(playerPos.y / 30)][
             Math.floor(playerPos.x / 30)
-          ].classList.contains("soft-wall")) &&
-        playerPos.y % 30 == 0
+          ].classList.contains("soft-wall")) ||
+          (grids[Math.ceil(playerPos.y / 30)][
+            Math.ceil(playerPos.x / 30)
+          ].classList.contains("wall") ||
+            grids[Math.ceil(playerPos.y / 30)][
+              Math.ceil(playerPos.x / 30)
+            ].classList.contains("soft-wall"))
       )
-        return;
+      {playerPos.y += playerSpeed;
+        return;}
       playerPos.y -= playerSpeed;
       getPosImg(upMove[currentLoop], 5);
       break;
     case "arrowdown":
       if (
-        (grids[Math.floor(playerPos.y / 30 + 1)][
+        (grids[Math.floor(playerPos.y / 30)][
           Math.floor(playerPos.x / 30)
         ].classList.contains("wall") ||
-          grids[Math.floor(playerPos.y / 30 + 1)][
+          grids[Math.floor(playerPos.y / 30)][
             Math.floor(playerPos.x / 30)
-          ].classList.contains("soft-wall")) &&
-        playerPos.y % 30 == 0
+          ].classList.contains("soft-wall")) ||
+          (grids[Math.ceil(playerPos.y / 30)][
+            Math.ceil(playerPos.x / 30)
+          ].classList.contains("wall") ||
+            grids[Math.ceil(playerPos.y / 30)][
+              Math.ceil(playerPos.x / 30)
+            ].classList.contains("soft-wall"))
       )
         return;
       playerPos.y += playerSpeed;
@@ -148,12 +159,17 @@ const movePlayer = (e) => {
     case "arrowleft":
       if (
         (grids[Math.floor(playerPos.y / 30)][
-          Math.floor(playerPos.x / 30 - 1)
+          Math.floor(playerPos.x / 30)
         ].classList.contains("wall") ||
           grids[Math.floor(playerPos.y / 30)][
-            Math.floor(playerPos.x / 30 - 1)
-          ].classList.contains("soft-wall")) &&
-        playerPos.x % 30 == 0
+            Math.floor(playerPos.x / 30)
+          ].classList.contains("soft-wall")) ||
+          (grids[Math.ceil(playerPos.y / 30)][
+            Math.ceil(playerPos.x / 30)
+          ].classList.contains("wall") ||
+            grids[Math.ceil(playerPos.y / 30)][
+              Math.ceil(playerPos.x / 30)
+            ].classList.contains("soft-wall")) 
       )
         return;
       playerPos.x -= playerSpeed;
@@ -162,12 +178,17 @@ const movePlayer = (e) => {
     case "arrowright":
       if (
         (grids[Math.floor(playerPos.y / 30)][
-          Math.floor(playerPos.x / 30) + 1
+          Math.floor(playerPos.x / 30) 
         ].classList.contains("wall") ||
           grids[Math.floor(playerPos.y / 30)][
-            Math.floor(playerPos.x / 30) + 1
-          ].classList.contains("soft-wall")) &&
-        playerPos.x % 30 == 0
+            Math.floor(playerPos.x / 30) 
+          ].classList.contains("soft-wall")) ||
+          (grids[Math.ceil(playerPos.y / 30)][
+            Math.ceil(playerPos.x / 30) 
+          ].classList.contains("wall") ||
+            grids[Math.ceil(playerPos.y / 30)][
+              Math.ceil(playerPos.x / 30) 
+            ].classList.contains("soft-wall"))
       )
         return;
       playerPos.x += playerSpeed;
