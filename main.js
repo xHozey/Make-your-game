@@ -2,8 +2,8 @@ import { level_1 } from "./levels.js";
 import { bomberman, getPosImg } from "./bomber.js";
 
 const map = document.querySelector(".map");
-
 const grids = [];
+
 let portal = false;
 for (let i = 0; i < 450; i++) {
   const row = Math.floor(Math.random() * level_1.length);
@@ -60,13 +60,51 @@ let slowedBy = 0
 let slowFrameRate = 5;
 map.append(bomberman);
 bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
+function isFloat(n) {
+  return Math.floor(n) !== n;
+}
+let boombpos = { x:0, y:0 };
+let boomb = document.createElement('div')
+let dropedtheboomb = false
+const PuttheBoomb = () => {
+  if (dropedtheboomb) return;
+  dropedtheboomb = true
+  boombpos = {x: playerPos.x, y:playerPos.y}
+  if (isFloat(boombpos.y/30) || isFloat(boombpos.x/30)) return  
+  boomb.classList.add('boomb')
+
+  boomb.style.transform = `translate(${boombpos.x}px, ${boombpos.y}px)`;
+  map.append(boomb);
+  setTimeout(() => {
+    boomb.classList.remove('boomb')
+    dropedtheboomb = false
+    if (grids[boombpos.y/30][boombpos.x/30+1].classList.contains('soft-wall')) {
+       grids[boombpos.y/30][boombpos.x/30+1].classList.remove('soft-wall')
+       grids[boombpos.y/30][boombpos.x/30+1].classList.add('empty')
+    }
+    if (grids[boombpos.y/30][boombpos.x/30-1].classList.contains('soft-wall')) {
+      grids[boombpos.y/30][boombpos.x/30-1].classList.remove('soft-wall')
+      grids[boombpos.y/30][boombpos.x/30-1].classList.add('empty')
+   }
+   if (grids[boombpos.y/30+1][boombpos.x/30].classList.contains('soft-wall')) {
+    grids[boombpos.y/30+1][boombpos.x/30].classList.remove('soft-wall')
+    grids[boombpos.y/30+1][boombpos.x/30].classList.add('empty')
+ }
+ if (grids[boombpos.y/30-1][boombpos.x/30].classList.contains('soft-wall')) {
+  grids[boombpos.y/30-1][boombpos.x/30].classList.remove('soft-wall')
+  grids[boombpos.y/30-1][boombpos.x/30].classList.add('empty')
+}
+  }, 2000);
+  //right
+}
 
 const movePlayer = (e) => {
-  console.log(playerPos);
   let key = e.key.toLowerCase();
   const playerSpeed = 3;
-
   switch (key) {
+    case " ":
+    PuttheBoomb()
+      break;
     case "arrowup":
       if (
         (grids[Math.floor(playerPos.y / 30 - 1)][Math.floor(playerPos.x / 30)].classList.contains(
