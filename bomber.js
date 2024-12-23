@@ -11,3 +11,7 @@ export const getPosImg = (frameX, frameY) => {
   const y = frameY * 30;
   bomberman.style.backgroundPosition = `${x}px ${y}px`;
 };
+export const upMove = [5, 6, 7, 8];
+export const leftMove = [9, 10, 11, 12];
+export const rightMove = [13, 14, 15, 16];
+export const downMove = [1, 2, 3, 4];

@@ -1,21 +1,15 @@
 import { level_1 } from "./levels.js";
-import { bomberman, getPosImg } from "./bomber.js";
+import {
+  bomberman,
+  getPosImg,
+  leftMove,
+  rightMove,
+  upMove,
+  downMove,
+} from "./bomber.js";
 
 const map = document.querySelector(".map");
 const grids = [];
-
-let portal = false;
-for (let i = 0; i < 450; i++) {
-  const row = Math.floor(Math.random() * level_1.length);
-  const col = Math.floor(Math.random() * level_1[0].length);
-
-  if (!portal && level_1[row][col] == 0) {
-    level_1[row][col] = 3;
-    portal = true;
-    continue;
-  }
-  if (level_1[row][col] == 0) level_1[row][col] = 2;
-}
 
 for (let i = 0; i < level_1.length; i++) {
   grids[i] = [];
@@ -52,10 +46,7 @@ const lose = () => {
 
 const playerPos = { x: 60, y: 60 };
 let currentLoop = 0;
-const downMove = [1, 2, 3, 4];
-const upMove = [5, 6, 7, 8];
-const leftMove = [9, 10, 11, 12];
-const rightMove = [13, 14, 15, 16];
+
 let slowedBy = 0;
 let slowFrameRate = 5;
 map.append(bomberman);
@@ -67,18 +58,54 @@ const PuttheBoomb = () => {
   if (dropedtheboomb) return;
   dropedtheboomb = true;
   boombpos = { x: playerPos.x, y: playerPos.y };
-  grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30)].classList.add('bomb')
+  grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30)].classList.add(
+    "bomb"
+  );
 
   setTimeout(() => {
-    grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30)].classList.remove('bomb')
-    grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.remove("soft-wall")
-    grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.contains("wall")?null:grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.add("empty");
-    grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) - 1].classList.remove("soft-wall");
-    grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) - 1].classList.contains("wall")?null:grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) - 1].classList.add("empty");
-    grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.remove("soft-wall");
-    grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.contains("wall")?null:grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.add("empty");
-    grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.remove("soft-wall");
-    grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.contains("wall")?null:grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.add("empty");
+    grids[Math.floor(boombpos.y / 30)][
+      Math.floor(boombpos.x / 30)
+    ].classList.remove("bomb");
+    grids[Math.floor(boombpos.y / 30)][
+      Math.floor(boombpos.x / 30) + 1
+    ].classList.remove("soft-wall");
+    grids[Math.floor(boombpos.y / 30)][
+      Math.floor(boombpos.x / 30) + 1
+    ].classList.contains("wall")
+      ? null
+      : grids[Math.floor(boombpos.y / 30)][
+          Math.floor(boombpos.x / 30) + 1
+        ].classList.add("empty");
+    grids[Math.floor(boombpos.y / 30)][
+      Math.floor(boombpos.x / 30) - 1
+    ].classList.remove("soft-wall");
+    grids[Math.floor(boombpos.y / 30)][
+      Math.floor(boombpos.x / 30) - 1
+    ].classList.contains("wall")
+      ? null
+      : grids[Math.floor(boombpos.y / 30)][
+          Math.floor(boombpos.x / 30) - 1
+        ].classList.add("empty");
+    grids[Math.floor(boombpos.y / 30) + 1][
+      Math.floor(boombpos.x / 30)
+    ].classList.remove("soft-wall");
+    grids[Math.floor(boombpos.y / 30) + 1][
+      Math.floor(boombpos.x / 30)
+    ].classList.contains("wall")
+      ? null
+      : grids[Math.floor(boombpos.y / 30) + 1][
+          Math.floor(boombpos.x / 30)
+        ].classList.add("empty");
+    grids[Math.floor(boombpos.y / 30) - 1][
+      Math.floor(boombpos.x / 30)
+    ].classList.remove("soft-wall");
+    grids[Math.floor(boombpos.y / 30) - 1][
+      Math.floor(boombpos.x / 30)
+    ].classList.contains("wall")
+      ? null
+      : grids[Math.floor(boombpos.y / 30) - 1][
+          Math.floor(boombpos.x / 30)
+        ].classList.add("empty");
     dropedtheboomb = false;
   }, 2000);
 };
