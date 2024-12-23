@@ -49,7 +49,7 @@ const lose = () => {
 };
 
 
-const playerPos = { x: 59, y: 59 };
+const playerPos = { x: 59, y: 49 };
 
 map.append(bomberman);
 bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
