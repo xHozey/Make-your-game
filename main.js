@@ -51,138 +51,148 @@ const lose = () => {
 };
 
 const playerPos = { x: 60, y: 60 };
-let currentPos = { ...playerPos };
-let currentLoop = 0
-const downMove = [1,2,3,4]
-const upMove = [5,6,7,8]
-const leftMove = [9,10,11,12]
-const rightMove = [13,14,15,16]
-let slowedBy = 0
+let currentLoop = 0;
+const downMove = [1, 2, 3, 4];
+const upMove = [5, 6, 7, 8];
+const leftMove = [9, 10, 11, 12];
+const rightMove = [13, 14, 15, 16];
+let slowedBy = 0;
 let slowFrameRate = 5;
 map.append(bomberman);
 bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
-function isFloat(n) {
-  return Math.floor(n) !== n;
-}
-let boombpos = { x:0, y:0 };
-let boomb = document.createElement('div')
-let dropedtheboomb = false
+
+let boombpos = { x: 0, y: 0 };
+let dropedtheboomb = false;
 const PuttheBoomb = () => {
   if (dropedtheboomb) return;
-  dropedtheboomb = true
-  boombpos = {x: playerPos.x, y:playerPos.y}
-  if (isFloat(boombpos.y/30) || isFloat(boombpos.x/30)) return  
-  boomb.classList.add('boomb')
-
-  boomb.style.transform = `translate(${boombpos.x}px, ${boombpos.y}px)`;
-  map.append(boomb);
+  dropedtheboomb = true;
+  boombpos = { x: playerPos.x, y: playerPos.y };
+  grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30)].style.backgroundImage =
+    "url(assets/boomb.jpg)";
   setTimeout(() => {
-    boomb.classList.remove('boomb')
-    dropedtheboomb = false
-    if (grids[boombpos.y/30][boombpos.x/30+1].classList.contains('soft-wall')) {
-       grids[boombpos.y/30][boombpos.x/30+1].classList.remove('soft-wall')
-       grids[boombpos.y/30][boombpos.x/30+1].classList.add('empty')
+    grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30)].style.backgroundImage = "";
+    if (
+      grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.contains(
+        "soft-wall"
+      )
+    ) { 
+      grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.remove("soft-wall");
+      grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.add("empty");
     }
-    if (grids[boombpos.y/30][boombpos.x/30-1].classList.contains('soft-wall')) {
-      grids[boombpos.y/30][boombpos.x/30-1].classList.remove('soft-wall')
-      grids[boombpos.y/30][boombpos.x/30-1].classList.add('empty')
-   }
-   if (grids[boombpos.y/30+1][boombpos.x/30].classList.contains('soft-wall')) {
-    grids[boombpos.y/30+1][boombpos.x/30].classList.remove('soft-wall')
-    grids[boombpos.y/30+1][boombpos.x/30].classList.add('empty')
- }
- if (grids[boombpos.y/30-1][boombpos.x/30].classList.contains('soft-wall')) {
-  grids[boombpos.y/30-1][boombpos.x/30].classList.remove('soft-wall')
-  grids[boombpos.y/30-1][boombpos.x/30].classList.add('empty')
-}
+    if (
+      grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) - 1].classList.contains(
+        "soft-wall"
+      )
+    ) {
+      grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) - 1].classList.remove("soft-wall");
+      grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) - 1].classList.add("empty");
+    }
+    if (
+      grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.contains(
+        "soft-wall"
+      )
+    ) {
+      grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.remove("soft-wall");
+      grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.add("empty");
+    }
+    if (
+      grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.contains(
+        "soft-wall"
+      )
+    ) {
+      grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.remove("soft-wall");
+      grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.add("empty");
+    }
+    dropedtheboomb = false;
+    console.log("hello");
+    console.log(dropedtheboomb);
   }, 2000);
-  //right
-}
+};
 
 const movePlayer = (e) => {
   let key = e.key.toLowerCase();
   const playerSpeed = 3;
   switch (key) {
-    case " ":
-    PuttheBoomb()
+    case "x":
+      PuttheBoomb();
       break;
     case "arrowup":
-      getPosImg(upMove[currentLoop], 5)
       if (
-        (grids[Math.floor(playerPos.y / 30 - 1)][Math.floor(playerPos.x / 30)].classList.contains(
-          "wall"
-        ) ||
-        grids[Math.floor(playerPos.y / 30 - 1)][Math.floor(playerPos.x / 30)].classList.contains(
-          "soft-wall"
-        )) && playerPos.y % 30 == 0
+        (grids[Math.floor(playerPos.y / 30 - 1)][
+          Math.floor(playerPos.x / 30)
+        ].classList.contains("wall") ||
+          grids[Math.floor(playerPos.y / 30 - 1)][
+            Math.floor(playerPos.x / 30)
+          ].classList.contains("soft-wall")) &&
+        playerPos.y % 30 == 0
       )
         return;
       playerPos.y -= playerSpeed;
+      getPosImg(upMove[currentLoop], 5);
       break;
-      case "arrowdown":
-      getPosImg(downMove[currentLoop], 8)
+    case "arrowdown":
       if (
-        (grids[Math.floor(playerPos.y / 30 + 1)][Math.floor(playerPos.x / 30)].classList.contains(
-          "wall"
-        ) ||
-        grids[Math.floor(playerPos.y / 30 + 1)][Math.floor(playerPos.x / 30)].classList.contains(
-          "soft-wall"
-        )) && playerPos.y % 30 == 0
+        (grids[Math.floor(playerPos.y / 30 + 1)][
+          Math.floor(playerPos.x / 30)
+        ].classList.contains("wall") ||
+          grids[Math.floor(playerPos.y / 30 + 1)][
+            Math.floor(playerPos.x / 30)
+          ].classList.contains("soft-wall")) &&
+        playerPos.y % 30 == 0
       )
         return;
       playerPos.y += playerSpeed;
+      getPosImg(downMove[currentLoop], 8);
       break;
     case "arrowleft":
-      getPosImg(leftMove[currentLoop], 7)
       if (
-        (grids[Math.floor(playerPos.y / 30)][Math.floor(playerPos.x / 30 - 1)].classList.contains(
-          "wall"
-        ) ||
-        grids[Math.floor(playerPos.y / 30)][Math.floor(playerPos.x / 30 - 1)].classList.contains(
-          "soft-wall"
-        )) && playerPos.x % 30 == 0
+        (grids[Math.floor(playerPos.y / 30)][
+          Math.floor(playerPos.x / 30 - 1)
+        ].classList.contains("wall") ||
+          grids[Math.floor(playerPos.y / 30)][
+            Math.floor(playerPos.x / 30 - 1)
+          ].classList.contains("soft-wall")) &&
+        playerPos.x % 30 == 0
       )
         return;
       playerPos.x -= playerSpeed;
+      getPosImg(leftMove[currentLoop], 7);
       break;
-      case "arrowright":
-      getPosImg(rightMove[currentLoop], 6)
+    case "arrowright":
       if (
-        (grids[Math.floor(playerPos.y / 30)][Math.floor(playerPos.x / 30) + 1].classList.contains(
-          "wall"
-        ) ||
-        grids[Math.floor(playerPos.y / 30)][Math.floor(playerPos.x / 30) + 1].classList.contains(
-          "soft-wall"
-        )) && playerPos.x % 30 == 0
+        (grids[Math.floor(playerPos.y / 30)][
+          Math.floor(playerPos.x / 30) + 1
+        ].classList.contains("wall") ||
+          grids[Math.floor(playerPos.y / 30)][
+            Math.floor(playerPos.x / 30) + 1
+          ].classList.contains("soft-wall")) &&
+        playerPos.x % 30 == 0
       )
         return;
       playerPos.x += playerSpeed;
+      getPosImg(rightMove[currentLoop], 6);
       break;
     default:
       break;
   }
-
-  requestAnimationFrame(animateMovement);
 };
 
 const animateMovement = () => {
   bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
   if (slowedBy >= slowFrameRate) {
-
-    if (currentLoop < downMove.length -1) {
-      currentLoop++
+    if (currentLoop < downMove.length - 1) {
+      currentLoop++;
     } else {
-      currentLoop = 0
+      currentLoop = 0;
     }
-    slowedBy = 0
+    slowedBy = 0;
   } else {
-    slowedBy++
+    slowedBy++;
   }
-  if (currentPos.x !== playerPos.x && currentPos.y !== playerPos.y) {
 
-    currentPos = { ...playerPos };
-    requestAnimationFrame(animateMovement);
-  }
+  requestAnimationFrame(animateMovement);
 };
+
+requestAnimationFrame(animateMovement);
 
 document.addEventListener("keydown", movePlayer);
