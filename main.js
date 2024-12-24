@@ -143,8 +143,6 @@ const movePlayer = (e) => {
          rowTop = Math.ceil((playerPos.y +playerSpeed)/ 30);
          colBot = Math.floor(playerPos.x / 30);
          colTop = Math.ceil(playerPos.x / 30);
-         console.log(grids[rowTop][colBot],grids[rowTop][colTop]);
-         console.log([rowTop,colBot],[rowTop,colTop]);
 
         if (
           grids[rowTop][colBot].classList.contains("wall") ||
@@ -163,8 +161,7 @@ const movePlayer = (e) => {
          rowTop = Math.ceil(playerPos.y / 30);
          colBot = Math.floor((playerPos.x-playerSpeed) / 30);
          colTop = Math.ceil((playerPos.x -playerSpeed)/ 30);
-        console.log(grids[rowTop][colBot], grids[rowBot][colBot]);
-        console.log([rowTop, colBot], [rowTop, colTop]);
+
         if (
           grids[rowTop][colBot].classList.contains("wall") ||
           grids[rowTop][colBot].classList.contains("soft-wall") ||
