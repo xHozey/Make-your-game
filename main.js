@@ -111,6 +111,7 @@ const PuttheBoomb = () => {
 
 const movePlayer = (e) => {
   let key = e.key.toLowerCase();
+  console.log(playerPos)
   const playerSpeed = 3;
   switch (key) {
     case "x":
@@ -132,13 +133,13 @@ const movePlayer = (e) => {
       break;
     case "arrowdown":
       if (
-        (grids[Math.floor(playerPos.y / 30 + 1)][
-          Math.floor(playerPos.x / 30)
+        (grids[Math.floor(playerPos.y / 30)+1][
+          Math.ceil(playerPos.x / 30)
         ].classList.contains("wall") ||
-          grids[Math.floor(playerPos.y / 30 + 1)][
-            Math.floor(playerPos.x / 30)
-          ].classList.contains("soft-wall")) &&
-        playerPos.y % 30 == 0
+          grids[Math.floor(playerPos.y / 30)+1][
+            Math.ceil(playerPos.x / 30)
+          ].classList.contains("soft-wall")) 
+        //  playerPos.x % 30 == 0
       )
         return;
       playerPos.y += playerSpeed;
@@ -160,13 +161,13 @@ const movePlayer = (e) => {
       break;
     case "arrowright":
       if (
-        (grids[Math.floor(playerPos.y / 30)][
-          Math.floor(playerPos.x / 30) + 1
+        (grids[Math.floor(playerPos.y / 31)+1][
+          Math.floor(playerPos.x / 31) + 1
         ].classList.contains("wall") ||
-          grids[Math.floor(playerPos.y / 30)][
-            Math.floor(playerPos.x / 30) + 1
-          ].classList.contains("soft-wall")) &&
-        playerPos.x % 30 == 0
+          grids[Math.floor(playerPos.y / 31)+1][
+            Math.floor(playerPos.x / 31) + 1
+          ].classList.contains("soft-wall")) 
+        // playerPos.x % 30 == 0
       )
         return;
       playerPos.x += playerSpeed;

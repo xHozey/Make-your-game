@@ -64,6 +64,7 @@ body {
 }
 
 .bomber-man {
+  background-color: black;
   position: absolute;
   image-rendering: pixelated;
   justify-content: center;
