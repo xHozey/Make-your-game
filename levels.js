@@ -4,7 +4,9 @@
 // 3-power-pullet
 // 4-ghost-lair
 //23x13
-export const level_1 = [
+export let level_1
+
+  level_1 = [
   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
   [1,1,'x','x',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
@@ -29,4 +31,15 @@ export const level_1 = [
   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
 ];
 
-  
+let portal = false;
+for (let i = 0; i < 450; i++) {
+  const row = Math.floor(Math.random() * level_1.length);
+  const col = Math.floor(Math.random() * level_1[0].length);
+
+  if (!portal && level_1[row][col] == 0) {
+    level_1[row][col] = 3;
+    portal = true;
+    continue;
+  }
+  if (level_1[row][col] == 0) level_1[row][col] = 2;
+}
