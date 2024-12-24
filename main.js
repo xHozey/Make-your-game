@@ -110,11 +110,55 @@ const putTheBomb = () => {
   }, 2000);
 };
 
+const checkUpperMove = (rowBot, colBot, colTop) => {
+  return (
+    grids[rowBot][colBot].classList.contains("wall") ||
+    grids[rowBot][colBot].classList.contains("soft-wall") ||
+    grids[rowBot][colTop].classList.contains("wall") ||
+    grids[rowBot][colTop].classList.contains("soft-wall")
+  );
+};
+
+const checkDownMove = (rowTop, colBot, colTop) => {
+  return (
+    grids[rowTop][colBot].classList.contains("wall") ||
+    grids[rowTop][colBot].classList.contains("soft-wall") ||
+    grids[rowTop][colTop].classList.contains("wall") ||
+    grids[rowTop][colTop].classList.contains("soft-wall")
+  );
+};
+
+const checkLeftMove = (rowBot, rowTop, colBot, colTop) => {
+  return (
+    grids[rowTop][colBot].classList.contains("wall") ||
+    grids[rowTop][colBot].classList.contains("soft-wall") ||
+    grids[rowBot][colBot].classList.contains("wall") ||
+    grids[rowBot][colBot].classList.contains("soft-wall") ||
+    grids[rowBot][colTop].classList.contains("wall") ||
+    grids[rowBot][colTop].classList.contains("soft-wall") ||
+    grids[rowTop][colTop].classList.contains("wall") ||
+    grids[rowTop][colTop].classList.contains("soft-wall")
+  );
+};
+
+const checkRightMove = (rowBot, rowTop, colBot, colTop) => {
+  return (
+    grids[rowTop][colBot].classList.contains("wall") ||
+    grids[rowTop][colBot].classList.contains("soft-wall") ||
+    grids[rowTop][colTop].classList.contains("wall") ||
+    grids[rowTop][colTop].classList.contains("soft-wall") ||
+    grids[rowBot][colTop].classList.contains("wall") ||
+    grids[rowBot][colTop].classList.contains("soft-wall") ||
+    grids[rowTop][colTop].classList.contains("wall") ||
+    grids[rowTop][colTop].classList.contains("soft-wall")
+  );
+};
+
 const movePlayer = (e) => {
-  let rowBot
-  let rowTop
-  let colTop
-  let colBot
+  let rowBot;
+  let rowTop;
+  let colTop;
+  let colBot;
   let key = e.key.toLowerCase();
   const playerSpeed = 3;
   switch (key) {
@@ -122,87 +166,43 @@ const movePlayer = (e) => {
       putTheBomb();
       break;
     case "arrowup":
-         rowBot = Math.floor((playerPos.y-playerSpeed )/ 30);
-         rowTop = Math.ceil((playerPos.y -playerSpeed)/ 30);
-         colBot = Math.floor(playerPos.x / 30);
-         colTop = Math.ceil(playerPos.x / 30);
-        if (
-          grids[rowBot][colBot].classList.contains("wall") ||
-          grids[rowBot][colBot].classList.contains("soft-wall") ||
-          grids[rowBot][colTop].classList.contains("wall") ||
-          grids[rowBot][colTop].classList.contains("soft-wall")
-        ) {
-          return;
-        }
-     
+      rowBot = Math.floor((playerPos.y - playerSpeed) / 30);
+      colBot = Math.floor(playerPos.x / 30);
+      colTop = Math.ceil(playerPos.x / 30);
+      if (checkUpperMove(rowBot, colBot, colTop)) return;
       playerPos.y -= playerSpeed;
       getPosImg(upMove[currentLoop], 5);
       break;
     case "arrowdown":
-         rowBot = Math.floor((playerPos.y+playerSpeed) / 30);
-         rowTop = Math.ceil((playerPos.y +playerSpeed)/ 30);
-         colBot = Math.floor(playerPos.x / 30);
-         colTop = Math.ceil(playerPos.x / 30);
-
-        if (
-          grids[rowTop][colBot].classList.contains("wall") ||
-          grids[rowTop][colBot].classList.contains("soft-wall") ||
-          grids[rowTop][colTop].classList.contains("wall") ||
-          grids[rowTop][colTop].classList.contains("soft-wall")
-        ) {
-          return;
-        }
-     
+      rowBot = Math.floor((playerPos.y + playerSpeed) / 30);
+      rowTop = Math.ceil((playerPos.y + playerSpeed) / 30);
+      colBot = Math.floor(playerPos.x / 30);
+      colTop = Math.ceil(playerPos.x / 30);
+      if (checkDownMove(rowTop, colBot, colTop)) return;
       playerPos.y += playerSpeed;
       getPosImg(downMove[currentLoop], 8);
       break;
     case "arrowleft":
-         rowBot = Math.floor(playerPos.y / 30);
-         rowTop = Math.ceil(playerPos.y / 30);
-         colBot = Math.floor((playerPos.x-playerSpeed) / 30);
-         colTop = Math.ceil((playerPos.x -playerSpeed)/ 30);
-
-        if (
-          grids[rowTop][colBot].classList.contains("wall") ||
-          grids[rowTop][colBot].classList.contains("soft-wall") ||
-          grids[rowBot][colBot].classList.contains("wall") ||
-          grids[rowBot][colBot].classList.contains("soft-wall") ||
-          grids[rowBot][colTop].classList.contains("wall") ||
-          grids[rowBot][colTop].classList.contains("soft-wall") ||
-          grids[rowTop][colTop].classList.contains("wall") ||
-          grids[rowTop][colTop].classList.contains("soft-wall")
-        ) {
-          return;
-        }
-     
+      rowBot = Math.floor(playerPos.y / 30);
+      rowTop = Math.ceil(playerPos.y / 30);
+      colBot = Math.floor((playerPos.x - playerSpeed) / 30);
+      colTop = Math.ceil((playerPos.x - playerSpeed) / 30);
+      if (checkLeftMove(rowBot, rowTop, colBot, colTop)) return;
       playerPos.x -= playerSpeed;
       getPosImg(leftMove[currentLoop], 7);
       break;
     case "arrowright":
-         rowBot = Math.floor(playerPos.y / 30);
-         rowTop = Math.ceil(playerPos.y / 30);
-         colBot = Math.floor((playerPos.x+playerSpeed) / 30);
-         colTop = Math.ceil((playerPos.x+playerSpeed)/ 30); 
-        if (
-          grids[rowTop][colBot].classList.contains("wall") ||
-          grids[rowTop][colBot].classList.contains("soft-wall") ||
-          grids[rowTop][colTop].classList.contains("wall") ||
-          grids[rowTop][colTop].classList.contains("soft-wall") ||
-          grids[rowBot][colTop].classList.contains("wall") ||
-          grids[rowBot][colTop].classList.contains("soft-wall") ||
-          grids[rowTop][colTop].classList.contains("wall") ||
-          grids[rowTop][colTop].classList.contains("soft-wall")
-        ) {
-          return;
-        }
-     
+      rowBot = Math.floor(playerPos.y / 30);
+      rowTop = Math.ceil(playerPos.y / 30);
+      colBot = Math.floor((playerPos.x + playerSpeed) / 30);
+      colTop = Math.ceil((playerPos.x + playerSpeed) / 30);
+      if (checkRightMove(rowBot, rowTop, colBot, colTop)) return;
       playerPos.x += playerSpeed;
       getPosImg(rightMove[currentLoop], 6);
       break;
     default:
       break;
   }
-
 };
 
 const animateMovement = () => {

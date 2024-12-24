@@ -67,7 +67,7 @@ body {
   image-rendering: pixelated;
   justify-content: center;
   align-items: center;
-  background-color: black;
+  /* background-color: black; */
 }
 
 .bomb {
