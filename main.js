@@ -50,16 +50,7 @@ const lose = () => {
   //player get expolied by bomber or hited by enemy
 };
 
-const playerPos = { x: 60, y: 60 };
-let currentLoop = 0;
-const downMove = [1, 2, 3, 4];
-const upMove = [5, 6, 7, 8];
-const leftMove = [9, 10, 11, 12];
-const rightMove = [13, 14, 15, 16];
-let slowedBy = 0;
-let slowFrameRate = 5;
-map.append(bomberman);
-bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
+
 
 let boombpos = { x: 0, y: 0 };
 let dropedtheboomb = false;
@@ -70,7 +61,6 @@ const PuttheBoomb = () => {
   grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30)].classList.add('bomb')
 
   setTimeout(() => {
-    grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30)].classList.remove('bomb')
     grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.remove("soft-wall")
     grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.contains("wall")?null:grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) + 1].classList.add("empty");
     grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30) - 1].classList.remove("soft-wall");
@@ -79,10 +69,21 @@ const PuttheBoomb = () => {
     grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.contains("wall")?null:grids[Math.floor(boombpos.y / 30) + 1][Math.floor(boombpos.x / 30)].classList.add("empty");
     grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.remove("soft-wall");
     grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.contains("wall")?null:grids[Math.floor(boombpos.y / 30) - 1][Math.floor(boombpos.x / 30)].classList.add("empty");
+    grids[Math.floor(boombpos.y / 30)][Math.floor(boombpos.x / 30)].classList.remove('bomb')
     dropedtheboomb = false;
   }, 2000);
 };
 
+const playerPos = { x: 60, y: 60 };
+let currentLoop = 0;
+const downMove = [1, 2, 3, 4];
+const upMove = [5, 6, 7, 8];
+const leftMove = [9, 10, 11, 12];
+const rightMove = [13, 14, 15, 16];
+let slowedBy = 0;
+let slowFrameRate = 5;
+map.append(bomberman);
+bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
 const movePlayer = (e) => {
   let key = e.key.toLowerCase();
   const playerSpeed = 3;
@@ -170,3 +171,77 @@ const animateMovement = () => {
 requestAnimationFrame(animateMovement);
 
 document.addEventListener("keydown", movePlayer);
+
+class monster {
+  constructor(y,x,speed) {
+  this.startY = y
+  this.startX = x
+  this.currentindexY = y
+  this.currentindexX = x
+  this.speed = speed  
+  }
+}
+
+const monster_speed = 1;
+
+const monsters = [
+  new monster(150,60,monster_speed),
+]
+
+monsters.forEach(monster => {
+  const directions = ['left','up','down','right']
+  let mn = document.createElement('div')
+  mn.classList.add('monster')  
+  map.append(mn)
+  let direction = "right"
+  setInterval(() => {
+   direction = directions[Math.floor(Math.random()*directions.length)]
+  }, 3000);
+  
+  setInterval(() => { 
+    if (direction == 'right') {
+    if ((grids[Math.floor(monster.currentindexY/ 30)][Math.floor(monster.currentindexX / 30) + 1].classList.contains("wall") ||grids[Math.floor(monster.currentindexY/ 30)][Math.floor(monster.currentindexX / 30) + 1].classList.contains("soft-wall")) && monster.currentindexX % 30 == 0) {
+        return;
+      }
+      monster.currentindexX += 1
+    }
+    if (direction == 'left') {
+      if (
+        (grids[Math.floor(monster.currentindexY/ 30)][
+          Math.floor(monster.currentindexX / 30 - 1)
+        ].classList.contains("wall") ||
+          grids[Math.floor(monster.currentindexY/ 30)][
+            Math.floor(monster.currentindexX / 30 - 1)
+          ].classList.contains("soft-wall")) &&
+        monster.currentindexX % 30 == 0
+      ) {
+        return;
+      }
+      monster.currentindexX -= 1
+    }
+    if (direction == 'up') {
+      if (
+        (grids[Math.floor(monster.currentindexY/ 30 - 1)][Math.floor(monster.currentindexX / 30)].classList.contains("wall") || 
+        grids[Math.floor(monster.currentindexY/ 30 - 1)][Math.floor(monster.currentindexX / 30)].classList.contains("soft-wall")) &&
+        monster.currentindexY% 30 == 0) {
+          return;
+        }
+      monster.currentindexY -= 1
+    }
+    if (direction == 'down') {
+      if (
+        (grids[Math.floor(monster.currentindexY/ 30 + 1)][
+          Math.floor(monster.currentindexX / 30)
+        ].classList.contains("wall") ||
+          grids[Math.floor(monster.currentindexY/ 30 + 1)][
+            Math.floor(monster.currentindexX / 30)
+          ].classList.contains("soft-wall")) &&
+        monster.currentindexY% 30 == 0
+      ) {
+        return;
+      }
+      monster.currentindexY += 1
+    }
+    mn.style.transform = `translate(${monster.currentindexX}px, ${monster.currentindexY}px)`;
+  }, 100);
+});

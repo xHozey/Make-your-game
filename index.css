@@ -67,11 +67,16 @@ body {
   position: absolute;
   image-rendering: pixelated;
   justify-content: center;
-  align-items: center;
 }
 
 .bomb {
   background-image: url('assets/bomb.png');
   background-size: 30px 30px;
   background-color: black;
+}
+
+.monster {
+  position: absolute;
+  background-color: blueviolet;
+  background-image: none;
 }
