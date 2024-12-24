@@ -8,9 +8,7 @@ let portal = false;
 for (let i = 0; i < 450; i++) {
   const row = Math.floor(Math.random() * level_1.length);
   const col = Math.floor(Math.random() * level_1[0].length);
-  if (level_1[row][col] == 4) {
-    continue
-  }
+
   if (!portal && level_1[row][col] == 0) {
     level_1[row][col] = 3;
     portal = true;
@@ -25,7 +23,7 @@ for (let i = 0; i < level_1.length; i++) {
     const div = document.createElement("div");
     grids[i].push(div);
     map.appendChild(div);
-    if (level_1[i][j] == 0 || level_1[i][j] == "x" || level_1[i][j] == 4) {
+    if (level_1[i][j] == 0 || level_1[i][j] == "x" || level_1[i][j] == 'M') {
       div.classList.add("empty");
       continue;
     }
@@ -190,9 +188,9 @@ class monster {
 
 
 const monsters = [
-  new monster(3*30,15*30,100),
-  new monster(150,60,150),
-  new monster(150,60,80),
+  new monster(2*30,420,100),
+  new monster(11*30,12*30,150),
+  new monster(5*30,22*30,80),
 ]
 
 monsters.forEach(monster => {
