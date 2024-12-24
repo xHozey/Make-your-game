@@ -73,6 +73,7 @@ body {
   background-size: 30px 30px;
   background-color: black;
 }
+
 .monster {
-  background-color: blue;
+  image-rendering: pixelated;
 }

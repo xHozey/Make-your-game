@@ -2,12 +2,9 @@ import { level_1 } from "./levels.js";
 import {
   bomberman,
   getPosImg,
-  leftMove,
-  rightMove,
-  upMove,
-  downMove,
 } from "./bomber.js";
-
+const lifes = document.querySelector('#lifes-id')
+let currentLifes = Number(lifes.innerHTML)
 const map = document.querySelector(".map");
 const grids = [];
 
@@ -36,17 +33,17 @@ for (let i = 0; i < level_1.length; i++) {
   }
 }
 
+let pause = false
+
 const win = () => {
   //player position in the portal and all enemies are dead
 };
 
-const lose = () => {
-  //player get expolied by bomber or hited by enemy
-};
 
 const playerPos = { x: 60, y: 60 };
 let currentLoop = 0;
-
+const playerFrame = [1,2,3,4]
+const monsterFrame = [1,2,3]
 let slowedBy = 0;
 let slowFrameRate = 5;
 map.append(bomberman);
@@ -162,6 +159,9 @@ const playerSpeed = 1;
 const movePlayer = (e) => {
   let key = e.key.toLowerCase();
   switch (key) {
+    case 'p':
+      pause = true
+      break
     case "x":
       putTheBomb();
       break;
@@ -183,6 +183,9 @@ const movePlayer = (e) => {
 const stopPlayer = (e) => {
   let key = e.key.toLowerCase();
   switch (key) {
+    case 'p':
+      pause = false
+      break
     case "arrowup":
       moveUp = false;
       break;
@@ -208,6 +211,8 @@ class monster {
     this.posY = y;
     this.id = id;
     this.dir = dir;
+    this.loop = 0
+    this.slow = 0
   }
 }
 const monsters = [];
@@ -222,6 +227,8 @@ for (let i = 0; i < 5; i++) {
     div.classList.add(`monster`);
     div.classList.add(`monster-${i}`);
     div.style.position = `absolute`;
+    div.style.backgroundImage = `url(assets/skull.png)`;
+    div.style.backgroundSize = "90px 120px";
     map.appendChild(div);
     div.style.transform = `translate(${currentMonster.posX}px, ${currentMonster.posY}px)`;
   } else {
@@ -263,11 +270,15 @@ const checkMonsterMove = (enemy) => {
   }
 };
 
+
 const animateMovement = () => {
+
   let rowBot;
   let rowTop;
   let colTop;
   let colBot;
+  if (!pause) {
+
   switch (true) {
     case moveDown:
       rowBot = Math.floor((playerPos.y + playerSpeed) / 30);
@@ -275,7 +286,7 @@ const animateMovement = () => {
       colBot = Math.floor(playerPos.x / 30);
       colTop = Math.ceil(playerPos.x / 30);
       if (!checkDownMove(rowTop, colBot, colTop)) {
-        getPosImg(downMove[currentLoop], 8);
+        getPosImg(playerFrame[currentLoop], 8, bomberman);
         playerPos.y += playerSpeed;
       }
       break;
@@ -285,7 +296,7 @@ const animateMovement = () => {
       colBot = Math.floor((playerPos.x - playerSpeed) / 30);
       colTop = Math.ceil((playerPos.x - playerSpeed) / 30);
       if (!checkLeftMove(rowBot, rowTop, colBot, colTop)) {
-        getPosImg(leftMove[currentLoop], 7);
+        getPosImg(playerFrame[currentLoop], 7, bomberman);
         playerPos.x -= playerSpeed;
       }
       break;
@@ -294,7 +305,7 @@ const animateMovement = () => {
       colBot = Math.floor(playerPos.x / 30);
       colTop = Math.ceil(playerPos.x / 30);
       if (!checkUpperMove(rowBot, colBot, colTop)) {
-        getPosImg(upMove[currentLoop], 5);
+        getPosImg(playerFrame[currentLoop], 5, bomberman);
         playerPos.y -= playerSpeed;
       }
       break;
@@ -304,14 +315,15 @@ const animateMovement = () => {
       colBot = Math.floor((playerPos.x + playerSpeed) / 30);
       colTop = Math.ceil((playerPos.x + playerSpeed) / 30);
       if (!checkRightMove(rowBot, rowTop, colBot, colTop)) {
-        getPosImg(rightMove[currentLoop], 6);
+        getPosImg(playerFrame[currentLoop], 6, bomberman);
         playerPos.x += playerSpeed;
       }
       break;
   }
+
   bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
   if (slowedBy >= slowFrameRate) {
-    if (currentLoop < downMove.length - 1) {
+    if (currentLoop < playerFrame.length - 1) {
       currentLoop++;
     } else {
       currentLoop = 0;
@@ -322,31 +334,51 @@ const animateMovement = () => {
   }
 
   monsters.forEach((enemy) => {
+
     if (!checkMonsterMove(enemy)) {
+      let div = document.querySelector(`.monster-${enemy.id}`);
       switch (enemy.dir) {
         case "up":
           enemy.posY -= monsterSpeed
+          getPosImg(monsterFrame[enemy.loop],4,div)
           break;
         case "down":
           enemy.posY += monsterSpeed
+          getPosImg(monsterFrame[enemy.loop],2,div)
           break;
         case "left":
           enemy.posX -= monsterSpeed
+          getPosImg(monsterFrame[enemy.loop],1,div)
           break;
         case "right":
           enemy.posX += monsterSpeed
+          getPosImg(monsterFrame[enemy.loop],3,div)
           break;
-      }  
-      let div = document.querySelector(`.monster-${enemy.id}`);
+      }
+      if (enemy.slow >= slowFrameRate) {
+        if (enemy.loop < playerFrame.length - 1) {
+          enemy.loop++;
+        } else {
+          enemy.loop = 0;
+        }
+        enemy.slow = 0;
+      } else {
+        enemy.slow++;
+      } 
       div.style.transform = `translate(${enemy.posX}px, ${enemy.posY}px)`;
+      if (enemy.posX+15  >= playerPos.x && enemy.posX <= playerPos.x+15  && enemy.posY+15  >= playerPos.y && enemy.posY <= playerPos.y+15   ) {
+        lifes.innerHTML = currentLifes - 1
+        currentLifes--
+      }
     } else {
-
       enemy.dir = randomMonsterDir()
     }
 
   });
 
+}
   requestAnimationFrame(animateMovement);
+
 };
 
 requestAnimationFrame(animateMovement);
