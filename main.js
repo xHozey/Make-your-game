@@ -8,7 +8,9 @@ let portal = false;
 for (let i = 0; i < 450; i++) {
   const row = Math.floor(Math.random() * level_1.length);
   const col = Math.floor(Math.random() * level_1[0].length);
-
+  if (level_1[row][col] == 4) {
+    continue
+  }
   if (!portal && level_1[row][col] == 0) {
     level_1[row][col] = 3;
     portal = true;
@@ -23,7 +25,7 @@ for (let i = 0; i < level_1.length; i++) {
     const div = document.createElement("div");
     grids[i].push(div);
     map.appendChild(div);
-    if (level_1[i][j] == 0 || level_1[i][j] == "x") {
+    if (level_1[i][j] == 0 || level_1[i][j] == "x" || level_1[i][j] == 4) {
       div.classList.add("empty");
       continue;
     }
@@ -172,6 +174,10 @@ requestAnimationFrame(animateMovement);
 
 document.addEventListener("keydown", movePlayer);
 
+
+
+
+
 class monster {
   constructor(y,x,speed) {
   this.startY = y
@@ -182,10 +188,11 @@ class monster {
   }
 }
 
-const monster_speed = 1;
 
 const monsters = [
-  new monster(150,60,monster_speed),
+  new monster(3*30,15*30,100),
+  new monster(150,60,150),
+  new monster(150,60,80),
 ]
 
 monsters.forEach(monster => {
@@ -243,5 +250,5 @@ monsters.forEach(monster => {
       monster.currentindexY += 1
     }
     mn.style.transform = `translate(${monster.currentindexX}px, ${monster.currentindexY}px)`;
-  }, 100);
+  }, monster.speed);
 });
