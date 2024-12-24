@@ -52,7 +52,6 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
-
 .soft-wall {
   background-image: url('assets/soft.png');
   background-repeat: no-repeat;
@@ -68,6 +67,7 @@ body {
   image-rendering: pixelated;
   justify-content: center;
   align-items: center;
+  background-color: black;
 }
 
 .bomb {
