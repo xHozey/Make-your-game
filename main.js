@@ -160,7 +160,8 @@ const movePlayer = (e) => {
   let key = e.key.toLowerCase();
   switch (key) {
     case 'p':
-      pause = true
+      if (!pause) pause = true
+      else pause = false
       break
     case "x":
       putTheBomb();
@@ -183,9 +184,6 @@ const movePlayer = (e) => {
 const stopPlayer = (e) => {
   let key = e.key.toLowerCase();
   switch (key) {
-    case 'p':
-      pause = false
-      break
     case "arrowup":
       moveUp = false;
       break;
