@@ -154,58 +154,97 @@ const checkRightMove = (rowBot, rowTop, colBot, colTop) => {
   );
 };
 
+let moveLeft = false;
+let moveDown = false;
+let moveUp = false;
+let moveRight = false;
+const playerSpeed = 1;
+
 const movePlayer = (e) => {
-  let rowBot;
-  let rowTop;
-  let colTop;
-  let colBot;
   let key = e.key.toLowerCase();
-  const playerSpeed = 3;
   switch (key) {
     case "x":
       putTheBomb();
       break;
     case "arrowup":
-      rowBot = Math.floor((playerPos.y - playerSpeed) / 30);
-      colBot = Math.floor(playerPos.x / 30);
-      colTop = Math.ceil(playerPos.x / 30);
-      if (checkUpperMove(rowBot, colBot, colTop)) return;
-      playerPos.y -= playerSpeed;
-      getPosImg(upMove[currentLoop], 5);
+      moveUp = true;
       break;
     case "arrowdown":
-      rowBot = Math.floor((playerPos.y + playerSpeed) / 30);
-      rowTop = Math.ceil((playerPos.y + playerSpeed) / 30);
-      colBot = Math.floor(playerPos.x / 30);
-      colTop = Math.ceil(playerPos.x / 30);
-      if (checkDownMove(rowTop, colBot, colTop)) return;
-      playerPos.y += playerSpeed;
-      getPosImg(downMove[currentLoop], 8);
+      moveDown = true;
       break;
     case "arrowleft":
-      rowBot = Math.floor(playerPos.y / 30);
-      rowTop = Math.ceil(playerPos.y / 30);
-      colBot = Math.floor((playerPos.x - playerSpeed) / 30);
-      colTop = Math.ceil((playerPos.x - playerSpeed) / 30);
-      if (checkLeftMove(rowBot, rowTop, colBot, colTop)) return;
-      playerPos.x -= playerSpeed;
-      getPosImg(leftMove[currentLoop], 7);
+      moveLeft = true;
       break;
     case "arrowright":
-      rowBot = Math.floor(playerPos.y / 30);
-      rowTop = Math.ceil(playerPos.y / 30);
-      colBot = Math.floor((playerPos.x + playerSpeed) / 30);
-      colTop = Math.ceil((playerPos.x + playerSpeed) / 30);
-      if (checkRightMove(rowBot, rowTop, colBot, colTop)) return;
-      playerPos.x += playerSpeed;
-      getPosImg(rightMove[currentLoop], 6);
+      moveRight = true;
       break;
-    default:
+  }
+};
+
+const stopPlayer = (e) => {
+  let key = e.key.toLowerCase();
+  switch (key) {
+    case "arrowup":
+      moveUp = false;
+      break;
+    case "arrowdown":
+      moveDown = false;
+      break;
+    case "arrowleft":
+      moveLeft = false;
+      break;
+    case "arrowright":
+      moveRight = false;
       break;
   }
 };
 
 const animateMovement = () => {
+  let rowBot;
+  let rowTop;
+  let colTop;
+  let colBot;
+  switch (true) {
+    case moveDown:
+      rowBot = Math.floor((playerPos.y + playerSpeed) / 30);
+      rowTop = Math.ceil((playerPos.y + playerSpeed) / 30);
+      colBot = Math.floor(playerPos.x / 30);
+      colTop = Math.ceil(playerPos.x / 30);
+      if (!checkDownMove(rowTop, colBot, colTop)) {
+        getPosImg(downMove[currentLoop], 8);
+        playerPos.y += playerSpeed;
+      }
+      break;
+    case moveLeft:
+      rowBot = Math.floor(playerPos.y / 30);
+      rowTop = Math.ceil(playerPos.y / 30);
+      colBot = Math.floor((playerPos.x - playerSpeed) / 30);
+      colTop = Math.ceil((playerPos.x - playerSpeed) / 30);
+      if (!checkLeftMove(rowBot, rowTop, colBot, colTop)) {
+        getPosImg(leftMove[currentLoop], 7);
+        playerPos.x -= playerSpeed;
+      }
+      break;
+    case moveUp:
+      rowBot = Math.floor((playerPos.y - playerSpeed) / 30);
+      colBot = Math.floor(playerPos.x / 30);
+      colTop = Math.ceil(playerPos.x / 30);
+      if (!checkUpperMove(rowBot, colBot, colTop)) {
+        getPosImg(upMove[currentLoop], 5);
+        playerPos.y -= playerSpeed;
+      }
+      break;
+    case moveRight:
+      rowBot = Math.floor(playerPos.y / 30);
+      rowTop = Math.ceil(playerPos.y / 30);
+      colBot = Math.floor((playerPos.x + playerSpeed) / 30);
+      colTop = Math.ceil((playerPos.x + playerSpeed) / 30);
+      if (!checkRightMove(rowBot, rowTop, colBot, colTop)) {
+        getPosImg(rightMove[currentLoop], 6);
+        playerPos.x += playerSpeed;
+      }
+      break;
+  }
   bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
   if (slowedBy >= slowFrameRate) {
     if (currentLoop < downMove.length - 1) {
@@ -224,3 +263,4 @@ const animateMovement = () => {
 requestAnimationFrame(animateMovement);
 
 document.addEventListener("keydown", movePlayer);
+document.addEventListener("keyup", stopPlayer);
