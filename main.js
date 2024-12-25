@@ -9,16 +9,18 @@ import {
   checkMonsterMove,
   checkIfBombed,
 } from "./checkers.js";
-const lifes = document.querySelector("#lifes-id");
+const lifes = document.getElementById("lifes-id");
+const score = document.getElementById("score-id");
+let currentLifes = 3;
+let currentScore = 0;
 const size = 30;
 let pause = false;
 const map = document.querySelector(".map");
-let currentLifes = Number(lifes.innerHTML);
 const boardMap = new Board(map, level_1);
 const grids = boardMap.initLevel();
 const player = new Player(60, 60, 1, map);
 const bomberman = player.initBomberMan(map);
-const monsters = boardMap.initMonsters();
+let monsters = boardMap.initMonsters();
 const bomb = new Bomb(grids);
 
 const movePlayer = (e) => {
@@ -127,66 +129,69 @@ const animateMovement = () => {
     monsters.forEach((enemy) => {
       if (!checkMonsterMove(enemy, grids)) {
         let div = document.querySelector(`.monster-${enemy.id}`);
-        if (checkIfBombed(grids,enemy.posX,enemy.posY)) {
+        if (checkIfBombed(grids, enemy.posX, enemy.posY)) {
           map.removeChild(div);
-          monsters.pop(enemy)
+          monsters = monsters.filter((monster) => monster.id !== enemy.id);
+          currentScore += 100;
+          score.innerText = currentScore;
         }
-        switch (enemy.dir) {
-          case "up":
-            enemy.posY -= enemy.speed;
-            getPosImg(enemy.frames[enemy.loop], 4, div);
-            break;
-          case "down":
-            enemy.posY += enemy.speed;
-            getPosImg(enemy.frames[enemy.loop], 2, div);
-            break;
-          case "left":
-            enemy.posX -= enemy.speed;
-            getPosImg(enemy.frames[enemy.loop], 1, div);
-            break;
-          case "right":
-            enemy.posX += enemy.speed;
-            getPosImg(enemy.frames[enemy.loop], 3, div);
-            break;
-        }
-        if (enemy.slow >= player.slowFrames) {
-          if (enemy.loop < player.frames.length - 1) {
-            enemy.loop++;
-          } else {
-            enemy.loop = 0;
+        if (div) {
+          switch (enemy.dir) {
+            case "up":
+              enemy.posY -= enemy.speed;
+              getPosImg(enemy.frames[enemy.loop], 4, div);
+              break;
+            case "down":
+              enemy.posY += enemy.speed;
+              getPosImg(enemy.frames[enemy.loop], 2, div);
+              break;
+            case "left":
+              enemy.posX -= enemy.speed;
+              getPosImg(enemy.frames[enemy.loop], 1, div);
+              break;
+            case "right":
+              enemy.posX += enemy.speed;
+              getPosImg(enemy.frames[enemy.loop], 3, div);
+              break;
           }
-          enemy.slow = 0;
-        } else {
-          enemy.slow++;
-        }
-        div.style.transform = `translate(${enemy.posX}px, ${enemy.posY}px)`;
-        if (
-          enemy.posX + 15 >= player.x &&
-          enemy.posX <= player.x + 15 &&
-          enemy.posY + 15 >= player.y &&
-          enemy.posY <= player.y + 15
-        ) {
-          death(player,monsters, currentLifes)
-          currentLifes--;
-          lifes.innerHTML = currentLifes
+          if (enemy.slow >= player.slowFrames) {
+            if (enemy.loop < player.frames.length - 1) {
+              enemy.loop++;
+            } else {
+              enemy.loop = 0;
+            }
+            enemy.slow = 0;
+          } else {
+            enemy.slow++;
+          }
+          div.style.transform = `translate(${enemy.posX}px, ${enemy.posY}px)`;
+          if (
+            enemy.posX + 15 >= player.x &&
+            enemy.posX <= player.x + 15 &&
+            enemy.posY + 15 >= player.y &&
+            enemy.posY <= player.y + 15
+          ) {
+            death(player, monsters, currentLifes);
+            currentLifes--;
+            lifes.innerHTML = currentLifes;
+          }
         }
       } else {
         enemy.dir = randomMonsterDir();
       }
     });
   }
-  if (checkIfBombed(grids,player.x, player.y)) {
-    death(player,monsters, currentLifes)
+  if (checkIfBombed(grids, player.x, player.y)) {
+    death(player, monsters, currentLifes);
     currentLifes--;
-    lifes.innerHTML = currentLifes
+    lifes.innerHTML = currentLifes;
   }
-    if (currentLifes === 0) {
-      alert('You lose!')
-      location.reload();
-    }
+  if (currentLifes === 0) {
+    alert("You lose!");
+    location.reload();
+  }
   requestAnimationFrame(animateMovement);
 };
-
 
 requestAnimationFrame(animateMovement);
 
