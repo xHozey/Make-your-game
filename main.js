@@ -3,19 +3,15 @@ import { Player, Bomb } from "./Objects.js";
 import {randomMonsterDir, getPosImg} from './helpers.js'
 let pause = false;
 const lifes = document.querySelector("#lifes-id");
-let currentLifes = Number(lifes.innerHTML);
-
-
-
 const map = document.querySelector(".map");
+let currentLifes = Number(lifes.innerHTML);
 const boardMap = new Board(map, level_1)
 const grids = boardMap.initLevel()
-const monsters = boardMap.initMonsters()
-
-const player = new Player(60,60, 1)
+const player = new Player(60,60, 1, map)
 const bomberman = player.initBomberMan()
-map.append(bomberman);
+const monsters = boardMap.initMonsters()
 const bomb = new Bomb(grids)
+
 
 const checkUpperMove = (rowBot, colBot, colTop) => {
   return (
@@ -135,7 +131,7 @@ const checkMonsterMove = (enemy) => {
       colTop = Math.ceil((enemy.posX - enemy.speed) / 30);
       return checkLeftMove(rowBot, rowTop, colBot, colTop);
   }
-};
+}
 
 const animateMovement = () => {
   let rowBot;

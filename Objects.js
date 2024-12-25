@@ -1,5 +1,5 @@
 export class Player {
-  constructor(posX, posY, speed) {
+  constructor(posX, posY, speed, map) {
     this.x = posX;
     this.y = posY;
     this.speed = speed;
@@ -11,6 +11,7 @@ export class Player {
     this.moveDown = false;
     this.moveUp = false;
     this.moveRight = false;
+    this.map = map
   }
   initBomberMan() {
     let div = document.createElement("div");
@@ -19,7 +20,8 @@ export class Player {
     img.src = "assets/hitler.png";
     div.style.backgroundImage = `url(${img.src})`;
     div.style.backgroundSize = "120px 240px";
-    return div;
+    this.map.append(div);
+    return div
   }
 }
 
