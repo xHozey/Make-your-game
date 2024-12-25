@@ -9,3 +9,11 @@ export const randomMonsterDir = () => {
     div.style.backgroundPosition = `${x}px ${y}px`;
   };
   
+  export const death = (player, monsters) => {
+    player.x = 60;
+    player.y = 60;
+    monsters.forEach(mn => {
+      mn.posX = mn.startX
+      mn.posY = mn.startY
+    })
+  }

@@ -85,7 +85,7 @@ export class Board {
           row * 30,
           i,
           randomMonsterDir(),
-          2
+          0.5
         );
         monsters.push(currentMonster);
         let div = document.createElement("div");

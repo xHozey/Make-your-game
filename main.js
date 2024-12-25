@@ -1,6 +1,6 @@
 import { level_1, Board } from "./levels.js";
 import { Player, Bomb } from "./Objects.js";
-import { randomMonsterDir, getPosImg } from "./helpers.js";
+import { randomMonsterDir, getPosImg, death } from "./helpers.js";
 import {
   checkDownMove,
   checkRightMove,
@@ -9,9 +9,9 @@ import {
   checkMonsterMove,
   checkIfBombed,
 } from "./checkers.js";
+const lifes = document.querySelector("#lifes-id");
 const size = 30;
 let pause = false;
-const lifes = document.querySelector("#lifes-id");
 const map = document.querySelector(".map");
 let currentLifes = Number(lifes.innerHTML);
 const boardMap = new Board(map, level_1);
@@ -127,6 +127,10 @@ const animateMovement = () => {
     monsters.forEach((enemy) => {
       if (!checkMonsterMove(enemy, grids)) {
         let div = document.querySelector(`.monster-${enemy.id}`);
+        if (checkIfBombed(grids,enemy.posX,enemy.posY)) {
+          map.removeChild(div);
+          monsters.pop(enemy)
+        }
         switch (enemy.dir) {
           case "up":
             enemy.posY -= enemy.speed;
@@ -162,12 +166,7 @@ const animateMovement = () => {
           enemy.posY + 15 >= player.y &&
           enemy.posY <= player.y + 15
         ) {
-          player.x = 60;
-          player.y = 60;
-          monsters.forEach(mn => {
-            mn.posX = mn.startX
-            mn.posY = mn.startY
-          })
+          death(player,monsters, currentLifes)
           currentLifes--;
           lifes.innerHTML = currentLifes
         }
@@ -177,6 +176,7 @@ const animateMovement = () => {
     });
   }
   if (checkIfBombed(grids,player.x, player.y)) {
+    death(player,monsters, currentLifes)
     currentLifes--;
     lifes.innerHTML = currentLifes
   }
@@ -186,6 +186,7 @@ const animateMovement = () => {
     }
   requestAnimationFrame(animateMovement);
 };
+
 
 requestAnimationFrame(animateMovement);
 
