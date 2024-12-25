@@ -1,110 +1,18 @@
-import { level_1 } from "./levels.js";
-import {
-  bomberman,
-  getPosImg,
-} from "./bomber.js";
-const lifes = document.querySelector('#lifes-id')
-let currentLifes = Number(lifes.innerHTML)
+import { level_1, Board } from "./levels.js";
+import { Player, Bomb } from "./Objects.js";
+import {randomMonsterDir, getPosImg} from './helpers.js'
+const size = 30
+let pause = false;
+const lifes = document.querySelector("#lifes-id");
 const map = document.querySelector(".map");
-const grids = [];
+let currentLifes = Number(lifes.innerHTML);
+const boardMap = new Board(map, level_1)
+const grids = boardMap.initLevel()
+const player = new Player(60,60, 1, map)
+const bomberman = player.initBomberMan()
+const monsters = boardMap.initMonsters()
+const bomb = new Bomb(grids)
 
-for (let i = 0; i < level_1.length; i++) {
-  grids[i] = [];
-  for (let j = 0; j < level_1[i].length; j++) {
-    const div = document.createElement("div");
-    grids[i].push(div);
-    map.appendChild(div);
-    if (level_1[i][j] == 0 || level_1[i][j] == "x") {
-      div.classList.add("empty");
-      continue;
-    }
-    if (level_1[i][j] == 1) {
-      div.classList.add("wall");
-      continue;
-    }
-    if (level_1[i][j] == 2) {
-      div.classList.add("soft-wall");
-      continue;
-    }
-    if (level_1[i][j] == 3) {
-      div.classList.add("soft-wall", "portal");
-      continue;
-    }
-  }
-}
-
-let pause = false
-
-const win = () => {
-  //player position in the portal and all enemies are dead
-};
-
-
-const playerPos = { x: 60, y: 60 };
-let currentLoop = 0;
-const playerFrame = [1,2,3,4]
-const monsterFrame = [1,2,3]
-let slowedBy = 0;
-let slowFrameRate = 5;
-map.append(bomberman);
-
-let boombpos = { x: 0, y: 0 };
-let dropedtheboomb = false;
-const putTheBomb = () => {
-  if (dropedtheboomb) return;
-  dropedtheboomb = true;
-  boombpos = { x: playerPos.x, y: playerPos.y };
-  grids[Math.round(boombpos.y / 30)][Math.round(boombpos.x / 30)].classList.add(
-    "bomb"
-  );
-
-  setTimeout(() => {
-    grids[Math.round(boombpos.y / 30)][
-      Math.round(boombpos.x / 30)
-    ].classList.remove("bomb");
-    grids[Math.round(boombpos.y / 30)][
-      Math.round(boombpos.x / 30) + 1
-    ].classList.remove("soft-wall");
-    grids[Math.round(boombpos.y / 30)][
-      Math.round(boombpos.x / 30) + 1
-    ].classList.contains("wall")
-      ? null
-      : grids[Math.round(boombpos.y / 30)][
-          Math.round(boombpos.x / 30) + 1
-        ].classList.add("empty");
-    grids[Math.round(boombpos.y / 30)][
-      Math.round(boombpos.x / 30) - 1
-    ].classList.remove("soft-wall");
-    grids[Math.round(boombpos.y / 30)][
-      Math.round(boombpos.x / 30) - 1
-    ].classList.contains("wall")
-      ? null
-      : grids[Math.round(boombpos.y / 30)][
-          Math.round(boombpos.x / 30) - 1
-        ].classList.add("empty");
-    grids[Math.round(boombpos.y / 30) + 1][
-      Math.round(boombpos.x / 30)
-    ].classList.remove("soft-wall");
-    grids[Math.round(boombpos.y / 30) + 1][
-      Math.round(boombpos.x / 30)
-    ].classList.contains("wall")
-      ? null
-      : grids[Math.round(boombpos.y / 30) + 1][
-          Math.round(boombpos.x / 30)
-        ].classList.add("empty");
-    grids[Math.round(boombpos.y / 30) - 1][
-      Math.round(boombpos.x / 30)
-    ].classList.remove("soft-wall");
-    grids[Math.round(boombpos.y / 30) - 1][
-      Math.round(boombpos.x / 30)
-    ].classList.contains("wall")
-      ? null
-      : grids[Math.round(boombpos.y / 30) - 1][
-          Math.round(boombpos.x / 30)
-        ].classList.add("empty");
-    dropedtheboomb = false;
-  }, 2000);
-};
 
 const checkUpperMove = (rowBot, colBot, colTop) => {
   return (
@@ -150,11 +58,6 @@ const checkRightMove = (rowBot, rowTop, colBot, colTop) => {
   );
 };
 
-let moveLeft = false;
-let moveDown = false;
-let moveUp = false;
-let moveRight = false;
-const playerSpeed = 1;
 
 const movePlayer = (e) => {
   let key = e.key.toLowerCase();
@@ -164,15 +67,15 @@ const movePlayer = (e) => {
 =======
 >>>>>>> origin/saliheddine
   switch (key) {
-    case 'p':
-      if (!pause) pause = true
-      else pause = false
-      break
+    case "p":
+      if (!pause) pause = true;
+      else pause = false;
+      break;
     case "x":
-      putTheBomb();
+      bomb.putTheBomb(player.x,player.y, size)
       break;
     case "arrowup":
-      moveUp = true;
+      player.moveUp = true;
       break;
     case "arrowdown":
 <<<<<<< HEAD
@@ -189,29 +92,14 @@ const movePlayer = (e) => {
       playerPos.y += playerSpeed;
       getPosImg(downMove[currentLoop], 8);
 =======
-      moveDown = true;
+      player.moveDown = true;
 >>>>>>> origin/saliheddine
       break;
     case "arrowleft":
-      moveLeft = true;
+      player.moveLeft = true;
       break;
     case "arrowright":
-<<<<<<< HEAD
-      if (
-        (grids[Math.floor(playerPos.y / 31)+1][
-          Math.floor(playerPos.x / 31) + 1
-        ].classList.contains("wall") ||
-          grids[Math.floor(playerPos.y / 31)+1][
-            Math.floor(playerPos.x / 31) + 1
-          ].classList.contains("soft-wall")) 
-        // playerPos.x % 30 == 0
-      )
-        return;
-      playerPos.x += playerSpeed;
-      getPosImg(rightMove[currentLoop], 6);
-=======
       moveRight = true;
->>>>>>> origin/saliheddine
       break;
   }
 };
@@ -220,56 +108,19 @@ const stopPlayer = (e) => {
   let key = e.key.toLowerCase();
   switch (key) {
     case "arrowup":
-      moveUp = false;
+      player.moveUp = false;
       break;
     case "arrowdown":
-      moveDown = false;
+      player.moveDown = false;
       break;
     case "arrowleft":
-      moveLeft = false;
+      player.moveLeft = false;
       break;
     case "arrowright":
-      moveRight = false;
+      player.moveRight = false;
       break;
   }
 };
-
-const randomMonsterDir = () => {
-  const directions = ["left", "up", "down", "right"];
-  return directions[Math.floor(directions.length * Math.random())];
-};
-class monster {
-  constructor(x, y, id, dir) {
-    this.posX = x;
-    this.posY = y;
-    this.id = id;
-    this.dir = dir;
-    this.loop = 0
-    this.slow = 0
-  }
-}
-const monsters = [];
-for (let i = 0; i < 5; i++) {
-  const row = Math.floor(Math.random() * level_1.length);
-  const col = Math.floor(Math.random() * level_1[0].length);
-
-  if (level_1[row][col] === 0) {
-    let currentMonster = new monster(col * 30, row * 30, i, randomMonsterDir());
-    monsters.push(currentMonster);
-    let div = document.createElement("div");
-    div.classList.add(`monster`);
-    div.classList.add(`monster-${i}`);
-    div.style.position = `absolute`;
-    div.style.backgroundImage = `url(assets/skull.png)`;
-    div.style.backgroundSize = "90px 120px";
-    map.appendChild(div);
-    div.style.transform = `translate(${currentMonster.posX}px, ${currentMonster.posY}px)`;
-  } else {
-    i--;
-  }
-}
-
-const monsterSpeed = 1;
 
 const checkMonsterMove = (enemy) => {
   let rowBot;
@@ -278,140 +129,138 @@ const checkMonsterMove = (enemy) => {
   let colTop;
   switch (enemy.dir) {
     case "up":
-      rowBot = Math.floor((enemy.posY - monsterSpeed) / 30);
-      colBot = Math.floor(enemy.posX / 30);
-      colTop = Math.ceil(enemy.posX / 30);
+      rowBot = Math.floor((enemy.posY - enemy.speed) / size);
+      colBot = Math.floor(enemy.posX / size);
+      colTop = Math.ceil(enemy.posX / size);
       return checkUpperMove(rowBot, colBot, colTop);
     case "down":
-      rowBot = Math.floor((enemy.posY + monsterSpeed) / 30);
-      rowTop = Math.ceil((enemy.posY + monsterSpeed) / 30);
-      colBot = Math.floor(enemy.posX / 30);
-      colTop = Math.ceil(enemy.posX / 30);
+      rowBot = Math.floor((enemy.posY + enemy.speed) / size);
+      rowTop = Math.ceil((enemy.posY + enemy.speed) / size);
+      colBot = Math.floor(enemy.posX / size);
+      colTop = Math.ceil(enemy.posX / size);
       return checkDownMove(rowTop, colBot, colTop);
     case "right":
-      rowBot = Math.floor(enemy.posY / 30);
-      rowTop = Math.ceil(enemy.posY / 30);
-      colBot = Math.floor((enemy.posX + monsterSpeed) / 30);
-      colTop = Math.ceil((enemy.posX + monsterSpeed) / 30);
+      rowBot = Math.floor(enemy.posY / size);
+      rowTop = Math.ceil(enemy.posY / size);
+      colBot = Math.floor((enemy.posX + enemy.speed) / size);
+      colTop = Math.ceil((enemy.posX + enemy.speed) / size);
       return checkRightMove(rowBot, rowTop, colBot, colTop);
     case "left":
-      rowBot = Math.floor(enemy.posY / 30);
-      rowTop = Math.ceil(enemy.posY / 30);
-      colBot = Math.floor((enemy.posX - monsterSpeed) / 30);
-      colTop = Math.ceil((enemy.posX - monsterSpeed) / 30);
+      rowBot = Math.floor(enemy.posY / size);
+      rowTop = Math.ceil(enemy.posY / size);
+      colBot = Math.floor((enemy.posX - enemy.speed) / size);
+      colTop = Math.ceil((enemy.posX - enemy.speed) / size);
       return checkLeftMove(rowBot, rowTop, colBot, colTop);
   }
-};
-
+}
 
 const animateMovement = () => {
-
   let rowBot;
   let rowTop;
   let colTop;
   let colBot;
   if (!pause) {
-
-  switch (true) {
-    case moveDown:
-      rowBot = Math.floor((playerPos.y + playerSpeed) / 30);
-      rowTop = Math.ceil((playerPos.y + playerSpeed) / 30);
-      colBot = Math.floor(playerPos.x / 30);
-      colTop = Math.ceil(playerPos.x / 30);
-      if (!checkDownMove(rowTop, colBot, colTop)) {
-        getPosImg(playerFrame[currentLoop], 8, bomberman);
-        playerPos.y += playerSpeed;
-      }
-      break;
-    case moveLeft:
-      rowBot = Math.floor(playerPos.y / 30);
-      rowTop = Math.ceil(playerPos.y / 30);
-      colBot = Math.floor((playerPos.x - playerSpeed) / 30);
-      colTop = Math.ceil((playerPos.x - playerSpeed) / 30);
-      if (!checkLeftMove(rowBot, rowTop, colBot, colTop)) {
-        getPosImg(playerFrame[currentLoop], 7, bomberman);
-        playerPos.x -= playerSpeed;
-      }
-      break;
-    case moveUp:
-      rowBot = Math.floor((playerPos.y - playerSpeed) / 30);
-      colBot = Math.floor(playerPos.x / 30);
-      colTop = Math.ceil(playerPos.x / 30);
-      if (!checkUpperMove(rowBot, colBot, colTop)) {
-        getPosImg(playerFrame[currentLoop], 5, bomberman);
-        playerPos.y -= playerSpeed;
-      }
-      break;
-    case moveRight:
-      rowBot = Math.floor(playerPos.y / 30);
-      rowTop = Math.ceil(playerPos.y / 30);
-      colBot = Math.floor((playerPos.x + playerSpeed) / 30);
-      colTop = Math.ceil((playerPos.x + playerSpeed) / 30);
-      if (!checkRightMove(rowBot, rowTop, colBot, colTop)) {
-        getPosImg(playerFrame[currentLoop], 6, bomberman);
-        playerPos.x += playerSpeed;
-      }
-      break;
-  }
-
-  bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
-  if (slowedBy >= slowFrameRate) {
-    if (currentLoop < playerFrame.length - 1) {
-      currentLoop++;
-    } else {
-      currentLoop = 0;
-    }
-    slowedBy = 0;
-  } else {
-    slowedBy++;
-  }
-
-  monsters.forEach((enemy) => {
-
-    if (!checkMonsterMove(enemy)) {
-      let div = document.querySelector(`.monster-${enemy.id}`);
-      switch (enemy.dir) {
-        case "up":
-          enemy.posY -= monsterSpeed
-          getPosImg(monsterFrame[enemy.loop],4,div)
-          break;
-        case "down":
-          enemy.posY += monsterSpeed
-          getPosImg(monsterFrame[enemy.loop],2,div)
-          break;
-        case "left":
-          enemy.posX -= monsterSpeed
-          getPosImg(monsterFrame[enemy.loop],1,div)
-          break;
-        case "right":
-          enemy.posX += monsterSpeed
-          getPosImg(monsterFrame[enemy.loop],3,div)
-          break;
-      }
-      if (enemy.slow >= slowFrameRate) {
-        if (enemy.loop < playerFrame.length - 1) {
-          enemy.loop++;
-        } else {
-          enemy.loop = 0;
+    switch (true) {
+      case player.moveDown:
+        rowBot = Math.floor((player.y + player.speed) / size);
+        rowTop = Math.ceil((player.y + player.speed) / size);
+        colBot = Math.floor(player.x / size);
+        colTop = Math.ceil(player.x / size);
+        if (!checkDownMove(rowTop, colBot, colTop)) {
+          getPosImg(player.frames[player.loop], 8, bomberman);
+          player.y += player.speed;
         }
-        enemy.slow = 0;
-      } else {
-        enemy.slow++;
-      } 
-      div.style.transform = `translate(${enemy.posX}px, ${enemy.posY}px)`;
-      if (enemy.posX+15  >= playerPos.x && enemy.posX <= playerPos.x+15  && enemy.posY+15  >= playerPos.y && enemy.posY <= playerPos.y+15   ) {
-        lifes.innerHTML = currentLifes - 1
-        currentLifes--
-      }
-    } else {
-      enemy.dir = randomMonsterDir()
+        break;
+      case player.moveLeft:
+        rowBot = Math.floor(player.y / size);
+        rowTop = Math.ceil(player.y / size);
+        colBot = Math.floor((player.x - player.speed) / size);
+        colTop = Math.ceil((player.x - player.speed) / size);
+        if (!checkLeftMove(rowBot, rowTop, colBot, colTop)) {
+          getPosImg(player.frames[player.loop], 7, bomberman);
+          player.x -= player.speed;
+        }
+        break;
+      case player.moveUp:
+        rowBot = Math.floor((player.y - player.speed) / size);
+        colBot = Math.floor(player.x / size);
+        colTop = Math.ceil(player.x / size);
+        if (!checkUpperMove(rowBot, colBot, colTop)) {
+          getPosImg(player.frames[player.loop], 5, bomberman);
+          player.y -= player.speed;
+        }
+        break;
+      case player.moveRight:
+        rowBot = Math.floor(player.y / size);
+        rowTop = Math.ceil(player.y / size);
+        colBot = Math.floor((player.x + player.speed) / size);
+        colTop = Math.ceil((player.x + player.speed) / size);
+        if (!checkRightMove(rowBot, rowTop, colBot, colTop)) {
+          getPosImg(player.frames[player.loop], 6, bomberman);
+          player.x += player.speed;
+        }
+        break;
     }
 
-  });
+    bomberman.style.transform = `translate(${player.x}px, ${player.y}px)`;
+    if (player.slow >= player.slowFrames) {
+      if (player.loop < player.frames.length - 1) {
+        player.loop++;
+      } else {
+        player.loop = 0;
+      }
+      player.slow = 0;
+    } else {
+      player.slow++;
+    }
 
-}
+    monsters.forEach((enemy) => {
+      if (!checkMonsterMove(enemy)) {
+        let div = document.querySelector(`.monster-${enemy.id}`);
+        switch (enemy.dir) {
+          case "up":
+            enemy.posY -= enemy.speed;
+            getPosImg(enemy.frames[enemy.loop], 4, div);
+            break;
+          case "down":
+            enemy.posY += enemy.speed;
+            getPosImg(enemy.frames[enemy.loop], 2, div);
+            break;
+          case "left":
+            enemy.posX -= enemy.speed;
+            getPosImg(enemy.frames[enemy.loop], 1, div);
+            break;
+          case "right":
+            enemy.posX += enemy.speed;
+            getPosImg(enemy.frames[enemy.loop], 3, div);
+            break;
+        }
+        if (enemy.slow >= player.slowFrames) {
+          if (enemy.loop < player.frames.length - 1) {
+            enemy.loop++;
+          } else {
+            enemy.loop = 0;
+          }
+          enemy.slow = 0;
+        } else {
+          enemy.slow++;
+        }
+        div.style.transform = `translate(${enemy.posX}px, ${enemy.posY}px)`;
+        if (
+          enemy.posX + 15 >= player.x &&
+          enemy.posX <= player.x + 15 &&
+          enemy.posY + 15 >= player.y &&
+          enemy.posY <= player.y + 15
+        ) {
+          lifes.innerHTML = currentLifes - 1;
+          currentLifes--;
+        }
+      } else {
+        enemy.dir = randomMonsterDir();
+      }
+    });
+  }
   requestAnimationFrame(animateMovement);
-
 };
 
 requestAnimationFrame(animateMovement);
