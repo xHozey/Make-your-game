@@ -75,3 +75,7 @@ export const checkUpperMove = (grids,rowBot, colBot, colTop) => {
         return checkLeftMove(grids,rowBot, rowTop, colBot, colTop);
     }
   }
+
+  export const checkIfBombed = (grids,x,y) => {
+    return grids[Math.round(y/30)][Math.round(x/30)].classList.contains('explotion')
+  }

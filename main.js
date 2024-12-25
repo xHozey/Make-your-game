@@ -7,6 +7,7 @@ import {
   checkLeftMove,
   checkUpperMove,
   checkMonsterMove,
+  checkIfBombed,
 } from "./checkers.js";
 const size = 30;
 let pause = false;
@@ -168,18 +169,21 @@ const animateMovement = () => {
             mn.posY = mn.startY
           })
           currentLifes--;
-          if (currentLifes === 0) {
-            alert('You lose!')
-            location.reload();
-          }
           lifes.innerHTML = currentLifes
         }
-
       } else {
         enemy.dir = randomMonsterDir();
       }
     });
   }
+  if (checkIfBombed(grids,player.x, player.y)) {
+    currentLifes--;
+    lifes.innerHTML = currentLifes
+  }
+    if (currentLifes === 0) {
+      alert('You lose!')
+      location.reload();
+    }
   requestAnimationFrame(animateMovement);
 };
 

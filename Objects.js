@@ -49,8 +49,8 @@ export class Bomb {
     if (this.droped) return;
     this.droped = true;
     this.grids[Math.round(y / size)][Math.round(x / size)].classList.add("bomb");
-
-    setTimeout(() => {
+    let timer
+    timer = setTimeout(() => {
       this.grids[Math.round(y / size)][Math.round(x / size)].classList.remove(
         "bomb"
       );
@@ -95,6 +95,39 @@ export class Bomb {
             "empty"
           );
       this.droped = false;
+      timer = null
     }, 2000);
+    setTimeout(() => {
+      this.grids[Math.round(y / size)][Math.round(x / size) + 1].classList.add(
+        "explotion"
+      );
+  
+      this.grids[Math.round(y / size)][Math.round(x / size) - 1].classList.add(
+        "explotion"
+      );
+  
+      this.grids[Math.round(y / size) + 1][Math.round(x / size)].classList.add(
+        "explotion"
+      );
+  
+      this.grids[Math.round(y / size) - 1][Math.round(x / size)].classList.add(
+        "explotion"
+      );
+    }, 2000)
+
+    setTimeout(() => {
+      this.grids[Math.round(y / size) - 1][Math.round(x / size)].classList.remove(
+        "explotion"
+      );
+      this.grids[Math.round(y / size)][Math.round(x / size) + 1].classList.remove(
+        "explotion"
+      );
+      this.grids[Math.round(y / size) + 1][Math.round(x / size)].classList.remove(
+        "explotion"
+      );
+      this.grids[Math.round(y / size)][Math.round(x / size) - 1].classList.remove(
+        "explotion"
+      );
+    }, 3000);
   }
-}
+  }
