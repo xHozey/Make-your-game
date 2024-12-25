@@ -66,8 +66,6 @@ body {
   background-color: black;
   position: absolute;
   image-rendering: pixelated;
-  justify-content: center;
-  align-items: center;
   /* background-color: black; */
 }
 
@@ -75,4 +73,8 @@ body {
   background-image: url('assets/bomb.png');
   background-size: 30px 30px;
   background-color: black;
+}
+
+.monster {
+  image-rendering: pixelated;
 }
