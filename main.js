@@ -1,79 +1,21 @@
 import { level_1, Board } from "./levels.js";
-import { Player } from "./charcaters.js";
+import { Player, Bomb } from "./Objects.js";
 import {randomMonsterDir, getPosImg} from './helpers.js'
-
+let pause = false;
 const lifes = document.querySelector("#lifes-id");
 let currentLifes = Number(lifes.innerHTML);
+
 
 
 const map = document.querySelector(".map");
 const boardMap = new Board(map, level_1)
 const grids = boardMap.initLevel()
 const monsters = boardMap.initMonsters()
-let pause = false;
 
 const player = new Player(60,60, 1)
 const bomberman = player.initBomberMan()
-const monsterFrame = [1, 2, 3];
 map.append(bomberman);
-
-let boombpos = { x: 0, y: 0 };
-let dropedtheboomb = false;
-const putTheBomb = () => {
-  if (dropedtheboomb) return;
-  dropedtheboomb = true;
-  boombpos = { x: player.x, y: player.y };
-  grids[Math.round(boombpos.y / 30)][Math.round(boombpos.x / 30)].classList.add(
-    "bomb"
-  );
-
-  setTimeout(() => {
-    grids[Math.round(boombpos.y / 30)][
-      Math.round(boombpos.x / 30)
-    ].classList.remove("bomb");
-    grids[Math.round(boombpos.y / 30)][
-      Math.round(boombpos.x / 30) + 1
-    ].classList.remove("soft-wall");
-    grids[Math.round(boombpos.y / 30)][
-      Math.round(boombpos.x / 30) + 1
-    ].classList.contains("wall")
-      ? null
-      : grids[Math.round(boombpos.y / 30)][
-          Math.round(boombpos.x / 30) + 1
-        ].classList.add("empty");
-    grids[Math.round(boombpos.y / 30)][
-      Math.round(boombpos.x / 30) - 1
-    ].classList.remove("soft-wall");
-    grids[Math.round(boombpos.y / 30)][
-      Math.round(boombpos.x / 30) - 1
-    ].classList.contains("wall")
-      ? null
-      : grids[Math.round(boombpos.y / 30)][
-          Math.round(boombpos.x / 30) - 1
-        ].classList.add("empty");
-    grids[Math.round(boombpos.y / 30) + 1][
-      Math.round(boombpos.x / 30)
-    ].classList.remove("soft-wall");
-    grids[Math.round(boombpos.y / 30) + 1][
-      Math.round(boombpos.x / 30)
-    ].classList.contains("wall")
-      ? null
-      : grids[Math.round(boombpos.y / 30) + 1][
-          Math.round(boombpos.x / 30)
-        ].classList.add("empty");
-    grids[Math.round(boombpos.y / 30) - 1][
-      Math.round(boombpos.x / 30)
-    ].classList.remove("soft-wall");
-    grids[Math.round(boombpos.y / 30) - 1][
-      Math.round(boombpos.x / 30)
-    ].classList.contains("wall")
-      ? null
-      : grids[Math.round(boombpos.y / 30) - 1][
-          Math.round(boombpos.x / 30)
-        ].classList.add("empty");
-    dropedtheboomb = false;
-  }, 2000);
-};
+const bomb = new Bomb(grids)
 
 const checkUpperMove = (rowBot, colBot, colTop) => {
   return (
@@ -119,10 +61,6 @@ const checkRightMove = (rowBot, rowTop, colBot, colTop) => {
   );
 };
 
-let moveLeft = false;
-let moveDown = false;
-let moveUp = false;
-let moveRight = false;
 
 const movePlayer = (e) => {
   let key = e.key.toLowerCase();
@@ -132,19 +70,19 @@ const movePlayer = (e) => {
       else pause = false;
       break;
     case "x":
-      putTheBomb();
+      bomb.putTheBomb(player.x,player.y)
       break;
     case "arrowup":
-      moveUp = true;
+      player.moveUp = true;
       break;
     case "arrowdown":
-      moveDown = true;
+      player.moveDown = true;
       break;
     case "arrowleft":
-      moveLeft = true;
+      player.moveLeft = true;
       break;
     case "arrowright":
-      moveRight = true;
+      player.moveRight = true;
       break;
   }
 };
@@ -153,16 +91,16 @@ const stopPlayer = (e) => {
   let key = e.key.toLowerCase();
   switch (key) {
     case "arrowup":
-      moveUp = false;
+      player.moveUp = false;
       break;
     case "arrowdown":
-      moveDown = false;
+      player.moveDown = false;
       break;
     case "arrowleft":
-      moveLeft = false;
+      player.moveLeft = false;
       break;
     case "arrowright":
-      moveRight = false;
+      player.moveRight = false;
       break;
   }
 };
@@ -206,7 +144,7 @@ const animateMovement = () => {
   let colBot;
   if (!pause) {
     switch (true) {
-      case moveDown:
+      case player.moveDown:
         rowBot = Math.floor((player.y + player.speed) / 30);
         rowTop = Math.ceil((player.y + player.speed) / 30);
         colBot = Math.floor(player.x / 30);
@@ -216,7 +154,7 @@ const animateMovement = () => {
           player.y += player.speed;
         }
         break;
-      case moveLeft:
+      case player.moveLeft:
         rowBot = Math.floor(player.y / 30);
         rowTop = Math.ceil(player.y / 30);
         colBot = Math.floor((player.x - player.speed) / 30);
@@ -226,7 +164,7 @@ const animateMovement = () => {
           player.x -= player.speed;
         }
         break;
-      case moveUp:
+      case player.moveUp:
         rowBot = Math.floor((player.y - player.speed) / 30);
         colBot = Math.floor(player.x / 30);
         colTop = Math.ceil(player.x / 30);
@@ -235,7 +173,7 @@ const animateMovement = () => {
           player.y -= player.speed;
         }
         break;
-      case moveRight:
+      case player.moveRight:
         rowBot = Math.floor(player.y / 30);
         rowTop = Math.ceil(player.y / 30);
         colBot = Math.floor((player.x + player.speed) / 30);
@@ -265,19 +203,19 @@ const animateMovement = () => {
         switch (enemy.dir) {
           case "up":
             enemy.posY -= enemy.speed;
-            getPosImg(monsterFrame[enemy.loop], 4, div);
+            getPosImg(enemy.frames[enemy.loop], 4, div);
             break;
           case "down":
             enemy.posY += enemy.speed;
-            getPosImg(monsterFrame[enemy.loop], 2, div);
+            getPosImg(enemy.frames[enemy.loop], 2, div);
             break;
           case "left":
             enemy.posX -= enemy.speed;
-            getPosImg(monsterFrame[enemy.loop], 1, div);
+            getPosImg(enemy.frames[enemy.loop], 1, div);
             break;
           case "right":
             enemy.posX += enemy.speed;
-            getPosImg(monsterFrame[enemy.loop], 3, div);
+            getPosImg(enemy.frames[enemy.loop], 3, div);
             break;
         }
         if (enemy.slow >= player.slowFrames) {

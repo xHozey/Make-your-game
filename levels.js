@@ -1,5 +1,5 @@
 export let level_1;
-import { Monster } from "./charcaters.js";
+import { Monster } from "./Objects.js";
 import {randomMonsterDir} from './helpers.js'
 
 level_1 = [
