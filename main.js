@@ -1,6 +1,7 @@
 import { level_1, Board } from "./levels.js";
 import { Player, Bomb } from "./Objects.js";
 import {randomMonsterDir, getPosImg} from './helpers.js'
+const size = 30
 let pause = false;
 const lifes = document.querySelector("#lifes-id");
 const map = document.querySelector(".map");
@@ -66,7 +67,7 @@ const movePlayer = (e) => {
       else pause = false;
       break;
     case "x":
-      bomb.putTheBomb(player.x,player.y)
+      bomb.putTheBomb(player.x,player.y, size)
       break;
     case "arrowup":
       player.moveUp = true;
@@ -108,27 +109,27 @@ const checkMonsterMove = (enemy) => {
   let colTop;
   switch (enemy.dir) {
     case "up":
-      rowBot = Math.floor((enemy.posY - enemy.speed) / 30);
-      colBot = Math.floor(enemy.posX / 30);
-      colTop = Math.ceil(enemy.posX / 30);
+      rowBot = Math.floor((enemy.posY - enemy.speed) / size);
+      colBot = Math.floor(enemy.posX / size);
+      colTop = Math.ceil(enemy.posX / size);
       return checkUpperMove(rowBot, colBot, colTop);
     case "down":
-      rowBot = Math.floor((enemy.posY + enemy.speed) / 30);
-      rowTop = Math.ceil((enemy.posY + enemy.speed) / 30);
-      colBot = Math.floor(enemy.posX / 30);
-      colTop = Math.ceil(enemy.posX / 30);
+      rowBot = Math.floor((enemy.posY + enemy.speed) / size);
+      rowTop = Math.ceil((enemy.posY + enemy.speed) / size);
+      colBot = Math.floor(enemy.posX / size);
+      colTop = Math.ceil(enemy.posX / size);
       return checkDownMove(rowTop, colBot, colTop);
     case "right":
-      rowBot = Math.floor(enemy.posY / 30);
-      rowTop = Math.ceil(enemy.posY / 30);
-      colBot = Math.floor((enemy.posX + enemy.speed) / 30);
-      colTop = Math.ceil((enemy.posX + enemy.speed) / 30);
+      rowBot = Math.floor(enemy.posY / size);
+      rowTop = Math.ceil(enemy.posY / size);
+      colBot = Math.floor((enemy.posX + enemy.speed) / size);
+      colTop = Math.ceil((enemy.posX + enemy.speed) / size);
       return checkRightMove(rowBot, rowTop, colBot, colTop);
     case "left":
-      rowBot = Math.floor(enemy.posY / 30);
-      rowTop = Math.ceil(enemy.posY / 30);
-      colBot = Math.floor((enemy.posX - enemy.speed) / 30);
-      colTop = Math.ceil((enemy.posX - enemy.speed) / 30);
+      rowBot = Math.floor(enemy.posY / size);
+      rowTop = Math.ceil(enemy.posY / size);
+      colBot = Math.floor((enemy.posX - enemy.speed) / size);
+      colTop = Math.ceil((enemy.posX - enemy.speed) / size);
       return checkLeftMove(rowBot, rowTop, colBot, colTop);
   }
 }
@@ -141,39 +142,39 @@ const animateMovement = () => {
   if (!pause) {
     switch (true) {
       case player.moveDown:
-        rowBot = Math.floor((player.y + player.speed) / 30);
-        rowTop = Math.ceil((player.y + player.speed) / 30);
-        colBot = Math.floor(player.x / 30);
-        colTop = Math.ceil(player.x / 30);
+        rowBot = Math.floor((player.y + player.speed) / size);
+        rowTop = Math.ceil((player.y + player.speed) / size);
+        colBot = Math.floor(player.x / size);
+        colTop = Math.ceil(player.x / size);
         if (!checkDownMove(rowTop, colBot, colTop)) {
           getPosImg(player.frames[player.loop], 8, bomberman);
           player.y += player.speed;
         }
         break;
       case player.moveLeft:
-        rowBot = Math.floor(player.y / 30);
-        rowTop = Math.ceil(player.y / 30);
-        colBot = Math.floor((player.x - player.speed) / 30);
-        colTop = Math.ceil((player.x - player.speed) / 30);
+        rowBot = Math.floor(player.y / size);
+        rowTop = Math.ceil(player.y / size);
+        colBot = Math.floor((player.x - player.speed) / size);
+        colTop = Math.ceil((player.x - player.speed) / size);
         if (!checkLeftMove(rowBot, rowTop, colBot, colTop)) {
           getPosImg(player.frames[player.loop], 7, bomberman);
           player.x -= player.speed;
         }
         break;
       case player.moveUp:
-        rowBot = Math.floor((player.y - player.speed) / 30);
-        colBot = Math.floor(player.x / 30);
-        colTop = Math.ceil(player.x / 30);
+        rowBot = Math.floor((player.y - player.speed) / size);
+        colBot = Math.floor(player.x / size);
+        colTop = Math.ceil(player.x / size);
         if (!checkUpperMove(rowBot, colBot, colTop)) {
           getPosImg(player.frames[player.loop], 5, bomberman);
           player.y -= player.speed;
         }
         break;
       case player.moveRight:
-        rowBot = Math.floor(player.y / 30);
-        rowTop = Math.ceil(player.y / 30);
-        colBot = Math.floor((player.x + player.speed) / 30);
-        colTop = Math.ceil((player.x + player.speed) / 30);
+        rowBot = Math.floor(player.y / size);
+        rowTop = Math.ceil(player.y / size);
+        colBot = Math.floor((player.x + player.speed) / size);
+        colTop = Math.ceil((player.x + player.speed) / size);
         if (!checkRightMove(rowBot, rowTop, colBot, colTop)) {
           getPosImg(player.frames[player.loop], 6, bomberman);
           player.x += player.speed;

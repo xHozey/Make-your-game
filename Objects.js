@@ -44,53 +44,53 @@ export class Bomb {
     this.droped = false;
   }
 
-  putTheBomb(x, y) {
+  putTheBomb(x, y, size) {
     if (this.droped) return;
     this.droped = true;
-    this.grids[Math.round(y / 30)][Math.round(x / 30)].classList.add("bomb");
+    this.grids[Math.round(y / size)][Math.round(x / size)].classList.add("bomb");
 
     setTimeout(() => {
-      this.grids[Math.round(y / 30)][Math.round(x / 30)].classList.remove(
+      this.grids[Math.round(y / size)][Math.round(x / size)].classList.remove(
         "bomb"
       );
-      this.grids[Math.round(y / 30)][Math.round(x / 30) + 1].classList.remove(
+      this.grids[Math.round(y / size)][Math.round(x / size) + 1].classList.remove(
         "soft-wall"
       );
-      this.grids[Math.round(y / 30)][Math.round(x / 30) + 1].classList.contains(
+      this.grids[Math.round(y / size)][Math.round(x / size) + 1].classList.contains(
         "wall"
       )
         ? null
-        : this.grids[Math.round(y / 30)][Math.round(x / 30) + 1].classList.add(
+        : this.grids[Math.round(y / size)][Math.round(x / size) + 1].classList.add(
             "empty"
           );
-      this.grids[Math.round(y / 30)][Math.round(x / 30) - 1].classList.remove(
+      this.grids[Math.round(y / size)][Math.round(x / size) - 1].classList.remove(
         "soft-wall"
       );
-      this.grids[Math.round(y / 30)][Math.round(x / 30) - 1].classList.contains(
+      this.grids[Math.round(y / size)][Math.round(x / size) - 1].classList.contains(
         "wall"
       )
         ? null
-        : this.grids[Math.round(y / 30)][Math.round(x / 30) - 1].classList.add(
+        : this.grids[Math.round(y / size)][Math.round(x / size) - 1].classList.add(
             "empty"
           );
-      this.grids[Math.round(y / 30) + 1][Math.round(x / 30)].classList.remove(
+      this.grids[Math.round(y / size) + 1][Math.round(x / size)].classList.remove(
         "soft-wall"
       );
-      this.grids[Math.round(y / 30) + 1][Math.round(x / 30)].classList.contains(
+      this.grids[Math.round(y / size) + 1][Math.round(x / size)].classList.contains(
         "wall"
       )
         ? null
-        : this.grids[Math.round(y / 30) + 1][Math.round(x / 30)].classList.add(
+        : this.grids[Math.round(y / size) + 1][Math.round(x / size)].classList.add(
             "empty"
           );
-      this.grids[Math.round(y / 30) - 1][Math.round(x / 30)].classList.remove(
+      this.grids[Math.round(y / size) - 1][Math.round(x / size)].classList.remove(
         "soft-wall"
       );
-      this.grids[Math.round(y / 30) - 1][Math.round(x / 30)].classList.contains(
+      this.grids[Math.round(y / size) - 1][Math.round(x / size)].classList.contains(
         "wall"
       )
         ? null
-        : this.grids[Math.round(y / 30) - 1][Math.round(x / 30)].classList.add(
+        : this.grids[Math.round(y / size) - 1][Math.round(x / size)].classList.add(
             "empty"
           );
       this.droped = false;
