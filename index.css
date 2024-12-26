@@ -62,13 +62,11 @@ body {
 }
 
 .portal {
-  background-color: yellow;
+  text-size-adjust: 50px;
 }
 
 .bomber-man {
   position: absolute;
-  image-rendering: pixelated;
-  /* background-color: black; */
 }
 
 .bomb {
@@ -80,3 +78,20 @@ body {
 .explotion {
   background-color: red;
 }
+
+#menu {
+  position: absolute;
+  justify-content: center;
+  align-content: center;
+  z-index: 80;
+}
+
+.open {
+  display: none;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+.portal-image {}

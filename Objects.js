@@ -17,6 +17,10 @@ export class Player {
     this.moveDown = false;
     this.moveUp = false;
     this.moveRight = false;
+    this.rowBot = 0
+    this.rowTop = 0
+    this.colBot = 0
+    this.colTop = 0
   }
   initBomberMan(map) {
     let div = document.createElement("div");
@@ -44,6 +48,10 @@ export class Monster {
     this.slow = 0;
     this.speed = speed;
     this.frames = [1, 2, 3];
+    this.rowBot = 0
+    this.rowTop = 0
+    this.colBot = 0
+    this.colTop = 0
   }
   initMonsters(enemiesTotal, bluePrint, map) {
     const monsters = [];

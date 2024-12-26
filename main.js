@@ -5,6 +5,7 @@ import {
   getPosImg,
   death,
   getPlayerPose,
+  Displaymenu,
 } from "./helpers.js";
 import {
   checkDownMove,
@@ -13,27 +14,30 @@ import {
   checkUpperMove,
   checkMonsterMove,
   checkIfBombed,
+  checkIfPortal,
 } from "./checkers.js";
 const lifes = document.getElementById("lifes-id");
 const score = document.getElementById("score-id");
 const enemies = document.getElementById("enemies-id");
-export const Size = 60;
+export const Size = 30;
 const usedMap = level_2;
-let initPos= getPlayerPose(usedMap);
-  
 let currentLifes = 3;
 let currentScore = 0;
-let enemiesTotal = 5;
+let enemiesTotal = 10;
 enemies.innerText = enemiesTotal;
+lifes.innerText = currentLifes;
+let initPos = getPlayerPose(usedMap);
 let pause = false;
+let stopAlert = false;
 const map = document.querySelector(".map");
 const boardMap = new Board(map, usedMap);
 boardMap.randomizeBricks();
 const grids = boardMap.initLevel();
-const player = new Player(initPos[0] * Size, initPos[1] * Size, 1, map);
+const player = new Player(initPos[0] * Size, initPos[1] * Size, 2, map);
 const bomberman = player.initBomberMan(map);
 let monsters = new Monster().initMonsters(enemiesTotal, usedMap, map);
 const bomb = new Bomb(grids);
+const portal = document.querySelector(".portal");
 
 const movePlayer = (e) => {
   let key = e.key.toLowerCase();
@@ -41,6 +45,7 @@ const movePlayer = (e) => {
     case "p":
       if (!pause) pause = true;
       else pause = false;
+      Displaymenu(map);
       break;
     case "x":
       bomb.putTheBomb(player.x, player.y, Size);
@@ -77,54 +82,79 @@ const stopPlayer = (e) => {
       break;
   }
 };
-let stopAlert = false;
 const animateMovement = () => {
-  if (enemiesTotal === 0 && !stopAlert) {
+  if (portal.classList.contains("empty")) {
+    portal.innerText = "";
+    portal.classList.remove("empty");
+    portal.style.backgroundImage = `url('assets/door.jpg')`
+    portal.style.backgroundSize = `${Size}px ${Size}px`;
+  }
+  if (
+    enemiesTotal === 0 &&
+    checkIfPortal(grids, player.x, player.y) &&
+    !stopAlert
+  ) {
     stopAlert = true;
     alert("You won!");
     location.reload();
   }
-  let rowBot;
-  let rowTop;
-  let colTop;
-  let colBot;
   if (!pause) {
     switch (true) {
       case player.moveDown:
-        rowBot = Math.floor((player.y + player.speed) / Size);
-        rowTop = Math.ceil((player.y + player.speed) / Size);
-        colBot = Math.floor(player.x / Size);
-        colTop = Math.ceil(player.x / Size);
-        if (!checkDownMove(grids, rowTop, colBot, colTop)) {
+        player.rowBot = Math.floor((player.y + player.speed) / Size);
+        player.rowTop = Math.ceil((player.y + player.speed) / Size);
+        player.colBot = Math.floor(player.x / Size);
+        player.colTop = Math.ceil(player.x / Size);
+        if (
+          !checkDownMove(grids, player.rowTop, player.colBot, player.colTop)
+        ) {
           getPosImg(player.frames[player.loop], 8, bomberman);
           player.y += player.speed;
         }
         break;
       case player.moveLeft:
-        rowBot = Math.floor(player.y / Size);
-        rowTop = Math.ceil(player.y / Size);
-        colBot = Math.floor((player.x - player.speed) / Size);
-        colTop = Math.ceil((player.x - player.speed) / Size);
-        if (!checkLeftMove(grids, rowBot, rowTop, colBot, colTop)) {
+        player.rowBot = Math.floor(player.y / Size);
+        player.rowTop = Math.ceil(player.y / Size);
+        player.colBot = Math.floor((player.x - player.speed) / Size);
+        player.colTop = Math.ceil((player.x - player.speed) / Size);
+        if (
+          !checkLeftMove(
+            grids,
+            player.rowBot,
+            player.rowTop,
+            player.colBot,
+            player.colTop
+          )
+        ) {
           getPosImg(player.frames[player.loop], 7, bomberman);
           player.x -= player.speed;
         }
         break;
       case player.moveUp:
-        rowBot = Math.floor((player.y - player.speed) / Size);
-        colBot = Math.floor(player.x / Size);
-        colTop = Math.ceil(player.x / Size);
-        if (!checkUpperMove(grids, rowBot, colBot, colTop)) {
+        player.rowBot = Math.floor((player.y - player.speed) / Size);
+        player.colBot = Math.floor(player.x / Size);
+        player.colTop = Math.ceil(player.x / Size);
+        if (
+          !checkUpperMove(grids, player.rowBot, player.colBot, player.colTop)
+        ) {
           getPosImg(player.frames[player.loop], 5, bomberman);
           player.y -= player.speed;
         }
         break;
       case player.moveRight:
-        rowBot = Math.floor(player.y / Size);
-        rowTop = Math.ceil(player.y / Size);
-        colBot = Math.floor((player.x + player.speed) / Size);
-        colTop = Math.ceil((player.x + player.speed) / Size);
-        if (!checkRightMove(grids, rowBot, rowTop, colBot, colTop)) {
+        player.rowBot = Math.floor(player.y / Size);
+        player.rowTop = Math.ceil(player.y / Size);
+        player.colBot = Math.floor((player.x + player.speed) / Size);
+        player.colTop = Math.ceil((player.x + player.speed) / Size);
+        if (
+          !checkRightMove(
+            grids,
+            player.rowBot,
+            player.rowTop,
+            player.colBot,
+            player.colTop
+          )
+        ) {
           getPosImg(player.frames[player.loop], 6, bomberman);
           player.x += player.speed;
         }
@@ -217,3 +247,13 @@ requestAnimationFrame(animateMovement);
 
 document.addEventListener("keydown", movePlayer);
 document.addEventListener("keyup", stopPlayer);
+document.getElementById("continue").addEventListener("click", () => {
+  if (!pause) pause = true;
+  else {
+    Displaymenu(map);
+    pause = false;
+  }
+});
+document.getElementById("restart").addEventListener("click", () => {
+  location.reload();
+});
