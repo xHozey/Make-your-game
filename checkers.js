@@ -1,6 +1,7 @@
 import { width,height } from "./main.js";
 
 export const checkUpperMove = (grids,rowBot, colBot, colTop) => {
+  
     return (
       grids[rowBot][colBot].classList.contains("wall") ||
       grids[rowBot][colBot].classList.contains("soft-wall") ||

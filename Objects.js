@@ -40,8 +40,8 @@ export class Monster {
   constructor(x, y, id, dir, speed) {
     this.startX = x;
     this.startY = y;
-    this.posX = x;
-    this.posY = y;
+    this.posX = x*width;
+    this.posY = y*height;
     this.id = id;
     this.dir = dir;
     this.loop = 0;
@@ -61,8 +61,8 @@ export class Monster {
 
       if (bluePrint[row][col] === 0) {
         let currentMonster = new Monster(
-          col * width,
-          row * height,
+          col ,
+          row ,
           i,
           randomMonsterDir(),
           0.5
