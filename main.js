@@ -44,8 +44,10 @@ const portal = document.querySelector(".portal");
 
 setInterval(() => {
   if (countDown == 0) return;
-  countDown--;
-  timer.innerText = countDown;
+  if (!pause) {
+    countDown--;
+    timer.innerText = countDown;
+  }
 }, 1000);
 
 const movePlayer = (e) => {
