@@ -73,9 +73,9 @@ export class Board {
     }
     return grids;
   }
-  initMonsters() {
+  initMonsters(enemiesTotal) {
     const monsters = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < enemiesTotal; i++) {
       const row = Math.floor(Math.random() * this.bluePrint.length);
       const col = Math.floor(Math.random() * this.bluePrint[0].length);
 

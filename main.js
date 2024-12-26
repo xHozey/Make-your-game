@@ -11,16 +11,19 @@ import {
 } from "./checkers.js";
 const lifes = document.getElementById("lifes-id");
 const score = document.getElementById("score-id");
+const enemies = document.getElementById('enemies-id')
 let currentLifes = 3;
 let currentScore = 0;
+let enemiesTotal = 5
 const size = 30;
+enemies.innerText = enemiesTotal
 let pause = false;
 const map = document.querySelector(".map");
 const boardMap = new Board(map, level_1);
 const grids = boardMap.initLevel();
 const player = new Player(60, 60, 1, map);
 const bomberman = player.initBomberMan(map);
-let monsters = boardMap.initMonsters();
+let monsters = boardMap.initMonsters(enemiesTotal);
 const bomb = new Bomb(grids);
 
 const movePlayer = (e) => {
@@ -65,8 +68,14 @@ const stopPlayer = (e) => {
       break;
   }
 };
-
+let stopAlert = false
 const animateMovement = () => {
+      
+      if (enemiesTotal === 0 && !stopAlert) {
+        stopAlert = true
+        alert('You won!')
+        location.reload()
+      }
   let rowBot;
   let rowTop;
   let colTop;
@@ -127,12 +136,15 @@ const animateMovement = () => {
     }
 
     monsters.forEach((enemy) => {
+      
       if (!checkMonsterMove(enemy, grids)) {
         let div = document.querySelector(`.monster-${enemy.id}`);
         if (checkIfBombed(grids, enemy.posX, enemy.posY)) {
           map.removeChild(div);
           monsters = monsters.filter((monster) => monster.id !== enemy.id);
           currentScore += 100;
+          enemiesTotal--
+          enemies.innerText = enemiesTotal
           score.innerText = currentScore;
         }
         if (div) {
@@ -186,7 +198,8 @@ const animateMovement = () => {
     currentLifes--;
     lifes.innerHTML = currentLifes;
   }
-  if (currentLifes === 0) {
+  if (currentLifes === 0 && !stopAlert) {
+    stopAlert=true
     alert("You lose!");
     location.reload();
   }
