@@ -27,7 +27,8 @@ body {
 
 .score-holder,
 .lifes-holder,
-.enemies-holder {
+.enemies-holder,
+.timer-holder {
   position: absolute;
   top: 250px;
   left: 120px;
@@ -42,6 +43,10 @@ body {
 
 .enemies-holder {
   left: 350px;
+}
+
+.timer-holder {
+  left: 450px
 }
 
 .wall {
@@ -93,5 +98,3 @@ body {
 .btn {
   cursor: pointer;
 }
-
-.portal-image {}

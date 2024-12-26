@@ -19,11 +19,14 @@ import {
 const lifes = document.getElementById("lifes-id");
 const score = document.getElementById("score-id");
 const enemies = document.getElementById("enemies-id");
+const timer = document.getElementById("timer-id");
 export const Size = 30;
 const usedMap = level_2;
 let currentLifes = 3;
 let currentScore = 0;
-let enemiesTotal = 10;
+let enemiesTotal = 3;
+let countDown = 160;
+timer.innerText = countDown;
 enemies.innerText = enemiesTotal;
 lifes.innerText = currentLifes;
 let initPos = getPlayerPose(usedMap);
@@ -38,6 +41,12 @@ const bomberman = player.initBomberMan(map);
 let monsters = new Monster().initMonsters(enemiesTotal, usedMap, map);
 const bomb = new Bomb(grids);
 const portal = document.querySelector(".portal");
+
+setInterval(() => {
+  if (countDown == 0) return;
+  countDown--;
+  timer.innerText = countDown;
+}, 1000);
 
 const movePlayer = (e) => {
   let key = e.key.toLowerCase();
@@ -86,7 +95,7 @@ const animateMovement = () => {
   if (portal.classList.contains("empty")) {
     portal.innerText = "";
     portal.classList.remove("empty");
-    portal.style.backgroundImage = `url('assets/door.jpg')`
+    portal.style.backgroundImage = `url('assets/door.jpg')`;
     portal.style.backgroundSize = `${Size}px ${Size}px`;
   }
   if (
@@ -235,7 +244,7 @@ const animateMovement = () => {
     currentLifes--;
     lifes.innerHTML = currentLifes;
   }
-  if (currentLifes === 0 && !stopAlert) {
+  if ((currentLifes === 0 || countDown === 0) && !stopAlert) {
     stopAlert = true;
     alert("You lose!");
     location.reload();
