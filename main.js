@@ -20,8 +20,12 @@ const lifes = document.getElementById("lifes-id");
 const score = document.getElementById("score-id");
 const enemies = document.getElementById("enemies-id");
 const timer = document.getElementById("timer-id");
-export const Size = 30;
 const usedMap = level_2;
+const initWidth = Math.floor((window.innerWidth / usedMap[0].length))
+const initHeight = Math.floor((window.innerHeight/usedMap.length))
+export let width = Math.min(initWidth,initHeight)
+export let height = Math.min(initWidth,initHeight)
+
 let currentLifes = 3;
 let currentScore = 0;
 let enemiesTotal = 3;
@@ -36,11 +40,12 @@ const map = document.querySelector(".map");
 const boardMap = new Board(map, usedMap);
 boardMap.randomizeBricks();
 const grids = boardMap.initLevel();
-const player = new Player(initPos[0] * Size, initPos[1] * Size, 2, map);
+const player = new Player(initPos[0] * width, initPos[1] * height, 2, map);
 const bomberman = player.initBomberMan(map);
 let monsters = new Monster().initMonsters(enemiesTotal, usedMap, map);
 const bomb = new Bomb(grids);
 const portal = document.querySelector(".portal");
+console.log(window.innerWidth, window.innerHeight);
 
 setInterval(() => {
   if (countDown == 0) return;
@@ -59,7 +64,7 @@ const movePlayer = (e) => {
       Displaymenu(map);
       break;
     case "x":
-      bomb.putTheBomb(player.x, player.y, Size);
+      bomb.putTheBomb(player.x, player.y);
       break;
     case "arrowup":
       player.moveUp = true;
@@ -98,7 +103,7 @@ const animateMovement = () => {
     portal.innerText = "";
     portal.classList.remove("empty");
     portal.style.backgroundImage = `url('assets/door.jpg')`;
-    portal.style.backgroundSize = `${Size}px ${Size}px`;
+    portal.style.backgroundSize = `${width}px ${height}px`;
   }
   if (
     enemiesTotal === 0 &&
@@ -112,10 +117,10 @@ const animateMovement = () => {
   if (!pause) {
     switch (true) {
       case player.moveDown:
-        player.rowBot = Math.floor((player.y + player.speed) / Size);
-        player.rowTop = Math.ceil((player.y + player.speed) / Size);
-        player.colBot = Math.floor(player.x / Size);
-        player.colTop = Math.ceil(player.x / Size);
+        player.rowBot = Math.floor((player.y + player.speed) / height);
+        player.rowTop = Math.ceil((player.y + player.speed) / height);
+        player.colBot = Math.floor(player.x / width);
+        player.colTop = Math.ceil(player.x / width);
         if (
           !checkDownMove(grids, player.rowTop, player.colBot, player.colTop)
         ) {
@@ -124,10 +129,10 @@ const animateMovement = () => {
         }
         break;
       case player.moveLeft:
-        player.rowBot = Math.floor(player.y / Size);
-        player.rowTop = Math.ceil(player.y / Size);
-        player.colBot = Math.floor((player.x - player.speed) / Size);
-        player.colTop = Math.ceil((player.x - player.speed) / Size);
+        player.rowBot = Math.floor(player.y / height);
+        player.rowTop = Math.ceil(player.y / height);
+        player.colBot = Math.floor((player.x - player.speed) / width);
+        player.colTop = Math.ceil((player.x - player.speed) / width);
         if (
           !checkLeftMove(
             grids,
@@ -142,9 +147,9 @@ const animateMovement = () => {
         }
         break;
       case player.moveUp:
-        player.rowBot = Math.floor((player.y - player.speed) / Size);
-        player.colBot = Math.floor(player.x / Size);
-        player.colTop = Math.ceil(player.x / Size);
+        player.rowBot = Math.floor((player.y - player.speed) / height);
+        player.colBot = Math.floor(player.x / width);
+        player.colTop = Math.ceil(player.x / width);
         if (
           !checkUpperMove(grids, player.rowBot, player.colBot, player.colTop)
         ) {
@@ -153,10 +158,10 @@ const animateMovement = () => {
         }
         break;
       case player.moveRight:
-        player.rowBot = Math.floor(player.y / Size);
-        player.rowTop = Math.ceil(player.y / Size);
-        player.colBot = Math.floor((player.x + player.speed) / Size);
-        player.colTop = Math.ceil((player.x + player.speed) / Size);
+        player.rowBot = Math.floor(player.y / height);
+        player.rowTop = Math.ceil(player.y / height);
+        player.colBot = Math.floor((player.x + player.speed) / width);
+        player.colTop = Math.ceil((player.x + player.speed) / width);
         if (
           !checkRightMove(
             grids,
@@ -265,6 +270,11 @@ document.getElementById("continue").addEventListener("click", () => {
     pause = false;
   }
 });
+
 document.getElementById("restart").addEventListener("click", () => {
   location.reload();
 });
+
+window.addEventListener('resize', () => {
+  location.reload()
+})

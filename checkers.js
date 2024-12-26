@@ -1,4 +1,4 @@
-import { Size } from "./main.js";
+import { width,height } from "./main.js";
 
 export const checkUpperMove = (grids,rowBot, colBot, colTop) => {
     return (
@@ -47,35 +47,35 @@ export const checkUpperMove = (grids,rowBot, colBot, colTop) => {
   export const checkMonsterMove = (enemy, grids) => {
     switch (enemy.dir) {
       case "up":
-        enemy.rowBot = Math.floor((enemy.posY - enemy.speed) / Size);
-        enemy.colBot = Math.floor(enemy.posX / Size);
-        enemy.colTop = Math.ceil(enemy.posX / Size);
+        enemy.rowBot = Math.floor((enemy.posY - enemy.speed) / height);
+        enemy.colBot = Math.floor(enemy.posX / width);
+        enemy.colTop = Math.ceil(enemy.posX / width);
         return checkUpperMove(grids,enemy.rowBot, enemy.colBot, enemy.colTop);
       case "down":
-        enemy.rowBot = Math.floor((enemy.posY + enemy.speed) / Size);
-        enemy.rowTop = Math.ceil((enemy.posY + enemy.speed) / Size);
-        enemy.colBot = Math.floor(enemy.posX / Size);
-        enemy.colTop = Math.ceil(enemy.posX / Size);
+        enemy.rowBot = Math.floor((enemy.posY + enemy.speed) / height);
+        enemy.rowTop = Math.ceil((enemy.posY + enemy.speed) / height);
+        enemy.colBot = Math.floor(enemy.posX / width);
+        enemy.colTop = Math.ceil(enemy.posX / width);
         return checkDownMove(grids, enemy.rowTop, enemy.colBot, enemy.colTop);
       case "right":
-        enemy.rowBot = Math.floor(enemy.posY / Size);
-        enemy.rowTop = Math.ceil(enemy.posY / Size);
-        enemy.colBot = Math.floor((enemy.posX + enemy.speed) / Size);
-        enemy.colTop = Math.ceil((enemy.posX + enemy.speed) / Size);
+        enemy.rowBot = Math.floor(enemy.posY / height);
+        enemy.rowTop = Math.ceil(enemy.posY / height);
+        enemy.colBot = Math.floor((enemy.posX + enemy.speed) / width);
+        enemy.colTop = Math.ceil((enemy.posX + enemy.speed) / width);
         return checkRightMove(grids,enemy.rowBot, enemy.rowTop, enemy.colBot, enemy.colTop);
       case "left":
-        enemy.rowBot = Math.floor(enemy.posY / Size);
-        enemy.rowTop = Math.ceil(enemy.posY / Size);
-        enemy.colBot = Math.floor((enemy.posX - enemy.speed) / Size);
-        enemy.colTop = Math.ceil((enemy.posX - enemy.speed) / Size);
+        enemy.rowBot = Math.floor(enemy.posY / height);
+        enemy.rowTop = Math.ceil(enemy.posY / height);
+        enemy.colBot = Math.floor((enemy.posX - enemy.speed) / width);
+        enemy.colTop = Math.ceil((enemy.posX - enemy.speed) / width);
         return checkLeftMove(grids,enemy.rowBot, enemy.rowTop, enemy.colBot, enemy.colTop);
     }
   }
 
   export const checkIfBombed = (grids,x,y) => {
-    return grids[Math.round(y/Size)][Math.round(x/Size)].classList.contains('explotion')
+    return grids[Math.round(y/height)][Math.round(x/width)].classList.contains('explotion')
   }
 
   export const checkIfPortal = (grids,x,y) => {
-    return grids[Math.round(y/Size)][Math.round(x/Size)].classList.contains('portal')
+    return grids[Math.round(y/height)][Math.round(x/width)].classList.contains('portal')
   }

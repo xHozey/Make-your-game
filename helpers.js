@@ -1,4 +1,4 @@
-import { Size } from "./main.js";
+import { width,height } from "./main.js";
 
 export const randomMonsterDir = () => {
   const directions = ["left", "up", "down", "right"];
@@ -6,8 +6,8 @@ export const randomMonsterDir = () => {
 };
 
 export const getPosImg = (frameX, frameY, div) => {
-  const x = frameX * Size;
-  const y = frameY * Size;
+  const x = frameX * width;
+  const y = frameY * height;
   div.style.backgroundPosition = `${x}px ${y}px`;
 };
 

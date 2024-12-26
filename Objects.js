@@ -1,4 +1,4 @@
-import { Size } from "./main.js";
+import { width,height } from "./main.js";
 
 import { randomMonsterDir } from "./helpers.js";
 
@@ -28,9 +28,9 @@ export class Player {
     const img = new Image();
     img.src = "assets/hitler.png";
     div.style.backgroundImage = `url(${img.src})`;
-    div.style.backgroundSize = `${4*Size}px ${8*Size}px`;
-    div.style.width = `${Size}px`;
-    div.style.height = `${Size}px`;
+    div.style.backgroundSize = `${4*width}px ${8*height}px`;
+    div.style.width = `${width}px`;
+    div.style.height = `${height}px`;
     map.append(div);
     return div;
   }
@@ -61,22 +61,22 @@ export class Monster {
 
       if (bluePrint[row][col] === 0) {
         let currentMonster = new Monster(
-          col * Size,
-          row * Size,
+          col * width,
+          row * height,
           i,
           randomMonsterDir(),
           0.5
         );
         monsters.push(currentMonster);
         let div = document.createElement("div");
-        div.style.width = `${Size}px`;
-        div.style.height = `${Size}px`;
+        div.style.width = `${width}px`;
+        div.style.height = `${height}px`;
         div.classList.add(`monster`);
         div.classList.add(`monster-${i}`);
         div.style.position = `absolute`;
         div.style.imageRendering = "pixelated";
         div.style.backgroundImage = `url(assets/skull.png)`;
-        div.style.backgroundSize = `${3*Size}px ${4*Size}px`;
+        div.style.backgroundSize = `${3*width}px ${4*height}px`;
         map.appendChild(div);
         div.style.transform = `translate(${currentMonster.posX}px, ${currentMonster.posY}px)`;
       } else {
@@ -93,130 +93,130 @@ export class Bomb {
     this.droped = false;
   }
 
-  putTheBomb(x, y, size) {
+  putTheBomb(x, y) {
     if (this.droped) return;
     this.droped = true;
-    this.grids[Math.round(y / size)][Math.round(x / size)].classList.add(
+    this.grids[Math.round(y / height)][Math.round(x / width)].classList.add(
       "bomb"
     );
     let timer;
     timer = setTimeout(() => {
-      this.grids[Math.round(y / size)][Math.round(x / size)].classList.remove(
+      this.grids[Math.round(y/height)][Math.round(x/width)].classList.remove(
         "bomb"
       );
-      this.grids[Math.round(y / size)][
-        Math.round(x / size) + 1
+      this.grids[Math.round(y/height)][
+        Math.round(x/width) + 1
       ].classList.remove("soft-wall");
-      this.grids[Math.round(y / size)][
-        Math.round(x / size) + 1
+      this.grids[Math.round(y/height)][
+        Math.round(x/width) + 1
       ].classList.contains("wall")
         ? null
-        : this.grids[Math.round(y / size)][
-            Math.round(x / size) + 1
+        : this.grids[Math.round(y/height)][
+            Math.round(x/width) + 1
           ].classList.add("empty");
-      this.grids[Math.round(y / size)][
-        Math.round(x / size) - 1
+      this.grids[Math.round(y/height)][
+        Math.round(x/width) - 1
       ].classList.remove("soft-wall");
-      this.grids[Math.round(y / size)][
-        Math.round(x / size) - 1
+      this.grids[Math.round(y/height)][
+        Math.round(x/width) - 1
       ].classList.contains("wall")
         ? null
-        : this.grids[Math.round(y / size)][
-            Math.round(x / size) - 1
+        : this.grids[Math.round(y/height)][
+            Math.round(x/width) - 1
           ].classList.add("empty");
-      this.grids[Math.round(y / size) + 1][
-        Math.round(x / size)
+      this.grids[Math.round(y/height) + 1][
+        Math.round(x/width)
       ].classList.remove("soft-wall");
-      this.grids[Math.round(y / size) + 1][
-        Math.round(x / size)
+      this.grids[Math.round(y/height) + 1][
+        Math.round(x/width)
       ].classList.contains("wall")
         ? null
-        : this.grids[Math.round(y / size) + 1][
-            Math.round(x / size)
+        : this.grids[Math.round(y/height) + 1][
+            Math.round(x/width)
           ].classList.add("empty");
-      this.grids[Math.round(y / size) - 1][
-        Math.round(x / size)
+      this.grids[Math.round(y/height) - 1][
+        Math.round(x/width)
       ].classList.remove("soft-wall");
-      this.grids[Math.round(y / size) - 1][
-        Math.round(x / size)
+      this.grids[Math.round(y/height) - 1][
+        Math.round(x/width)
       ].classList.contains("wall")
         ? null
-        : this.grids[Math.round(y / size) - 1][
-            Math.round(x / size)
+        : this.grids[Math.round(y/height) - 1][
+            Math.round(x/width)
           ].classList.add("empty");
       this.droped = false;
       timer = null;
     }, 2000);
     setTimeout(() => {
-      this.grids[Math.round(y / size)][Math.round(x / size) + 1].classList.add(
+      this.grids[Math.round(y/height)][Math.round(x/width) + 1].classList.add(
         "explotion"
       );
 
-      this.grids[Math.round(y / size)][Math.round(x / size) - 1].classList.add(
+      this.grids[Math.round(y/height)][Math.round(x/width) - 1].classList.add(
         "explotion"
       );
 
-      this.grids[Math.round(y / size) + 1][Math.round(x / size)].classList.add(
+      this.grids[Math.round(y/height) + 1][Math.round(x/width)].classList.add(
         "explotion"
       );
 
-      this.grids[Math.round(y / size) - 1][Math.round(x / size)].classList.add(
+      this.grids[Math.round(y/height) - 1][Math.round(x/width)].classList.add(
         "explotion"
       );
-      this.grids[Math.round(y / size) - 1][
-        Math.round(x / size)
+      this.grids[Math.round(y/height) - 1][
+        Math.round(x/width)
       ].classList.remove("empty");
-      this.grids[Math.round(y / size)][
-        Math.round(x / size) + 1
+      this.grids[Math.round(y/height)][
+        Math.round(x/width) + 1
       ].classList.remove("empty");
-      this.grids[Math.round(y / size) + 1][
-        Math.round(x / size)
+      this.grids[Math.round(y/height) + 1][
+        Math.round(x/width)
       ].classList.remove("empty");
-      this.grids[Math.round(y / size)][
-        Math.round(x / size) - 1
+      this.grids[Math.round(y/height)][
+        Math.round(x/width) - 1
       ].classList.remove("empty");
     }, 2000);
 
     setTimeout(() => {
-      this.grids[Math.round(y / size) - 1][
-        Math.round(x / size)
+      this.grids[Math.round(y/height) - 1][
+        Math.round(x/width)
       ].classList.remove("explotion");
-      this.grids[Math.round(y / size)][
-        Math.round(x / size) + 1
+      this.grids[Math.round(y/height)][
+        Math.round(x/width) + 1
       ].classList.remove("explotion");
-      this.grids[Math.round(y / size) + 1][
-        Math.round(x / size)
+      this.grids[Math.round(y/height) + 1][
+        Math.round(x/width)
       ].classList.remove("explotion");
-      this.grids[Math.round(y / size)][
-        Math.round(x / size) - 1
+      this.grids[Math.round(y/height)][
+        Math.round(x/width) - 1
       ].classList.remove("explotion");
-      this.grids[Math.round(y / size)][
-        Math.round(x / size) + 1
+      this.grids[Math.round(y/height)][
+        Math.round(x/width) + 1
       ].classList.contains("wall")
         ? null
-        : this.grids[Math.round(y / size)][
-            Math.round(x / size) + 1
+        : this.grids[Math.round(y/height)][
+            Math.round(x/width) + 1
           ].classList.add("empty");
-      this.grids[Math.round(y / size)][
-        Math.round(x / size) - 1
+      this.grids[Math.round(y/height)][
+        Math.round(x/width) - 1
       ].classList.contains("wall")
         ? null
-        : this.grids[Math.round(y / size)][
-            Math.round(x / size) - 1
+        : this.grids[Math.round(y/height)][
+            Math.round(x/width) - 1
           ].classList.add("empty");
-      this.grids[Math.round(y / size) + 1][
-        Math.round(x / size)
+      this.grids[Math.round(y/height) + 1][
+        Math.round(x/width)
       ].classList.contains("wall")
         ? null
-        : this.grids[Math.round(y / size) + 1][
-            Math.round(x / size)
+        : this.grids[Math.round(y/height) + 1][
+            Math.round(x/width)
           ].classList.add("empty");
-      this.grids[Math.round(y / size) - 1][
-        Math.round(x / size)
+      this.grids[Math.round(y/height) - 1][
+        Math.round(x/width)
       ].classList.contains("wall")
         ? null
-        : this.grids[Math.round(y / size) - 1][
-            Math.round(x / size)
+        : this.grids[Math.round(y/height) - 1][
+            Math.round(x/width)
           ].classList.add("empty");
     }, 3000);
   }
