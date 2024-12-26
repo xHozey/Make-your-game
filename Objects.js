@@ -1,5 +1,11 @@
+import { Size } from "./main.js";
+
+import { randomMonsterDir } from "./helpers.js";
+
 export class Player {
   constructor(posX, posY, speed) {
+    this.startX = posX
+    this.startY = posY
     this.x = posX;
     this.y = posY;
     this.speed = speed;
@@ -18,7 +24,9 @@ export class Player {
     const img = new Image();
     img.src = "assets/hitler.png";
     div.style.backgroundImage = `url(${img.src})`;
-    div.style.backgroundSize = "120px 240px";
+    div.style.backgroundSize = `${4*Size}px ${8*Size}px`;
+    div.style.width = `${Size}px`;
+    div.style.height = `${Size}px`;
     map.append(div);
     return div;
   }
@@ -36,6 +44,38 @@ export class Monster {
     this.slow = 0;
     this.speed = speed;
     this.frames = [1, 2, 3];
+  }
+  initMonsters(enemiesTotal, bluePrint, map) {
+    const monsters = [];
+    for (let i = 0; i < enemiesTotal; i++) {
+      const row = Math.floor(Math.random() * bluePrint.length);
+      const col = Math.floor(Math.random() * bluePrint[0].length);
+
+      if (bluePrint[row][col] === 0) {
+        let currentMonster = new Monster(
+          col * Size,
+          row * Size,
+          i,
+          randomMonsterDir(),
+          0.5
+        );
+        monsters.push(currentMonster);
+        let div = document.createElement("div");
+        div.style.width = `${Size}px`;
+        div.style.height = `${Size}px`;
+        div.classList.add(`monster`);
+        div.classList.add(`monster-${i}`);
+        div.style.position = `absolute`;
+        div.style.imageRendering = "pixelated";
+        div.style.backgroundImage = `url(assets/skull.png)`;
+        div.style.backgroundSize = `${3*Size}px ${4*Size}px`;
+        map.appendChild(div);
+        div.style.transform = `translate(${currentMonster.posX}px, ${currentMonster.posY}px)`;
+      } else {
+        i--;
+      }
+    }
+    return monsters;
   }
 }
 

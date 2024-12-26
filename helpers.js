@@ -1,19 +1,30 @@
+import { Size } from "./main.js";
+
+
 export const randomMonsterDir = () => {
     const directions = ["left", "up", "down", "right"];
     return directions[Math.floor(directions.length * Math.random())];
   };
 
   export const getPosImg = (frameX, frameY, div) => {
-    const x = frameX * 30;
-    const y = frameY * 30;
+    const x = frameX * Size;
+    const y = frameY * Size;
     div.style.backgroundPosition = `${x}px ${y}px`;
   };
   
   export const death = (player, monsters) => {
-    player.x = 60;
-    player.y = 60;
+    player.x = player.startX;
+    player.y = player.startY;
     monsters.forEach(mn => {
       mn.posX = mn.startX
       mn.posY = mn.startY
     })
+  }
+
+  export const getPlayerPose = (bluePrint) => {
+    for (let i = 0; i < bluePrint.length; i++) {
+      for (let j =0; j < bluePrint[i].length; j++ ) {
+        if (bluePrint[i][j] === 'x') return [i,j]
+      }
+    }
   }
