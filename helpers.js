@@ -1,4 +1,4 @@
-import { Size } from "./main.js";
+import { width,height } from "./main.js";
 
 export const randomMonsterDir = () => {
   const directions = ["left", "up", "down", "right"];
@@ -6,8 +6,8 @@ export const randomMonsterDir = () => {
 };
 
 export const getPosImg = (frameX, frameY, div) => {
-  const x = frameX * Size;
-  const y = frameY * Size;
+  const x = frameX * width;
+  const y = frameY * height;
   div.style.backgroundPosition = `${x}px ${y}px`;
 };
 
@@ -15,8 +15,8 @@ export const death = (player, monsters) => {
   player.x = player.startX;
   player.y = player.startY;
   monsters.forEach((mn) => {
-    mn.posX = mn.startX;
-    mn.posY = mn.startY;
+    mn.posX = mn.startX*width;
+    mn.posY = mn.startY*height;
   });
 };
 

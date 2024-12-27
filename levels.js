@@ -1,6 +1,6 @@
 export let level_1;
 export let level_2;
-import { Size } from "./main.js";
+import { width,height } from "./main.js";
 
 
 level_1 = [
@@ -256,8 +256,8 @@ export class Board {
     }
   }
   initLevel() {
-    this.map.style.width = `${this.bluePrint[0].length * Size}px`;
-    this.map.style.height = `${this.bluePrint.length * Size}px`;
+    this.map.style.width = `${this.bluePrint[0].length * width}px`;
+    this.map.style.height = `${this.bluePrint.length * height}px`;
     const grids = [];
     for (let i = 0; i < this.bluePrint.length; i++) {
       grids[i] = [];
@@ -266,8 +266,8 @@ export class Board {
         div.style.imageRendering = "pixelated";
         grids[i].push(div);
         this.map.appendChild(div);
-        div.style.width = `${Size}px`;
-        div.style.height = `${Size}px`;
+        div.style.width = `${width}px`;
+        div.style.height = `${height}px`;
         if (this.bluePrint[i][j] == 0 || this.bluePrint[i][j] == "x") {
           div.classList.add("empty");
           continue;
