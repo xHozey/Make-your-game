@@ -3,11 +3,11 @@ import { width,height } from "./main.js";
 import { randomMonsterDir } from "./helpers.js";
 
 export class Player {
-  constructor(posX, posY, speed) {
-    this.startX = posX
-    this.startY = posY
-    this.x = posX;
-    this.y = posY;
+  constructor(x, y, speed) {
+    this.startX = x
+    this.startY = y
+    this.x = x;
+    this.y = y;
     this.speed = speed;
     this.loop = 0;
     this.slowFrames = 5;
@@ -40,8 +40,8 @@ export class Monster {
   constructor(x, y, id, dir, speed) {
     this.startX = x;
     this.startY = y;
-    this.posX = x*width;
-    this.posY = y*height;
+    this.x = x*width;
+    this.y = y*height;
     this.id = id;
     this.dir = dir;
     this.loop = 0;
@@ -65,7 +65,7 @@ export class Monster {
           row ,
           i,
           randomMonsterDir(),
-          Math.floor(width/20)
+          Math.floor(width/14)
         );
         monsters.push(currentMonster);
         let div = document.createElement("div");
@@ -78,7 +78,7 @@ export class Monster {
         div.style.backgroundImage = `url(assets/skull.png)`;
         div.style.backgroundSize = `${3*width}px ${4*height}px`;
         map.appendChild(div);
-        div.style.transform = `translate(${currentMonster.posX}px, ${currentMonster.posY}px)`;
+        div.style.transform = `translate(${currentMonster.x}px, ${currentMonster.y}px)`;
       } else {
         i--;
       }
