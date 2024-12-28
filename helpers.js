@@ -11,7 +11,11 @@ export const getPosImg = (frameX, frameY, div) => {
   div.style.backgroundPosition = `${x}px ${y}px`;
 };
 
-export const death = (player, monsters) => {
+export const death = (player, monsters, bomberman) => {
+  bomberman.classList.add('immune')
+  setTimeout(() => {
+    bomberman.classList.remove('immune')
+  },1500)
   monsters.forEach((mn) => {
     mn.posX = mn.startX*width;
     mn.posY = mn.startY*height;
