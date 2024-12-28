@@ -44,7 +44,7 @@ const grids = boardMap.initLevel();
 const player = new Player(
   initPos[0] * width,
   initPos[1] * height,
-  Math.floor(size / 15),
+  2,
   map
 );
 const bomberman = player.initBomberMan(map);

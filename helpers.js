@@ -12,12 +12,12 @@ export const getPosImg = (frameX, frameY, div) => {
 };
 
 export const death = (player, monsters) => {
-  player.x = player.startX;
-  player.y = player.startY;
   monsters.forEach((mn) => {
     mn.posX = mn.startX*width;
     mn.posY = mn.startY*height;
   });
+  player.x = player.startX;
+  player.y = player.startY;
 };
 
 export const getPlayerPose = (bluePrint) => {

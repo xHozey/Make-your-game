@@ -67,6 +67,7 @@ body {
 
 .bomber-man {
   position: absolute;
+  background-color: black;
 }
 
 .bomb {
