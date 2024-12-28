@@ -67,14 +67,9 @@ body {
 
 .bomber-man {
   position: absolute;
-  background-color: black;
 }
 
-.bomb {
-  background-image: url('assets/bomb.png');
-  background-size: 30px 30px;
-  background-color: black;
-}
+
 
 .explotion {
   background-color: red;

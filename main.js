@@ -59,6 +59,10 @@ setInterval(() => {
   }
 }, 1000);
 
+const playerPos = { x: 60, y: 60 };
+let flamess
+map.append(bomberman);
+bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
 const movePlayer = (e) => {
   let key = e.key.toLowerCase();
   switch (key) {
@@ -68,7 +72,7 @@ const movePlayer = (e) => {
       Displaymenu(map);
       break;
     case "x":
-      bomb.putTheBomb(player.x, player.y);
+      flamess = bomb.putTheBomb(player.x, player.y, map);
       break;
     case "arrowup":
       player.moveUp = true;
@@ -102,7 +106,37 @@ const stopPlayer = (e) => {
       break;
   }
 };
+
 const animateMovement = () => {
+  console.log(flamess);
+  let bombDiv = document.querySelector('.bomb')
+  if (bombDiv) {
+    if (bomb.slow >= bomb.slowFrames) {
+      if (bomb.loop < bomb.frames.length - 1) {
+        getPosImg(bomb.frames[bomb.loop], 1, bombDiv)
+        bomb.loop++;
+      } else {
+        bomb.loop = 0;
+      }
+      bomb.slow = 0;
+    } else {
+      bomb.slow++;
+    }
+  }
+  let flames = document.querySelectorAll('.fire')
+  if (flames) {
+
+    flames.forEach(element => {
+        if (loop < frames.length) {
+          getPosImg(frames[loop], 1, element)
+          loop++
+        } else {
+          loop = 0
+        }
+        slow = 0
+      
+    })
+  }
   if (portal.classList.contains("empty")) {
     portal.innerText = "";
     portal.classList.remove("empty");
