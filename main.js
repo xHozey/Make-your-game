@@ -61,11 +61,6 @@ setInterval(() => {
 
 const movePlayer = (e) => {
   let key = e.key.toLowerCase();
-<<<<<<< HEAD
-  console.log(playerPos)
-  const playerSpeed = 3;
-=======
->>>>>>> origin/saliheddine
   switch (key) {
     case "p":
       if (!pause) pause = true;
@@ -79,28 +74,13 @@ const movePlayer = (e) => {
       player.moveUp = true;
       break;
     case "arrowdown":
-<<<<<<< HEAD
-      if (
-        (grids[Math.floor(playerPos.y / 30)+1][
-          Math.ceil(playerPos.x / 30)
-        ].classList.contains("wall") ||
-          grids[Math.floor(playerPos.y / 30)+1][
-            Math.ceil(playerPos.x / 30)
-          ].classList.contains("soft-wall")) 
-        //  playerPos.x % 30 == 0
-      )
-        return;
-      playerPos.y += playerSpeed;
-      getPosImg(downMove[currentLoop], 8);
-=======
       player.moveDown = true;
->>>>>>> origin/saliheddine
       break;
     case "arrowleft":
       player.moveLeft = true;
       break;
     case "arrowright":
-      moveRight = true;
+      player.moveRight = true;
       break;
   }
 };

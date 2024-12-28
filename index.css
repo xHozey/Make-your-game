@@ -12,7 +12,15 @@ body {
   height: 100%;
 
 }
-
+.container{
+  overflow: hidden;
+}
+.header{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 10px;
+}
 .map {
   border: 5px solid;
   display: flex;
@@ -24,12 +32,12 @@ body {
 .lifes-holder,
 .enemies-holder,
 .timer-holder {
-  position: absolute;
+  /* position: absolute;
   top: 0px;
   left: 120px;
   display: flex;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: bold; */
 }
 
 .lifes-holder {
@@ -95,3 +103,10 @@ body {
 .btn {
   cursor: pointer;
 }
+
+
+@media (max-width: 575.98px) { 
+  .header{
+    font-size: 10px;
+  }
+ }
