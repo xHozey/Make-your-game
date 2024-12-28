@@ -88,7 +88,7 @@ export class Monster {
 }
 
 export class explotion {
-  constructor(x, y,map) {
+  constructor(x, y,map, id) {
     this.map = map
     this.x = x
     this.y = y
@@ -98,6 +98,7 @@ export class explotion {
     this.slowFrames = 5
     this.slow = 0
     this.loop = 0
+    this.id = id
   }
   initExplotion(grids) {
     let currentDiv = grids[this.y][this.x]
@@ -114,7 +115,7 @@ export class explotion {
       currentDiv.classList.remove("soft-wall");
       currentDiv.classList.contains("wall") ? null : currentDiv.classList.add("empty");
       currentDiv.classList.add('explotion')
-      fire.classList.add("fire")
+      fire.classList.add(`fire-${this.id}`)
       return [fire, currentDiv]
     }
   }
@@ -148,11 +149,11 @@ export class Bomb {
 
     let timer;
     let explotions = []
-    let centerEx = new explotion(xPos, yPos,map)
-    let rightEx = new explotion(xPos + 1, yPos,map)
-    let leftEx =new explotion(xPos - 1, yPos,map)
-    let downEx= new explotion(xPos, yPos + 1,map)
-    let upEx = new explotion(xPos, yPos - 1,map)
+    let centerEx = new explotion(xPos, yPos,map,1)
+    let rightEx = new explotion(xPos + 1, yPos,map,2)
+    let leftEx =new explotion(xPos - 1, yPos,map,3)
+    let downEx= new explotion(xPos, yPos + 1,map,4)
+    let upEx = new explotion(xPos, yPos - 1,map,5)
     timer = setTimeout(() => {
       map.removeChild(bomb)
       this.droped = false

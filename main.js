@@ -41,12 +41,7 @@ const map = document.querySelector(".map");
 const boardMap = new Board(map, usedMap);
 boardMap.randomizeBricks();
 const grids = boardMap.initLevel();
-const player = new Player(
-  initPos[0] * width,
-  initPos[1] * height,
-  2,
-  map
-);
+const player = new Player(initPos[0] * width, initPos[1] * height, 2, map);
 const bomberman = player.initBomberMan(map);
 let monsters = new Monster().initMonsters(enemiesTotal, usedMap, map);
 const bomb = new Bomb(grids);
@@ -60,7 +55,7 @@ setInterval(() => {
 }, 1000);
 
 const playerPos = { x: 60, y: 60 };
-let flamess
+let flames;
 map.append(bomberman);
 bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
 const movePlayer = (e) => {
@@ -72,7 +67,7 @@ const movePlayer = (e) => {
       Displaymenu(map);
       break;
     case "x":
-      flamess = bomb.putTheBomb(player.x, player.y, map);
+      flames = bomb.putTheBomb(player.x, player.y, map);
       break;
     case "arrowup":
       player.moveUp = true;
@@ -108,12 +103,11 @@ const stopPlayer = (e) => {
 };
 
 const animateMovement = () => {
-  console.log(flamess);
-  let bombDiv = document.querySelector('.bomb')
+  let bombDiv = document.querySelector(".bomb");
   if (bombDiv) {
     if (bomb.slow >= bomb.slowFrames) {
       if (bomb.loop < bomb.frames.length - 1) {
-        getPosImg(bomb.frames[bomb.loop], 1, bombDiv)
+        getPosImg(bomb.frames[bomb.loop], 1, bombDiv);
         bomb.loop++;
       } else {
         bomb.loop = 0;
@@ -123,19 +117,23 @@ const animateMovement = () => {
       bomb.slow++;
     }
   }
-  let flames = document.querySelectorAll('.fire')
   if (flames) {
-
-    flames.forEach(element => {
-        if (loop < frames.length) {
-          getPosImg(frames[loop], 1, element)
-          loop++
+    flames.forEach((flame) => {
+      let flameDiv = document.querySelector(`.fire-${flame.id}`);
+      if (flameDiv) {
+        if (flame.slow >= flame.slowFrames) {
+          if (flame.loop < flame.frames.length - 1) {
+            getPosImg(flame.frames[flame.loop], 1, flameDiv);
+            flame.loop++;
+          } else {
+            flame.loop = 0;
+          }
+          flame.slow = 0;
         } else {
-          loop = 0
+          flame.slow++;
         }
-        slow = 0
-      
-    })
+      }
+    });
   }
   if (portal.classList.contains("empty")) {
     portal.innerText = "";
@@ -283,10 +281,11 @@ const animateMovement = () => {
           }
           div.style.transform = `translate(${enemy.x}px, ${enemy.y}px)`;
           if (
-            (enemy.x + 15 >= player.x &&
+            enemy.x + 15 >= player.x &&
             enemy.x <= player.x + 15 &&
             enemy.y + 15 >= player.y &&
-            enemy.y <= player.y + 15) && !bomberman.classList.contains('immune')
+            enemy.y <= player.y + 15 &&
+            !bomberman.classList.contains("immune")
           ) {
             death(player, monsters, bomberman);
             currentLifes--;
@@ -298,7 +297,10 @@ const animateMovement = () => {
       }
     });
   }
-  if (checkIfBombed(grids, player.x, player.y) && !bomberman.classList.contains('immune')) {
+  if (
+    checkIfBombed(grids, player.x, player.y) &&
+    !bomberman.classList.contains("immune")
+  ) {
     death(player, monsters, bomberman);
     currentLifes--;
     lifes.innerHTML = currentLifes;
