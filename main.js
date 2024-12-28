@@ -41,7 +41,7 @@ const map = document.querySelector(".map");
 const boardMap = new Board(map, usedMap);
 boardMap.randomizeBricks();
 const grids = boardMap.initLevel();
-const player = new Player(initPos[0] * width, initPos[1] * height, 2, map);
+const player = new Player(initPos[0] * width, initPos[1] * height, size, map);
 const bomberman = player.initBomberMan(map);
 let monsters = new Monster().initMonsters(enemiesTotal, usedMap, map);
 const bomb = new Bomb(grids);
@@ -302,7 +302,7 @@ const animateMovement = () => {
     !bomberman.classList.contains("immune")
   ) {
     death(player, monsters, bomberman);
-    
+
     currentLifes--;
     lifes.innerHTML = currentLifes;
   }
