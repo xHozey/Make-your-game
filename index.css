@@ -25,7 +25,7 @@ body {
 .enemies-holder,
 .timer-holder {
   position: absolute;
-  top: 250px;
+  top: 0px;
   left: 120px;
   display: flex;
   font-size: 18px;
