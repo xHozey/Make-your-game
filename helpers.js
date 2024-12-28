@@ -17,8 +17,8 @@ export const death = (player, monsters, bomberman) => {
     bomberman.classList.remove('immune')
   },1500)
   monsters.forEach((mn) => {
-    mn.posX = mn.startX*width;
-    mn.posY = mn.startY*height;
+    mn.x = mn.startX*width;
+    mn.y = mn.startY*height;
   });
   player.x = player.startX;
   player.y = player.startY;

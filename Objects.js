@@ -65,7 +65,7 @@ export class Monster {
           row,
           i,
           randomMonsterDir(),
-          3
+          1
         );
         monsters.push(currentMonster);
         let div = document.createElement("div");

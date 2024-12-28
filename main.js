@@ -302,6 +302,7 @@ const animateMovement = () => {
     !bomberman.classList.contains("immune")
   ) {
     death(player, monsters, bomberman);
+    
     currentLifes--;
     lifes.innerHTML = currentLifes;
   }

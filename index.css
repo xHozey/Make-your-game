@@ -28,18 +28,6 @@ body {
   position: relative;
 }
 
-.score-holder,
-.lifes-holder,
-.enemies-holder,
-.timer-holder {
-  /* position: absolute;
-  top: 0px;
-  left: 120px;
-  display: flex;
-  font-size: 18px;
-  font-weight: bold; */
-}
-
 .lifes-holder {
   left: 250px;
 }
@@ -74,19 +62,12 @@ body {
 }
 
 .bomber-man {
-  background-color: black;
   position: absolute;
-  background-color: black;
 }
 
 .bomb {
   background-image: url('assets/bomb.png');
   background-size: 30px 30px;
-  background-color: black;
-}
-
-.explotion {
-  background-color: red;
 }
 
 #menu {
