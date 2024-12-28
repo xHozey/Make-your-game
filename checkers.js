@@ -76,8 +76,9 @@ export const checkUpperMove = (grids,rowBot, colBot, colTop, object) => {
         enemy.colTop = Math.ceil(enemy.x / width);
         return (grids[enemy.rowBot][enemy.colBot].classList.contains("wall") ||
         grids[enemy.rowBot][enemy.colBot].classList.contains("soft-wall")||
+        grids[enemy.rowBot][enemy.colBot].classList.contains("bomb1") ||
         grids[enemy.rowBot][enemy.colTop].classList.contains("wall") ||
-        grids[enemy.rowBot][enemy.colTop].classList.contains("soft-wall"))
+        grids[enemy.rowBot][enemy.colTop].classList.contains("soft-wall")) 
       case "down":
         enemy.rowBot = Math.floor((enemy.y + enemy.speed) / height);
         enemy.rowTop = Math.ceil((enemy.y + enemy.speed) / height);
@@ -85,6 +86,7 @@ export const checkUpperMove = (grids,rowBot, colBot, colTop, object) => {
         enemy.colTop = Math.ceil(enemy.x / width);
         return (grids[enemy.rowTop][enemy.colBot].classList.contains("wall") ||
         grids[enemy.rowTop][enemy.colBot].classList.contains("soft-wall") ||
+        grids[enemy.rowTop][enemy.colBot].classList.contains("bomb1") ||
         grids[enemy.rowTop][enemy.colTop].classList.contains("wall") ||
         grids[enemy.rowTop][enemy.colTop].classList.contains("soft-wall"))
       case "right":
@@ -94,6 +96,7 @@ export const checkUpperMove = (grids,rowBot, colBot, colTop, object) => {
         enemy.colTop = Math.ceil((enemy.x + enemy.speed) / width);
         return (grids[enemy.rowBot][enemy.colTop].classList.contains("wall") ||
         grids[enemy.rowBot][enemy.colTop].classList.contains("soft-wall")||
+        grids[enemy.rowBot][enemy.colTop].classList.contains("bomb1")||
         grids[enemy.rowTop][enemy.colTop].classList.contains("wall") ||
         grids[enemy.rowTop][enemy.colTop].classList.contains("soft-wall"))
       case "left":
@@ -103,6 +106,8 @@ export const checkUpperMove = (grids,rowBot, colBot, colTop, object) => {
         enemy.colTop = Math.ceil((enemy.x - enemy.speed) / width);
        return (grids[enemy.rowTop][enemy.colBot].classList.contains("wall") ||
         grids[enemy.rowTop][enemy.colBot].classList.contains("soft-wall") ||
+        grids[enemy.rowTop][enemy.colBot].classList.contains("bomb1") ||
+
         grids[enemy.rowBot][enemy.colBot].classList.contains("wall") ||
         grids[enemy.rowBot][enemy.colBot].classList.contains("soft-wall"))
     }

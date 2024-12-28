@@ -222,7 +222,7 @@ const animateMovement = () => {
         player.y = checkObj[1];
         getPosImg(player.frames[player.loop], 6, bomberman);
         if (!checkObj[0]) {
-          player.x += player.speed;
+          player.x += player.speed
         }
         break;
     }
@@ -281,10 +281,10 @@ const animateMovement = () => {
           }
           div.style.transform = `translate(${enemy.x}px, ${enemy.y}px)`;
           if (
-            enemy.x + 15 >= player.x &&
-            enemy.x <= player.x + 15 &&
-            enemy.y + 15 >= player.y &&
-            enemy.y <= player.y + 15 &&
+            enemy.x + size/2 >= player.x &&
+            enemy.x <= player.x + size/2 &&
+            enemy.y + size/2 >= player.y &&
+            enemy.y <= player.y + size/2 &&
             !bomberman.classList.contains("immune")
           ) {
             death(player, monsters, bomberman);

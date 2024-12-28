@@ -61,18 +61,8 @@ body {
   background-size: cover;
 }
 
-.portal {
-  text-size-adjust: 50px;
-}
-
 .bomber-man {
   position: absolute;
-}
-
-
-
-.explotion {
-  background-color: red;
 }
 
 #menu {
