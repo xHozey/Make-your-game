@@ -12,7 +12,15 @@ body {
   height: 100%;
 
 }
-
+.container{
+  overflow: hidden;
+}
+.header{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 10px;
+}
 .map {
   border: 5px solid;
   display: flex;
@@ -24,12 +32,12 @@ body {
 .lifes-holder,
 .enemies-holder,
 .timer-holder {
-  position: absolute;
+  /* position: absolute;
   top: 0px;
   left: 120px;
   display: flex;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: bold; */
 }
 
 .lifes-holder {
@@ -61,8 +69,24 @@ body {
   background-size: cover;
 }
 
+.portal {
+  text-size-adjust: 50px;
+}
+
 .bomber-man {
+  background-color: black;
   position: absolute;
+  background-color: black;
+}
+
+.bomb {
+  background-image: url('assets/bomb.png');
+  background-size: 30px 30px;
+  background-color: black;
+}
+
+.explotion {
+  background-color: red;
 }
 
 #menu {
@@ -79,3 +103,10 @@ body {
 .btn {
   cursor: pointer;
 }
+
+
+@media (max-width: 575.98px) { 
+  .header{
+    font-size: 10px;
+  }
+ }
