@@ -44,7 +44,7 @@ const grids = boardMap.initLevel();
 const player = new Player(
   initPos[0] * width,
   initPos[1] * height,
-  Math.floor(size / 15),
+  2,
   map
 );
 const bomberman = player.initBomberMan(map);
@@ -271,12 +271,12 @@ const animateMovement = () => {
           }
           div.style.transform = `translate(${enemy.x}px, ${enemy.y}px)`;
           if (
-            enemy.x + 15 >= player.x &&
+            (enemy.x + 15 >= player.x &&
             enemy.x <= player.x + 15 &&
             enemy.y + 15 >= player.y &&
-            enemy.y <= player.y + 15
+            enemy.y <= player.y + 15) && !bomberman.classList.contains('immune')
           ) {
-            death(player, monsters, currentLifes);
+            death(player, monsters, bomberman);
             currentLifes--;
             lifes.innerHTML = currentLifes;
           }
@@ -286,8 +286,8 @@ const animateMovement = () => {
       }
     });
   }
-  if (checkIfBombed(grids, player.x, player.y)) {
-    death(player, monsters, currentLifes);
+  if (checkIfBombed(grids, player.x, player.y) && !bomberman.classList.contains('immune')) {
+    death(player, monsters, bomberman);
     currentLifes--;
     lifes.innerHTML = currentLifes;
   }
