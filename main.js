@@ -51,8 +51,6 @@ const bomberman = player.initBomberMan(map);
 let monsters = new Monster().initMonsters(enemiesTotal, usedMap, map);
 const bomb = new Bomb(grids);
 const portal = document.querySelector(".portal");
-console.log(window.innerWidth, window.innerHeight);
-
 setInterval(() => {
   if (countDown == 0) return;
   if (!pause) {
@@ -318,35 +316,7 @@ document.getElementById("restart").addEventListener("click", () => {
 let resizeTimeout;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimeout);
-  // resizeTimeout = setTimeout(() => {
-  // const newWidth = Math.floor((window.innerWidth / usedMap[0].length)/1.4)
-  // const newHeight = Math.floor((window.innerHeight/usedMap.length)/1.4)
-  // size = Math.min(newWidth,newHeight)
-  // width = size
-  // height = size
-  // bomberman.speed = size/15
-  // map.style.width = `${usedMap[0].length*width}`
-  // map.style.height = `${usedMap.length*height}`
-  // bomberman.style.backgroundSize = `${4*width}px ${8*height}px`;
-  // player.x = initPos[0]*width
-  // player.y = initPos[1]*height
-  // player.startX = initPos[0]*width
-  // player.startY = initPos[1]*height
-
-  // monsters.forEach(monster => {
-  //   let divMn = document.querySelector(`.monster-${monster.id}`)
-  //   divMn.style.backgroundSize = `${3*width}px ${4*height}px`;
-  //   monster.x = monster.startX*width
-  //   monster.y = monster.startY*height
-  //   monster.speed = size/20
-  // })
-  // const mapChild = document.querySelectorAll('.map div')
-  // mapChild.forEach(div => {
-  //   div.style.width = `${width}`
-  //   div.style.height = `${height}`
-  // })
-  //   }, 100);
   resizeTimeout = setTimeout(() => {
     location.reload();
-  }, 500);
+  }, 1000);
 });
