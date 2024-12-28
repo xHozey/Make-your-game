@@ -1,4 +1,4 @@
-import { width,height } from "./main.js";
+import { width, height } from "./main.js";
 
 import { randomMonsterDir } from "./helpers.js";
 
@@ -28,7 +28,7 @@ export class Player {
     const img = new Image();
     img.src = "assets/hitler.png";
     div.style.backgroundImage = `url(${img.src})`;
-    div.style.backgroundSize = `${4*width}px ${8*height}px`;
+    div.style.backgroundSize = `${4 * width}px ${8 * height}px`;
     div.style.width = `${width}px`;
     div.style.height = `${height}px`;
     map.append(div);
@@ -40,8 +40,8 @@ export class Monster {
   constructor(x, y, id, dir, speed) {
     this.startX = x;
     this.startY = y;
-    this.x = x*width;
-    this.y = y*height;
+    this.x = x * width;
+    this.y = y * height;
     this.id = id;
     this.dir = dir;
     this.loop = 0;
@@ -61,11 +61,11 @@ export class Monster {
 
       if (bluePrint[row][col] === 0) {
         let currentMonster = new Monster(
-          col ,
-          row ,
+          col,
+          row,
           i,
           randomMonsterDir(),
-          Math.floor(width/14)
+          Math.floor(width / 14)
         );
         monsters.push(currentMonster);
         let div = document.createElement("div");
@@ -76,7 +76,7 @@ export class Monster {
         div.style.position = `absolute`;
         div.style.imageRendering = "pixelated";
         div.style.backgroundImage = `url(assets/skull.png)`;
-        div.style.backgroundSize = `${3*width}px ${4*height}px`;
+        div.style.backgroundSize = `${3 * width}px ${4 * height}px`;
         map.appendChild(div);
         div.style.transform = `translate(${currentMonster.x}px, ${currentMonster.y}px)`;
       } else {
@@ -87,10 +87,47 @@ export class Monster {
   }
 }
 
+export class explotion {
+  constructor(x, y,map) {
+    this.map = map
+    this.x = x
+    this.y = y
+    this.height = height
+    this.width = width
+    this.frames = [1,2,3,4,5]
+    this.slowFrames = 5
+    this.slow = 0
+    this.loop = 0
+  }
+  initExplotion(grids) {
+    let currentDiv = grids[this.y][this.x]
+    if (!currentDiv.classList.contains('wall')) {
+      const fire = document.createElement('div')
+      fire.style.backgroundImage = 'url(assets/inTheFire.png)'
+      fire.style.backgroundSize = `${width*5}px ${height*2}px`
+      fire.style.width = `${width}px`;
+      fire.style.height = `${height}px`;
+      fire.style.backgroundPosition = `${width}px ${height*2}px`
+      fire.style.position = `absolute`
+      this.map.appendChild(fire)
+      fire.style.transform = `translate(${this.x*width}px, ${this.y*height}px)`
+      currentDiv.classList.remove("soft-wall");
+      currentDiv.classList.contains("wall") ? null : currentDiv.classList.add("empty");
+      currentDiv.classList.add('explotion')
+      fire.classList.add("fire")
+      return [fire, currentDiv]
+    }
+  }
+}
+
 export class Bomb {
   constructor(grids) {
     this.grids = grids;
     this.droped = false;
+    this.frames = [1, 2, 3]
+    this.loop = 0
+    this.slowFrames = 5
+    this.slow = 0
   }
 
   putTheBomb(x, y, map) {
@@ -98,130 +135,47 @@ export class Bomb {
     this.droped = true;
     let bomb = document.createElement('div')
     bomb.classList.add('bomb')
-    map.append(bomb)
+    bomb.style.backgroundImage = 'url(assets/bomb.png)'
+    bomb.style.backgroundSize = `${width * 3}px ${height}px`
+    bomb.style.width = `${width}px`;
+    bomb.style.height = `${height}px`;
+    bomb.style.backgroundPosition = `${width}px ${height}px`
+    bomb.style.position = `absolute`
+    map.appendChild(bomb)
+    let xPos = Math.round(x / width)
+    let yPos = Math.round(y / height)
+    bomb.style.transform = `translate(${xPos * width}px, ${yPos * height}px)`
 
-   /* this.grids[Math.round(y / height)][Math.round(x / width)].classList.add(
-      "bomb"
-    );*/
     let timer;
+    let explotions = []
+    let centerEx = new explotion(xPos, yPos,map)
+    let rightEx = new explotion(xPos + 1, yPos,map)
+    let leftEx =new explotion(xPos - 1, yPos,map)
+    let downEx= new explotion(xPos, yPos + 1,map)
+    let upEx = new explotion(xPos, yPos - 1,map)
     timer = setTimeout(() => {
-      this.grids[Math.round(y/height)][Math.round(x/width)].classList.remove(
-        "bomb"
-      );
-      this.grids[Math.round(y/height)][
-        Math.round(x/width) + 1
-      ].classList.remove("soft-wall");
-      this.grids[Math.round(y/height)][
-        Math.round(x/width) + 1
-      ].classList.contains("wall")
-        ? null
-        : this.grids[Math.round(y/height)][
-            Math.round(x/width) + 1
-          ].classList.add("empty");
-      this.grids[Math.round(y/height)][
-        Math.round(x/width) - 1
-      ].classList.remove("soft-wall");
-      this.grids[Math.round(y/height)][
-        Math.round(x/width) - 1
-      ].classList.contains("wall")
-        ? null
-        : this.grids[Math.round(y/height)][
-            Math.round(x/width) - 1
-          ].classList.add("empty");
-      this.grids[Math.round(y/height) + 1][
-        Math.round(x/width)
-      ].classList.remove("soft-wall");
-      this.grids[Math.round(y/height) + 1][
-        Math.round(x/width)
-      ].classList.contains("wall")
-        ? null
-        : this.grids[Math.round(y/height) + 1][
-            Math.round(x/width)
-          ].classList.add("empty");
-      this.grids[Math.round(y/height) - 1][
-        Math.round(x/width)
-      ].classList.remove("soft-wall");
-      this.grids[Math.round(y/height) - 1][
-        Math.round(x/width)
-      ].classList.contains("wall")
-        ? null
-        : this.grids[Math.round(y/height) - 1][
-            Math.round(x/width)
-          ].classList.add("empty");
+      map.removeChild(bomb)
+      this.droped = false
+      explotions = [
+        centerEx.initExplotion(this.grids),
+        rightEx.initExplotion(this.grids),
+        leftEx.initExplotion(this.grids),
+        downEx.initExplotion(this.grids),
+        upEx.initExplotion(this.grids),
+      ]
       this.droped = false;
       timer = null;
     }, 2000);
+    
     setTimeout(() => {
-      this.grids[Math.round(y/height)][Math.round(x/width) + 1].classList.add(
-        "explotion"
-      );
+        explotions.forEach(element => {
+          if (element != undefined) {
+            map.removeChild(element[0])
+            element[1].classList.remove('explotion')
+          }          
+        });
+      }, 3500);
 
-      this.grids[Math.round(y/height)][Math.round(x/width) - 1].classList.add(
-        "explotion"
-      );
-
-      this.grids[Math.round(y/height) + 1][Math.round(x/width)].classList.add(
-        "explotion"
-      );
-
-      this.grids[Math.round(y/height) - 1][Math.round(x/width)].classList.add(
-        "explotion"
-      );
-      this.grids[Math.round(y/height) - 1][
-        Math.round(x/width)
-      ].classList.remove("empty");
-      this.grids[Math.round(y/height)][
-        Math.round(x/width) + 1
-      ].classList.remove("empty");
-      this.grids[Math.round(y/height) + 1][
-        Math.round(x/width)
-      ].classList.remove("empty");
-      this.grids[Math.round(y/height)][
-        Math.round(x/width) - 1
-      ].classList.remove("empty");
-    }, 2000);
-
-    setTimeout(() => {
-      this.grids[Math.round(y/height) - 1][
-        Math.round(x/width)
-      ].classList.remove("explotion");
-      this.grids[Math.round(y/height)][
-        Math.round(x/width) + 1
-      ].classList.remove("explotion");
-      this.grids[Math.round(y/height) + 1][
-        Math.round(x/width)
-      ].classList.remove("explotion");
-      this.grids[Math.round(y/height)][
-        Math.round(x/width) - 1
-      ].classList.remove("explotion");
-      this.grids[Math.round(y/height)][
-        Math.round(x/width) + 1
-      ].classList.contains("wall")
-        ? null
-        : this.grids[Math.round(y/height)][
-            Math.round(x/width) + 1
-          ].classList.add("empty");
-      this.grids[Math.round(y/height)][
-        Math.round(x/width) - 1
-      ].classList.contains("wall")
-        ? null
-        : this.grids[Math.round(y/height)][
-            Math.round(x/width) - 1
-          ].classList.add("empty");
-      this.grids[Math.round(y/height) + 1][
-        Math.round(x/width)
-      ].classList.contains("wall")
-        ? null
-        : this.grids[Math.round(y/height) + 1][
-            Math.round(x/width)
-          ].classList.add("empty");
-      this.grids[Math.round(y/height) - 1][
-        Math.round(x/width)
-      ].classList.contains("wall")
-        ? null
-        : this.grids[Math.round(y/height) - 1][
-            Math.round(x/width)
-          ].classList.add("empty");
-    }, 3000);
+        return [centerEx,upEx,leftEx,rightEx,downEx]
   }
 }
