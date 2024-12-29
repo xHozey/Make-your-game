@@ -41,7 +41,7 @@ const map = document.querySelector(".map");
 const boardMap = new Board(map, usedMap);
 boardMap.randomizeBricks();
 const grids = boardMap.initLevel();
-const player = new Player(initPos[0] * width, initPos[1] * height, Math.ceil(size*delta) , map);
+const player = new Player(initPos[0] * width, initPos[1] * height, Math.ceil(size*delta)*2 , map);
 
 const bomberman = player.initBomberMan(map);
 let monsters = new Monster().initMonsters(enemiesTotal, usedMap, map);
