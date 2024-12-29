@@ -56,6 +56,7 @@ export const checkUpperMove = (grids,rowBot, colBot, colTop, object) => {
     grids[rowBot][colTop].classList.contains("soft-wall")
     const downGrid = grids[rowTop][colTop].classList.contains("wall") ||
     grids[rowTop][colTop].classList.contains("soft-wall")
+    
     if (upGrid && !downGrid) {
       return [true, object.y += object.speed]
     }

@@ -1,4 +1,4 @@
-import { width, height } from "./main.js";
+import { width, height, delta } from "./main.js";
 
 import { randomMonsterDir } from "./helpers.js";
 
@@ -65,7 +65,7 @@ export class Monster {
           row,
           i,
           randomMonsterDir(),
-          Math.ceil(width/18)
+          Math.ceil(width*delta)
         );
         monsters.push(currentMonster);
         let div = document.createElement("div");

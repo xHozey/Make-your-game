@@ -26,7 +26,7 @@ const initHeight = Math.floor(window.innerHeight / usedMap.length / 1.4);
 let size = Math.min(initWidth, initHeight);
 export let width = size;
 export let height = size;
-
+export let delta = 0.0166
 let currentLifes = 3;
 let currentScore = 0;
 let enemiesTotal = 5;
@@ -41,8 +41,7 @@ const map = document.querySelector(".map");
 const boardMap = new Board(map, usedMap);
 boardMap.randomizeBricks();
 const grids = boardMap.initLevel();
-const player = new Player(initPos[0] * width, initPos[1] * height, 2 , map);
-console.log(player.speed);
+const player = new Player(initPos[0] * width, initPos[1] * height, Math.ceil(size*delta) , map);
 
 const bomberman = player.initBomberMan(map);
 let monsters = new Monster().initMonsters(enemiesTotal, usedMap, map);
@@ -211,9 +210,8 @@ const animateMovement = () => {
       case player.moveRight:
         player.rowBot = Math.floor(player.y / height);
         player.rowTop = Math.ceil(player.y / height);
-        player.colBot = Math.floor((player.x + player.speed) / width);
         player.colTop = Math.ceil((player.x + player.speed) / width);
-
+        
         checkObj = checkRightMove(
           grids,
           player.rowBot,
