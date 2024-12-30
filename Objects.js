@@ -1,4 +1,4 @@
-import { width, height, delta } from "./main.js";
+import { width, height, delta, pause } from "./main.js";
 
 import { randomMonsterDir } from "./helpers.js";
 
@@ -133,6 +133,10 @@ export class Bomb {
     this.loop = 0;
     this.slowFrames = 5;
     this.slow = 0;
+    this.explotionTime = 2;
+    this.explotionCounter = 0;
+    this.removeEffectsTime = 3;
+    this.removeEffectsCounter = 0;
   }
 
   putTheBomb(x, y, map) {
@@ -151,7 +155,6 @@ export class Bomb {
     let yPos = Math.round(y / height);
     bomb.style.transform = `translate(${xPos * width}px, ${yPos * height}px)`;
 
-    let timer;
     let explotions = [];
     this.grids[yPos][xPos].classList.add("bomb-wall");
     let centerEx = new explotion(xPos, yPos, map, 1);
@@ -159,29 +162,38 @@ export class Bomb {
     let leftEx = new explotion(xPos - 1, yPos, map, 3);
     let downEx = new explotion(xPos, yPos + 1, map, 4);
     let upEx = new explotion(xPos, yPos - 1, map, 5);
-    timer = setTimeout(() => {
-      this.grids[yPos][xPos].classList.remove("bomb-wall");
-      map.removeChild(bomb);
-      this.droped = false;
-      explotions = [
-        centerEx.initExplotion(this.grids),
-        rightEx.initExplotion(this.grids),
-        leftEx.initExplotion(this.grids),
-        downEx.initExplotion(this.grids),
-        upEx.initExplotion(this.grids),
-      ];
-      this.droped = false;
-      timer = null;
-    }, 2000);
+    let bombInt = setInterval(() => {
+      if (!pause) this.explotionCounter++;
+      if (this.explotionCounter === this.explotionTime) {
+        this.grids[yPos][xPos].classList.remove("bomb-wall");
+        map.removeChild(bomb);
+        this.droped = false;
+        explotions = [
+          centerEx.initExplotion(this.grids),
+          rightEx.initExplotion(this.grids),
+          leftEx.initExplotion(this.grids),
+          downEx.initExplotion(this.grids),
+          upEx.initExplotion(this.grids),
+        ];
+        this.droped = false;
+        this.explotionCounter = 0;
+        clearInterval(bombInt)
+      }
+    }, 1000);
 
-    setTimeout(() => {
-      explotions.forEach((element) => {
-        if (element != undefined) {
-          map.removeChild(element[0]);
-          element[1].classList.remove("explotion");
-        }
-      });
-    }, 3500);
+    let effectsInt = setInterval(() => {
+      if (!pause) this.removeEffectsCounter++;
+      if (this.removeEffectsTime === this.removeEffectsCounter) {
+        explotions.forEach((element) => {
+          if (element != undefined) {
+            map.removeChild(element[0]);
+            element[1].classList.remove("explotion");
+          }
+        });
+        this.removeEffectsCounter = 0;
+        clearInterval(effectsInt)
+      }
+    }, 1000);
 
     return [centerEx, upEx, leftEx, rightEx, downEx];
   }

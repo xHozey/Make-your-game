@@ -35,7 +35,7 @@ timer.innerText = countDown;
 enemies.innerText = enemiesTotal;
 lifes.innerText = currentLifes;
 let initPos = getPlayerPose(usedMap);
-let pause = false;
+export let pause = false;
 let stopAlert = false;
 const map = document.querySelector(".map");
 const boardMap = new Board(map, usedMap);
@@ -104,6 +104,7 @@ const stopPlayer = (e) => {
 };
 
 const animateMovement = () => {
+  if (!pause) {
   let bombDiv = document.querySelector(".bomb");
   if (bombDiv) {
     if (bomb.slow >= bomb.slowFrames) {
@@ -151,7 +152,6 @@ const animateMovement = () => {
     alert("You won!");
     location.reload();
   }
-  if (!pause) {
     let checkObj;
     switch (true) {
       case player.moveDown:
