@@ -55,10 +55,7 @@ setInterval(() => {
   }
 }, 1000);
 
-const playerPos = { x: 60, y: 60 };
 let flames;
-map.append(bomberman);
-bomberman.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px)`;
 const movePlayer = (e) => {
   let key = e.key.toLowerCase();
   switch (key) {
@@ -296,20 +293,19 @@ const animateMovement = () => {
         enemy.dir = randomMonsterDir();
       }
     });
-  }
-  if (
-    checkIfBombed(grids, player.x, player.y) &&
-    !bomberman.classList.contains("immune")
-  ) {
-    death(player, monsters, bomberman);
-
-    currentLifes--;
-    lifes.innerHTML = currentLifes;
-  }
-  if ((currentLifes === 0 || countDown === 0) && !stopAlert) {
-    stopAlert = true;
-    alert("You lose!");
-    location.reload();
+    if ((currentLifes === 0 || countDown === 0) && !stopAlert) {
+      stopAlert = true;
+      alert("You lose!");
+      location.reload();
+    }
+    if (
+      checkIfBombed(grids, player.x, player.y) &&
+      !bomberman.classList.contains("immune")
+    ) {
+      death(player, monsters, bomberman);
+      currentLifes--;
+      lifes.innerHTML = currentLifes;
+    }
   }
   requestAnimationFrame(animateMovement);
 };

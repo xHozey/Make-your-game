@@ -21,6 +21,8 @@ export class Player {
     this.rowTop = 0;
     this.colBot = 0;
     this.colTop = 0;
+    this.deathTime = 2
+    this.deathCounter = 0
   }
   initBomberMan(map) {
     let div = document.createElement("div");

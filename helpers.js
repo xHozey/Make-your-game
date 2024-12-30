@@ -1,4 +1,4 @@
-import { width,height } from "./main.js";
+import { width,height, pause } from "./main.js";
 
 export const randomMonsterDir = () => {
   const directions = ["left", "up", "down", "right"];
@@ -13,9 +13,13 @@ export const getPosImg = (frameX, frameY, div) => {
 
 export const death = (player, monsters, bomberman) => {
   bomberman.classList.add('immune')
-  setTimeout(() => {
-    bomberman.classList.remove('immune')
-  },1500)
+  setInterval(() => {
+    if (!pause) player.deathCounter++
+    if (player.deathCounter == player.deathTime) {
+      bomberman.classList.remove('immune')
+      player.deathCounter = 0
+    }
+  },1000)
   monsters.forEach((mn) => {
     mn.x = mn.startX*width;
     mn.y = mn.startY*height;
