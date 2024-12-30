@@ -20,6 +20,7 @@ const lifes = document.getElementById("lifes-id");
 const score = document.getElementById("score-id");
 const enemies = document.getElementById("enemies-id");
 const timer = document.getElementById("timer-id");
+const milleTimer = document.getElementById('timer')
 const usedMap = level_2;
 const initWidth = Math.floor(window.innerWidth / usedMap[0].length / 1.4);
 const initHeight = Math.floor(window.innerHeight / usedMap.length / 1.4);
@@ -237,6 +238,7 @@ const animateMovement = () => {
     }
 
     monsters.forEach((enemy) => {
+     milleTimer.innerText = Number(milleTimer.innerText)+1
       if (!checkMonsterMove(enemy, grids)) {
         let div = document.querySelector(`.monster-${enemy.id}`);
         if (checkIfBombed(grids, enemy.x, enemy.y)) {
