@@ -1,4 +1,4 @@
-import { level_1, level_2, Board } from "./levels.js";
+import { level_2, Board } from "./levels.js";
 import { Player, Bomb, Monster } from "./Objects.js";
 import {
   randomMonsterDir,
@@ -41,7 +41,7 @@ const map = document.querySelector(".map");
 const boardMap = new Board(map, usedMap);
 boardMap.randomizeBricks();
 const grids = boardMap.initLevel();
-const player = new Player(initPos[0] * width, initPos[1] * height, Math.ceil(size*delta)*2 , map);
+export const player = new Player(initPos[0] * width, initPos[1] * height, Math.ceil(size*delta)*2 , map);
 
 const bomberman = player.initBomberMan(map);
 let monsters = new Monster().initMonsters(enemiesTotal, usedMap, map);
