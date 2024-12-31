@@ -66,7 +66,9 @@ const movePlayer = (e) => {
       Displaymenu(map);
       break;
     case "x":
-      flames = bomb.putTheBomb(player.x, player.y, map);
+      if (!pause) {
+        flames = bomb.putTheBomb(player.x, player.y, map);
+      }
       break;
     case "arrowup":
       player.moveUp = true;
@@ -102,6 +104,7 @@ const stopPlayer = (e) => {
 };
 
 const animateMovement = () => {
+  milleTimer.innerText = Number(milleTimer.innerText)+1
   if (!pause) {
   let bombDiv = document.querySelector(".bomb");
   if (bombDiv) {
@@ -238,7 +241,6 @@ const animateMovement = () => {
     }
 
     monsters.forEach((enemy) => {
-     milleTimer.innerText = Number(milleTimer.innerText)+1
       if (!checkMonsterMove(enemy, grids)) {
         let div = document.querySelector(`.monster-${enemy.id}`);
         if (checkIfBombed(grids, enemy.x, enemy.y)) {
